@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test1/screen/loginscreen.dart';
-import 'screen/partnerpreferencepage.dart';
 import 'package:get/get.dart';
 
 void main() {
