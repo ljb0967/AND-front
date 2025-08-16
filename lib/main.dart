@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test1/screen/loginscreen.dart';
 import 'screen/partnerpreferencepage.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,13 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '파트너 성향 선택',
+    return GetMaterialApp(
+      title: 'AND',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: PartnerPreferencePage(),
+      home: Loginscreen(),
     );
   }
 }
