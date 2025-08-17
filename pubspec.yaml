@@ -70,6 +70,7 @@ flutter:
   assets:
     - image/Frame 1.png
     - image/Frame 2.jpg
+    - image/home_image.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

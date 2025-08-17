@@ -17,7 +17,7 @@ class _TestscreenState extends State<Testscreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Get.to(() => Homescreen());
+            Get.offAll(() => Homescreen());
           },
           child: Text('홈화면 으로'),
         ),
