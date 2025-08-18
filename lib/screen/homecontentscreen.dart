@@ -122,7 +122,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                       ),
                       SizedBox(height: 8.0),
                       Text(
-                        '이별을 혼자서 감당하는 억누르기형을 위한 맞춤 퀘스트',
+                        '이별을 혼자서 감당하는 억누르기형을 위한 맞춤 퀘스트', //<---- API
                         style: TextStyle(color: Colors.white70, fontSize: 14.0),
                       ),
                     ],

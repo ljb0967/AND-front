@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../state/survey_controller.dart';
 
 class Homeappbarwidget extends StatefulWidget {
   const Homeappbarwidget({super.key});
@@ -8,6 +9,24 @@ class Homeappbarwidget extends StatefulWidget {
 }
 
 class _HomeappbarwidgetState extends State<Homeappbarwidget> {
+  String _todayString() {
+    final now = DateTime.now();
+    const weekDays = ['월', '화', '수', '목', '금', '토', '일'];
+    final weekday = weekDays[now.weekday - 1]; // 1(월)~7(일)
+    return '${now.year}년 ${now.month}월 ${now.day}일 ($weekday)';
+  }
+
+  String _andDaysText() {
+    final breakup = SurveyController.to.breakupDate;
+    if (breakup == null) return 'AND+0';
+    final today = DateTime.now();
+    final diff = today
+        .difference(DateTime(breakup.year, breakup.month, breakup.day))
+        .inDays;
+    final days = diff < 0 ? 0 : diff; // 미래 날짜 방지
+    return 'AND+$days';
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,7 +88,7 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '2025년 8월 31일 (일)', // <---------api
+                  _todayString(), // 동적 현재 날짜
                   style: TextStyle(color: Colors.white70, fontSize: 15),
                 ),
                 SizedBox(height: 8),
@@ -92,7 +111,7 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
                       style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
                     Text(
-                      'AND+31', // <---------api
+                      _andDaysText(), // AND+경과일
                       style: TextStyle(
                         color: Colors.blueAccent,
                         fontWeight: FontWeight.bold,
