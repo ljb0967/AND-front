@@ -102,12 +102,12 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                 ),
               ),
 
-              Positioned(
-                top: 324.0 + 80.0 + 20.0, // 적절한 위치로 조정
-                left: 16.0,
-                right: 16.0,
+              const SizedBox(height: 20.0),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
-                  padding: const EdgeInsets.all(20.0), // 내부 패딩
+                  padding: const EdgeInsets.all(16.0), // 내부 패딩
                   color: Colors.black,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,6 +129,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(
                   16.0,
@@ -180,12 +181,11 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                   ),
                 ),
               ),
-              Positioned(
-                top: 324.0 + 80.0 + 20.0 + 140.0, // 적절한 위치로 조정
-                left: 16.0,
-                right: 16.0,
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
-                  padding: const EdgeInsets.all(20.0), // 내부 패딩
+                  padding: const EdgeInsets.all(16.0), // 내부 패딩
                   color: Colors.black,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,6 +207,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                   ),
                 ),
               ),
+
               Container(color: Colors.white, height: 200.0),
             ]),
           ),
