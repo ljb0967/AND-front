@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'AND',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'Pretendard',
         useMaterial3: true,
       ),
       home: Loginscreen(),

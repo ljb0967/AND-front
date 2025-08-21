@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen.dart';
+import 'loginscreen.dart';
 
 class LoginScreen2 extends StatefulWidget {
   const LoginScreen2({super.key});
@@ -37,172 +38,590 @@ class _LoginScreen2State extends State<LoginScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEFF5FF),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Container(
+          width: 412,
+          height: 917,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(color: const Color(0xFF111111)),
+          child: Stack(
             children: [
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.topCenter,
+              Positioned(
+                left: 32,
+                top: 132,
                 child: Text(
-                  '&',
+                  '만나서 반가워요 :)\n소중한 당신을 소개해주세요',
                   style: TextStyle(
-                    fontSize: 28,
-                    color: Colors.blue.shade200,
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w600,
+                    height: 1.40,
+                    letterSpacing: -0.50,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Center(
-                  child: Text(
-                    '약관 동의',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+              Positioned(
+                left: 32,
+                top: 196,
+                child: Text(
+                  '건강한 이별 극복을 돕기 위해 몇 가지 정보가 필요해요',
+                  style: TextStyle(
+                    color: const Color(0xFFBDC7DB),
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1.40,
+                    letterSpacing: -0.35,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              const Text(
-                '필수 동의 항목',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF5C6B8A),
-                ),
-              ),
-              const SizedBox(height: 6),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE6E9EE),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: const Text('[필수] 서비스 이용약관 동의'),
-                      value: requiredA,
-                      onChanged: (v) {
-                        setState(() => requiredA = v ?? false);
-                        _syncAllAgree();
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
+              Positioned(
+                left: 16,
+                top: 96,
+                child: Container(
+                  width: 380,
+                  height: 4,
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF232529),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
                     ),
-                    CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: const Text('[필수] 개인정보 처리방침 동의'),
-                      value: requiredB,
-                      onChanged: (v) {
-                        setState(() => requiredB = v ?? false);
-                        _syncAllAgree();
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                top: 96,
+                child: Container(
+                  width: 54.29,
+                  height: 4,
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF65A0FF),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 12,
+                top: 28,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // spacing: 1,
+                  children: [
+                    Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(),
+                      child: IconButton(
+                        icon: Image.asset('image/arrow-left.png'),
+                        onPressed: () {
+                          Get.to(
+                            () => const Loginscreen(),
+                            transition: Transition.fade,
+                          );
+                        },
+                      ),
+                    ),
+                    Text(
+                      '로그인 화면',
+                      style: TextStyle(
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.40,
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
-              const Text(
-                '선택 동의 항목',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF5C6B8A),
-                ),
-              ),
-              const SizedBox(height: 6),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE6E9EE),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: const Text('[선택] 마케팅 수신 동의'),
-                      value: optionalA,
-                      onChanged: (v) {
-                        setState(() => optionalA = v ?? false);
-                        _syncAllAgree();
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    ),
-                    CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: const Text('[선택] 맞춤 추천 동의'),
-                      value: optionalB,
-                      onChanged: (v) {
-                        setState(() => optionalB = v ?? false);
-                        _syncAllAgree();
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Checkbox(
-                    value: allAgree,
-                    onChanged: (v) => _toggleAll(v ?? false),
+              Positioned(
+                left: 16,
+                top: 280,
+                child: Container(
+                  width: 380,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
                   ),
-                  const SizedBox(width: 4),
-                  const Text('전체 약관 동의하기'),
-                ],
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: 88,
-                    height: 36,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5C84D5),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF1F2124),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: 8,
+                    children: [
+                      Text(
+                        '이름 입력',
+                        style: TextStyle(
+                          color: const Color(0xFF8A9099),
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
                         ),
                       ),
-                      onPressed: isAllRequiredChecked
-                          ? () {
-                              Get.to(() => const Testscreen());
-                            }
-                          : () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('필수 약관에 동의해 주세요.'),
-                                ),
-                              );
-                            },
-                      child: const Text('다음'),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                top: 382,
+                child: Container(
+                  width: 380,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF1F2124),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: 8,
+                    children: [
+                      Text(
+                        '나이 입력(숫자만)',
+                        style: TextStyle(
+                          color: const Color(0xFF8A9099),
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 32,
+                top: 248,
+                child: Text(
+                  '사용자 이름',
+                  style: TextStyle(
+                    color: const Color(0xFFBDC7DB),
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1.40,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 32,
+                top: 350,
+                child: Text(
+                  '사용자 나이(만)',
+                  style: TextStyle(
+                    color: const Color(0xFFBDC7DB),
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1.40,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 32,
+                top: 460,
+                child: Text(
+                  '사용자 성별',
+                  style: TextStyle(
+                    color: const Color(0xFFBDC7DB),
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1.40,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                top: 703,
+                child: Container(
+                  width: 370,
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF65A0FF),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: 8,
+                    children: [
+                      TextButton(
+                        child: Text(
+                          '다음으로 넘어가기',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w600,
+                            height: 1.40,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: () {
+                          Get.to(
+                            () => const Testscreen(),
+                            transition: Transition.fade,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                top: 492,
+                child: Container(
+                  width: 380,
+                  height: 46,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF1F2124),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Container(
+                          width: 190,
+                          height: 46,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF3D4147),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Container(
+                          width: 380,
+                          height: 46,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    spacing: 8,
+                                    children: [
+                                      Text(
+                                        '남성',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.40,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    spacing: 8,
+                                    children: [
+                                      Text(
+                                        '여성',
+                                        style: TextStyle(
+                                          color: const Color(0xFFBDC7DB),
+                                          fontSize: 16,
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.40,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 32,
+                top: 554,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 12,
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: 0.75,
+                            top: 0.75,
+                            child: Container(
+                              width: 16.50,
+                              height: 16.50,
+                              decoration: ShapeDecoration(
+                                shape: OvalBorder(
+                                  side: BorderSide(
+                                    width: 1.50,
+                                    strokeAlign: BorderSide.strokeAlignCenter,
+                                    color: const Color(0xFFBDC7DB),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '성별을 선택하지 않을래요',
+                      style: TextStyle(
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.40,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
       ),
+      // backgroundColor: const Color(0xFFEFF5FF),
+      // // backgroundColor: Colors.black,
+      // body: SafeArea(
+      //   child: Padding(
+      //     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.stretch,
+      //       children: [
+      //         const SizedBox(height: 8),
+      //         Align(
+      //           alignment: Alignment.topCenter,
+      //           child: Text(
+      //             '&',
+      //             style: TextStyle(
+      //               fontSize: 28,
+      //               color: Colors.blue.shade200,
+      //               fontWeight: FontWeight.w600,
+      //             ),
+      //           ),
+      //         ),
+      //         const SizedBox(height: 12),
+      //         Container(
+      //           padding: const EdgeInsets.symmetric(vertical: 10),
+      //           decoration: BoxDecoration(
+      //             color: Colors.white,
+      //             borderRadius: BorderRadius.circular(8),
+      //           ),
+      //           child: const Center(
+      //             child: Text(
+      //               '약관 동의',
+      //               style: TextStyle(fontWeight: FontWeight.w600),
+      //             ),
+      //           ),
+      //         ),
+      //         const SizedBox(height: 12),
+      //         const Text(
+      //           '필수 동의 항목',
+      //           style: TextStyle(
+      //             fontSize: 13,
+      //             fontWeight: FontWeight.w600,
+      //             color: Color(0xFF5C6B8A),
+      //           ),
+      //         ),
+      //         const SizedBox(height: 6),
+      //         Container(
+      //           padding: const EdgeInsets.all(8),
+      //           decoration: BoxDecoration(
+      //             color: const Color(0xFFE6E9EE),
+      //             borderRadius: BorderRadius.circular(8),
+      //           ),
+      //           child: Column(
+      //             children: [
+      //               CheckboxListTile(
+      //                 contentPadding: EdgeInsets.zero,
+      //                 dense: true,
+      //                 title: const Text('[필수] 서비스 이용약관 동의'),
+      //                 value: requiredA,
+      //                 onChanged: (v) {
+      //                   setState(() => requiredA = v ?? false);
+      //                   _syncAllAgree();
+      //                 },
+      //                 controlAffinity: ListTileControlAffinity.leading,
+      //               ),
+      //               CheckboxListTile(
+      //                 contentPadding: EdgeInsets.zero,
+      //                 dense: true,
+      //                 title: const Text('[필수] 개인정보 처리방침 동의'),
+      //                 value: requiredB,
+      //                 onChanged: (v) {
+      //                   setState(() => requiredB = v ?? false);
+      //                   _syncAllAgree();
+      //                 },
+      //                 controlAffinity: ListTileControlAffinity.leading,
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //         const SizedBox(height: 12),
+      //         const Text(
+      //           '선택 동의 항목',
+      //           style: TextStyle(
+      //             fontSize: 13,
+      //             fontWeight: FontWeight.w600,
+      //             color: Color(0xFF5C6B8A),
+      //           ),
+      //         ),
+      //         const SizedBox(height: 6),
+      //         Container(
+      //           padding: const EdgeInsets.all(8),
+      //           decoration: BoxDecoration(
+      //             color: const Color(0xFFE6E9EE),
+      //             borderRadius: BorderRadius.circular(8),
+      //           ),
+      //           child: Column(
+      //             children: [
+      //               CheckboxListTile(
+      //                 contentPadding: EdgeInsets.zero,
+      //                 dense: true,
+      //                 title: const Text('[선택] 마케팅 수신 동의'),
+      //                 value: optionalA,
+      //                 onChanged: (v) {
+      //                   setState(() => optionalA = v ?? false);
+      //                   _syncAllAgree();
+      //                 },
+      //                 controlAffinity: ListTileControlAffinity.leading,
+      //               ),
+      //               CheckboxListTile(
+      //                 contentPadding: EdgeInsets.zero,
+      //                 dense: true,
+      //                 title: const Text('[선택] 맞춤 추천 동의'),
+      //                 value: optionalB,
+      //                 onChanged: (v) {
+      //                   setState(() => optionalB = v ?? false);
+      //                   _syncAllAgree();
+      //                 },
+      //                 controlAffinity: ListTileControlAffinity.leading,
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //         const SizedBox(height: 12),
+      //         Row(
+      //           children: [
+      //             Checkbox(
+      //               value: allAgree,
+      //               onChanged: (v) => _toggleAll(v ?? false),
+      //             ),
+      //             const SizedBox(width: 4),
+      //             const Text('전체 약관 동의하기'),
+      //           ],
+      //         ),
+      //         const Spacer(),
+      //         Row(
+      //           mainAxisAlignment: MainAxisAlignment.end,
+      //           children: [
+      //             SizedBox(
+      //               width: 88,
+      //               height: 36,
+      //               child: ElevatedButton(
+      //                 style: ElevatedButton.styleFrom(
+      //                   backgroundColor: const Color(0xFF5C84D5),
+      //                   foregroundColor: Colors.white,
+      //                   elevation: 0,
+      //                   shape: RoundedRectangleBorder(
+      //                     borderRadius: BorderRadius.circular(18),
+      //                   ),
+      //                 ),
+      //                 onPressed: isAllRequiredChecked
+      //                     ? () {
+      //                         Get.to(() => const Testscreen());
+      //                       }
+      //                     : () {
+      //                         ScaffoldMessenger.of(context).showSnackBar(
+      //                           const SnackBar(
+      //                             content: Text('필수 약관에 동의해 주세요.'),
+      //                           ),
+      //                         );
+      //                       },
+      //                 child: const Text('다음'),
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

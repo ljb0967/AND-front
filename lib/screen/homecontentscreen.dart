@@ -59,16 +59,21 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        toolbarHeight: 250.0,
+        flexibleSpace: FlexibleSpaceBar(background: Homeappbarwidget()),
+      ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.black,
-            expandedHeight: 250.0,
-            // pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Homeappbarwidget(),
-            ), // Homeappbarwidget은 기존대로 사용
-          ),
+          // SliverAppBar(
+          //   backgroundColor: Colors.black,
+          //   expandedHeight: 250.0,
+          //   // pinned: true,
+          //   flexibleSpace: FlexibleSpaceBar(
+          //     background: Homeappbarwidget(),
+          //   ), // Homeappbarwidget은 기존대로 사용
+          // ),
           SliverList(
             delegate: SliverChildListDelegate([
               SizedBox(height: 20.0),
@@ -117,13 +122,17 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         '이별을 혼자서 감당하는 억누르기형을 위한 맞춤 퀘스트', //<---- API
-                        style: TextStyle(color: Colors.white70, fontSize: 14.0),
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -173,6 +182,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                             style: TextStyle(
                               color: Colors.blue,
                               fontSize: 12.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -189,19 +199,40 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                   color: Colors.black,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        '오늘도, 이별 나누기',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '오늘도, 이별 나누기',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(width: 90.0),
+                          TextButton(
+                            onPressed: () {}, // ---> 일기 공유 커뮤니티로
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all<Color>(
+                                const Color(0xFF1F2124),
+                              ),
+                            ),
+                            child: Text(
+                              '더보기',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 8.0),
+                      SizedBox(height: 2.0),
                       Text(
                         '나와 유사한 이별을 한, 나와 비슷한 사람들의 이별일기',
-                        style: TextStyle(color: Colors.white70, fontSize: 14.0),
+                        style: TextStyle(color: Colors.white70, fontSize: 12.0),
                       ),
                     ],
                   ),
