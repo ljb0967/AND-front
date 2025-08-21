@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test1/screen/testscreen6_2.dart';
 import 'testscreen4.dart';
 import 'testscreen2.dart';
 
@@ -18,485 +17,532 @@ class _Testscreen3State extends State<Testscreen3> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          width: 412,
-          height: 917,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: const Color(0xFF111111)),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 32,
-                top: 132,
-                child: Text(
-                  '이별한 사람과\n얼마나 오래 함께하셨나요?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w600,
-                    height: 1.40,
-                    letterSpacing: -0.50,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 32,
-                top: 196,
-                child: Text(
-                  'AND와의 여정을 위해 소중한 당신의 이야기를 들려주세요',
-                  style: TextStyle(
-                    color: const Color(0xFFBDC7DB),
-                    fontSize: 14,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w500,
-                    height: 1.40,
-                    letterSpacing: -0.35,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 96,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final double screenWidth = constraints.maxWidth;
+            const double designWidth = 412.0;
+            const double designHeight = 917.0;
+            final double scale = screenWidth / designWidth;
+            final double scaledHeight = designHeight * scale;
+
+            final Widget scaledContent = FittedBox(
+              alignment: Alignment.topLeft,
+              fit: BoxFit.fitWidth,
+              child: SizedBox(
+                width: designWidth,
+                height: designHeight,
                 child: Container(
-                  width: 380,
-                  height: 4,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF232529),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 96,
-                child: Container(
-                  width: 217.14,
-                  height: 4,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF65A0FF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 12,
-                top: 28,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  // spacing: 1,
-                  children: [
-                    Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(),
-                      child: IconButton(
-                        icon: Image.asset('image/arrow-left.png'),
-                        onPressed: () {
-                          Get.to(
-                            () => const Testscreen2(),
-                            transition: Transition.fade,
-                          );
-                        },
-                      ),
-                    ),
-                    Text(
-                      '이별 사유 선택',
-                      style: TextStyle(
-                        color: const Color(0xFFBDC7DB),
-                        fontSize: 14,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 703,
-                child: Container(
-                  width: 370,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF65A0FF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 8,
+                  width: 412,
+                  height: 917,
+                  clipBehavior: Clip.none,
+                  decoration: BoxDecoration(color: const Color(0xFF111111)),
+                  child: Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      TextButton(
+                      Positioned(
+                        left: 32,
+                        top: 132,
                         child: Text(
-                          '다음으로 넘어가기',
+                          '이별한 사람과\n얼마나 오래 함께하셨나요?',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 20,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w600,
                             height: 1.40,
+                            letterSpacing: -0.50,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                        onPressed: () {
-                          Get.to(
-                            () => const Testscreen4(),
-                            transition: Transition.fade,
-                          );
-                        },
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 280,
-                child: Container(
-                  width: 380,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 8,
-                    children: [
-                      Expanded(
-                        child: Column(
+                      Positioned(
+                        left: 32,
+                        top: 196,
+                        child: Text(
+                          'AND와의 여정을 위해 소중한 당신의 이야기를 들려주세요',
+                          style: TextStyle(
+                            color: const Color(0xFFBDC7DB),
+                            fontSize: 14,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.40,
+                            letterSpacing: -0.35,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 96,
+                        child: Container(
+                          width: 380,
+                          height: 4,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF232529),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 96,
+                        child: Container(
+                          width: 217.14,
+                          height: 4,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF65A0FF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 12,
+                        top: 28,
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 24,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          // spacing: 1,
                           children: [
                             Container(
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 12,
-                                children: [
-                                  Container(
-                                    width: 18,
-                                    height: 18,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0.75,
-                                          top: 0.75,
-                                          child: Container(
-                                            width: 16.50,
-                                            height: 16.50,
-                                            decoration: ShapeDecoration(
-                                              shape: OvalBorder(
-                                                side: BorderSide(
-                                                  width: 1.50,
-                                                  strokeAlign: BorderSide
-                                                      .strokeAlignCenter,
-                                                  color: const Color(
-                                                    0xFFBDC7DB,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '1~6개월',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.40,
-                                    ),
-                                  ),
-                                ],
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(),
+                              child: IconButton(
+                                icon: Image.asset('image/arrow-left.png'),
+                                onPressed: () {
+                                  Get.to(
+                                    () => const Testscreen2(),
+                                    transition: Transition.fade,
+                                  );
+                                },
                               ),
                             ),
-                            Container(
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 12,
-                                children: [
-                                  Container(
-                                    width: 18,
-                                    height: 18,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0.75,
-                                          top: 0.75,
-                                          child: Container(
-                                            width: 16.50,
-                                            height: 16.50,
-                                            decoration: ShapeDecoration(
-                                              shape: OvalBorder(
-                                                side: BorderSide(
-                                                  width: 1.50,
-                                                  strokeAlign: BorderSide
-                                                      .strokeAlignCenter,
-                                                  color: const Color(
-                                                    0xFFBDC7DB,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '6개월~1년',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.40,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 12,
-                                children: [
-                                  Container(
-                                    width: 18,
-                                    height: 18,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0.75,
-                                          top: 0.75,
-                                          child: Container(
-                                            width: 16.50,
-                                            height: 16.50,
-                                            decoration: ShapeDecoration(
-                                              shape: OvalBorder(
-                                                side: BorderSide(
-                                                  width: 1.50,
-                                                  strokeAlign: BorderSide
-                                                      .strokeAlignCenter,
-                                                  color: const Color(
-                                                    0xFFBDC7DB,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '1~2년',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.40,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 12,
-                                children: [
-                                  Container(
-                                    width: 18,
-                                    height: 18,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0.75,
-                                          top: 0.75,
-                                          child: Container(
-                                            width: 16.50,
-                                            height: 16.50,
-                                            decoration: ShapeDecoration(
-                                              shape: OvalBorder(
-                                                side: BorderSide(
-                                                  width: 1.50,
-                                                  strokeAlign: BorderSide
-                                                      .strokeAlignCenter,
-                                                  color: const Color(
-                                                    0xFFBDC7DB,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '2~5년',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.40,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 12,
-                                children: [
-                                  Container(
-                                    width: 18,
-                                    height: 18,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0.75,
-                                          top: 0.75,
-                                          child: Container(
-                                            width: 16.50,
-                                            height: 16.50,
-                                            decoration: ShapeDecoration(
-                                              shape: OvalBorder(
-                                                side: BorderSide(
-                                                  width: 1.50,
-                                                  strokeAlign: BorderSide
-                                                      .strokeAlignCenter,
-                                                  color: const Color(
-                                                    0xFFBDC7DB,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '5~10년',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.40,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 12,
-                                children: [
-                                  Container(
-                                    width: 18,
-                                    height: 18,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0.75,
-                                          top: 0.75,
-                                          child: Container(
-                                            width: 16.50,
-                                            height: 16.50,
-                                            decoration: ShapeDecoration(
-                                              shape: OvalBorder(
-                                                side: BorderSide(
-                                                  width: 1.50,
-                                                  strokeAlign: BorderSide
-                                                      .strokeAlignCenter,
-                                                  color: const Color(
-                                                    0xFFBDC7DB,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '10년 이상',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.40,
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              '이별 사유 선택',
+                              style: TextStyle(
+                                color: const Color(0xFFBDC7DB),
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
                               ),
                             ),
                           ],
                         ),
                       ),
+                      Positioned(
+                        left: 20,
+                        top: 723,
+                        child: Container(
+                          width: 370,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF65A0FF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              TextButton(
+                                child: Text(
+                                  '다음으로 넘어가기',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.40,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                onPressed: () {
+                                  Get.to(
+                                    () => const Testscreen4(),
+                                    transition: Transition.fade,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 280,
+                        child: Container(
+                          width: 380,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  spacing: 24,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        spacing: 12,
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 0.75,
+                                                  top: 0.75,
+                                                  child: Container(
+                                                    width: 16.50,
+                                                    height: 16.50,
+                                                    decoration: ShapeDecoration(
+                                                      shape: OvalBorder(
+                                                        side: BorderSide(
+                                                          width: 1.50,
+                                                          strokeAlign: BorderSide
+                                                              .strokeAlignCenter,
+                                                          color: const Color(
+                                                            0xFFBDC7DB,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            '1~6개월',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        spacing: 12,
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 0.75,
+                                                  top: 0.75,
+                                                  child: Container(
+                                                    width: 16.50,
+                                                    height: 16.50,
+                                                    decoration: ShapeDecoration(
+                                                      shape: OvalBorder(
+                                                        side: BorderSide(
+                                                          width: 1.50,
+                                                          strokeAlign: BorderSide
+                                                              .strokeAlignCenter,
+                                                          color: const Color(
+                                                            0xFFBDC7DB,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            '6개월~1년',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        spacing: 12,
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 0.75,
+                                                  top: 0.75,
+                                                  child: Container(
+                                                    width: 16.50,
+                                                    height: 16.50,
+                                                    decoration: ShapeDecoration(
+                                                      shape: OvalBorder(
+                                                        side: BorderSide(
+                                                          width: 1.50,
+                                                          strokeAlign: BorderSide
+                                                              .strokeAlignCenter,
+                                                          color: const Color(
+                                                            0xFFBDC7DB,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            '1~2년',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        spacing: 12,
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 0.75,
+                                                  top: 0.75,
+                                                  child: Container(
+                                                    width: 16.50,
+                                                    height: 16.50,
+                                                    decoration: ShapeDecoration(
+                                                      shape: OvalBorder(
+                                                        side: BorderSide(
+                                                          width: 1.50,
+                                                          strokeAlign: BorderSide
+                                                              .strokeAlignCenter,
+                                                          color: const Color(
+                                                            0xFFBDC7DB,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            '2~5년',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        spacing: 12,
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 0.75,
+                                                  top: 0.75,
+                                                  child: Container(
+                                                    width: 16.50,
+                                                    height: 16.50,
+                                                    decoration: ShapeDecoration(
+                                                      shape: OvalBorder(
+                                                        side: BorderSide(
+                                                          width: 1.50,
+                                                          strokeAlign: BorderSide
+                                                              .strokeAlignCenter,
+                                                          color: const Color(
+                                                            0xFFBDC7DB,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            '5~10년',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        spacing: 12,
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 0.75,
+                                                  top: 0.75,
+                                                  child: Container(
+                                                    width: 16.50,
+                                                    height: 16.50,
+                                                    decoration: ShapeDecoration(
+                                                      shape: OvalBorder(
+                                                        side: BorderSide(
+                                                          width: 1.50,
+                                                          strokeAlign: BorderSide
+                                                              .strokeAlignCenter,
+                                                          color: const Color(
+                                                            0xFFBDC7DB,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text(
+                                            '10년 이상',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 32,
+                        top: 248,
+                        child: Text(
+                          '이별 상대와 함께한 기간',
+                          style: TextStyle(
+                            color: const Color(0xFFBDC7DB),
+                            fontSize: 14,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.40,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              Positioned(
-                left: 32,
-                top: 248,
-                child: Text(
-                  '이별 상대와 함께한 기간',
-                  style: TextStyle(
-                    color: const Color(0xFFBDC7DB),
-                    fontSize: 14,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w500,
-                    height: 1.40,
-                  ),
+            );
+
+            if (scaledHeight > constraints.maxHeight) {
+              return SingleChildScrollView(
+                child: SizedBox(
+                  width: screenWidth,
+                  height: scaledHeight,
+                  child: scaledContent,
                 ),
-              ),
-            ],
-          ),
+              );
+            } else {
+              return SizedBox(
+                width: screenWidth,
+                height: scaledHeight,
+                child: scaledContent,
+              );
+            }
+          },
         ),
       ),
       // backgroundColor: const Color(0xFFEFF5FF),

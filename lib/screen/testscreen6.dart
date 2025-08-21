@@ -29,383 +29,418 @@ class _Testscreen6State extends State<Testscreen6> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          width: 412,
-          height: 917,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: const Color(0xFF111111)),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 32,
-                top: 132,
-                child: Text(
-                  'Q. 01\n마음이 힘들 때면 나는...',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w600,
-                    height: 1.40,
-                    letterSpacing: -0.50,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 32,
-                top: 196,
-                child: Text(
-                  '4개의 선택지 중 나를 가장 잘 나타내는 선택지 하나를 선택하세요',
-                  style: TextStyle(
-                    color: const Color(0xFFBDC7DB),
-                    fontSize: 14,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w500,
-                    height: 1.40,
-                    letterSpacing: -0.35,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 96,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final double screenWidth = constraints.maxWidth;
+            const double designWidth = 412.0;
+            const double designHeight = 917.0;
+            final double scale = screenWidth / designWidth;
+            final double scaledHeight = designHeight * scale;
+
+            final Widget scaledContent = FittedBox(
+              alignment: Alignment.topLeft,
+              fit: BoxFit.fitWidth,
+              child: SizedBox(
+                width: designWidth,
+                height: designHeight,
                 child: Container(
-                  width: 380,
-                  height: 4,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF232529),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 96,
-                child: Container(
-                  width: 325.71,
-                  height: 4,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF65A0FF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 12,
-                top: 28,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  // spacing: 1,
-                  children: [
-                    Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(),
-                      child: IconButton(
-                        icon: Image.asset('image/arrow-left.png'),
-                        onPressed: () {
-                          Get.to(
-                            () => const Testscreen5(),
-                            transition: Transition.fade,
-                          );
-                        },
-                      ),
-                    ),
-                    Text(
-                      '테스트 시작 화면',
-                      style: TextStyle(
-                        color: const Color(0xFFBDC7DB),
-                        fontSize: 14,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 703,
-                child: Container(
-                  width: 370,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF65A0FF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 8,
+                  width: 412,
+                  height: 917,
+                  clipBehavior: Clip.none,
+                  decoration: BoxDecoration(color: const Color(0xFF111111)),
+                  child: Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      TextButton(
+                      Positioned(
+                        left: 32,
+                        top: 132,
                         child: Text(
-                          '다음으로 넘어가기',
+                          'Q. 01\n마음이 힘들 때면 나는...',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 20,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w600,
                             height: 1.40,
+                            letterSpacing: -0.50,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                        onPressed: () {
-                          Get.to(
-                            () => const Testscreen7(),
-                            transition: Transition.fade,
-                          );
-                        },
+                      ),
+                      Positioned(
+                        left: 32,
+                        top: 196,
+                        child: Text(
+                          '4개의 선택지 중 나를 가장 잘 나타내는 선택지 하나를 선택하세요',
+                          style: TextStyle(
+                            color: const Color(0xFFBDC7DB),
+                            fontSize: 14,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.40,
+                            letterSpacing: -0.35,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 96,
+                        child: Container(
+                          width: 380,
+                          height: 4,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF232529),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 96,
+                        child: Container(
+                          width: 325.71,
+                          height: 4,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF65A0FF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 12,
+                        top: 28,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          // spacing: 1,
+                          children: [
+                            Container(
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(),
+                              child: IconButton(
+                                icon: Image.asset('image/arrow-left.png'),
+                                onPressed: () {
+                                  Get.to(
+                                    () => const Testscreen5(),
+                                    transition: Transition.fade,
+                                  );
+                                },
+                              ),
+                            ),
+                            Text(
+                              '테스트 시작 화면',
+                              style: TextStyle(
+                                color: const Color(0xFFBDC7DB),
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        top: 723,
+                        child: Container(
+                          width: 370,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF65A0FF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              TextButton(
+                                child: Text(
+                                  '다음으로 넘어가기',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.40,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                onPressed: () {
+                                  Get.to(
+                                    () => const Testscreen7(),
+                                    transition: Transition.fade,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 248,
+                        child: Container(
+                          width: 380,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF1F2124),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 12,
+                                children: [
+                                  SizedBox(
+                                    width: 16,
+                                    child: Text(
+                                      'A.',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.40,
+                                        letterSpacing: -0.40,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '감정을 숨기고 혼자 견딘다',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.40,
+                                      letterSpacing: -0.40,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 306,
+                        child: Container(
+                          width: 380,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF1F2124),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 12,
+                                children: [
+                                  SizedBox(
+                                    width: 16,
+                                    child: Text(
+                                      'B.',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.40,
+                                        letterSpacing: -0.40,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '다른 일에 몰두해 아예 생각을 차단한다',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.40,
+                                      letterSpacing: -0.40,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 364,
+                        child: Container(
+                          width: 380,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF1F2124),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 12,
+                                children: [
+                                  SizedBox(
+                                    width: 16,
+                                    child: Text(
+                                      'C.',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.40,
+                                        letterSpacing: -0.40,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '글을 쓰거나 노래를 듣고 울어버린다',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: 'Pretendard',
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.40,
+                                      letterSpacing: -0.40,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 422,
+                        child: Container(
+                          width: 380,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF1F2124),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 12,
+                                children: [
+                                  SizedBox(
+                                    width: 16,
+                                    child: Text(
+                                      'D.',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.40,
+                                        letterSpacing: -0.40,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 320,
+                                    child: Text(
+                                      '당시 상황을 떠올리며 ‘여기서 뭐가 잘못됐지?’하고 따져본다',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.40,
+                                        letterSpacing: -0.40,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-              Positioned(
-                left: 16,
-                top: 248,
-                child: Container(
-                  width: 380,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF1F2124),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 8,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 12,
-                        children: [
-                          SizedBox(
-                            width: 16,
-                            child: Text(
-                              'A.',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                                letterSpacing: -0.40,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            '감정을 숨기고 혼자 견딘다',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
-                              letterSpacing: -0.40,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+            );
+
+            if (scaledHeight > constraints.maxHeight) {
+              return SingleChildScrollView(
+                child: SizedBox(
+                  width: screenWidth,
+                  height: scaledHeight,
+                  child: scaledContent,
                 ),
-              ),
-              Positioned(
-                left: 16,
-                top: 306,
-                child: Container(
-                  width: 380,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF1F2124),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 8,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 12,
-                        children: [
-                          SizedBox(
-                            width: 16,
-                            child: Text(
-                              'B.',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                                letterSpacing: -0.40,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            '다른 일에 몰두해 아예 생각을 차단한다',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
-                              letterSpacing: -0.40,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 364,
-                child: Container(
-                  width: 380,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF1F2124),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 8,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 12,
-                        children: [
-                          SizedBox(
-                            width: 16,
-                            child: Text(
-                              'C.',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                                letterSpacing: -0.40,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            '글을 쓰거나 노래를 듣고 울어버린다',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
-                              letterSpacing: -0.40,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 422,
-                child: Container(
-                  width: 380,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF1F2124),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 8,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 12,
-                        children: [
-                          SizedBox(
-                            width: 16,
-                            child: Text(
-                              'D.',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                                letterSpacing: -0.40,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 320,
-                            child: Text(
-                              '당시 상황을 떠올리며 ‘여기서 뭐가 잘못됐지?’하고 따져본다',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                                letterSpacing: -0.40,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+              );
+            } else {
+              return SizedBox(
+                width: screenWidth,
+                height: scaledHeight,
+                child: scaledContent,
+              );
+            }
+          },
         ),
       ),
       // backgroundColor: const Color(0xFFEFF5FF),

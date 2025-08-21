@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test1/screen/loginscreen.dart';
+import 'package:test1/screen/intro_screen.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Pretendard',
         useMaterial3: true,
       ),
-      home: Loginscreen(),
+      home: const IntroScreen(),
     );
   }
 }
