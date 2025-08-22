@@ -222,6 +222,7 @@ class _LoginscreenState extends State<Loginscreen> {
                             ),
                             child: TextField(
                               controller: idController,
+                              keyboardType: TextInputType.emailAddress,
                               style: const TextStyle(
                                 color: const Color(0xFF8A9099),
                                 fontSize: 16,
@@ -284,46 +285,42 @@ class _LoginscreenState extends State<Loginscreen> {
                             ),
                           ),
                         ),
+
+                        // 250822 로그인 텍스트버튼 ElevatedButton 로 변경완료. positioned()는 조정 필요.
                         Positioned(
                           left: 16,
                           top: 485,
                           child: Container(
                             width: 370,
-                            decoration: ShapeDecoration(
-                              color: const Color(0xFF65A0FF),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              spacing: 8,
-                              children: [
-                                TextButton(
-                                  child: Text(
-                                    '로그인',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.40,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  onPressed: () {
-                                    Get.to(
-                                      () => const LoginScreen2(),
-                                      transition: Transition.fade,
-                                    );
-                                  },
+                            height: 48,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF65A0FF),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              ],
+                              ),
+                              child: Text(
+                                '로그인',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.40,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              onPressed: () {
+                                Get.to(
+                                  () => const LoginScreen2(),
+                                  transition: Transition.fade,
+                                );
+                              },
                             ),
                           ),
                         ),
+
                         Positioned(
                           left: 86,
                           top: 555,
@@ -423,38 +420,31 @@ class _LoginscreenState extends State<Loginscreen> {
                           top: 485,
                           child: Container(
                             width: 370,
-                            decoration: ShapeDecoration(
-                              color: const Color(0xFF65A0FF),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              spacing: 8,
-                              children: [
-                                TextButton(
-                                  child: Text(
-                                    '로그인',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.40,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  onPressed: () {
-                                    Get.to(
-                                      () => const LoginScreen2(),
-                                      transition: Transition.fade,
-                                    );
-                                  },
+                            height: 48,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF65A0FF),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              ],
+                              ),
+                              child: Text(
+                                '로그인',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.40,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              onPressed: () {
+                                Get.to(
+                                  () => const LoginScreen2(),
+                                  transition: Transition.fade,
+                                );
+                              },
                             ),
                           ),
                         ),

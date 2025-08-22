@@ -11,28 +11,39 @@ class LoginScreen2 extends StatefulWidget {
 }
 
 class _LoginScreen2State extends State<LoginScreen2> {
-  bool requiredA = true;
-  bool requiredB = false;
-  bool optionalA = false;
-  bool optionalB = false;
-  bool allAgree = false;
+  // bool requiredA = true;
+  // bool requiredB = false;
+  // bool optionalA = false;
+  // bool optionalB = false;
+  // bool allAgree = false;
 
-  bool get isAllRequiredChecked => requiredA && requiredB;
+  // bool get isAllRequiredChecked => requiredA && requiredB;
 
-  void _syncAllAgree() {
-    setState(() {
-      allAgree = requiredA && requiredB && optionalA && optionalB;
-    });
-  }
+  // void _syncAllAgree() {
+  //   setState(() {
+  //     allAgree = requiredA && requiredB && optionalA && optionalB;
+  //   });
+  // }
 
-  void _toggleAll(bool value) {
-    setState(() {
-      allAgree = value;
-      requiredA = value;
-      requiredB = value;
-      optionalA = value;
-      optionalB = value;
-    });
+  // void _toggleAll(bool value) {
+  //   setState(() {
+  //     allAgree = value;
+  //     requiredA = value;
+  //     requiredB = value;
+  //     optionalA = value;
+  //     optionalB = value;
+  //   });
+  // }
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  String? _gender;
+
+  // 필수 입력 검증을 위한 getter
+  bool get _isFormValid {
+    return nameController.text.trim().isNotEmpty &&
+        ageController.text.trim().isNotEmpty &&
+        _gender != null;
   }
 
   @override
@@ -169,26 +180,32 @@ class _LoginScreen2State extends State<LoginScreen2> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              Text(
-                                '이름 입력',
-                                style: TextStyle(
-                                  color: const Color(0xFF8A9099),
-                                  fontSize: 16,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.40,
-                                ),
+                          child: TextField(
+                            controller: nameController,
+                            keyboardType: TextInputType.name,
+                            style: const TextStyle(
+                              color: const Color(0xFF8A9099),
+                              fontSize: 16,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                            ),
+                            decoration: const InputDecoration(
+                              isCollapsed: true,
+                              border: InputBorder.none,
+                              hintText: '이름 입력',
+                              hintStyle: TextStyle(
+                                color: Color(0xFF8A9099),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
+
                       Positioned(
                         left: 16,
                         top: 382,
@@ -204,26 +221,32 @@ class _LoginScreen2State extends State<LoginScreen2> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              Text(
-                                '나이 입력(숫자만)',
-                                style: TextStyle(
-                                  color: const Color(0xFF8A9099),
-                                  fontSize: 16,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.40,
-                                ),
+                          child: TextField(
+                            controller: ageController,
+                            keyboardType: TextInputType.number,
+                            style: const TextStyle(
+                              color: const Color(0xFF8A9099),
+                              fontSize: 16,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                            ),
+                            decoration: const InputDecoration(
+                              isCollapsed: true,
+                              border: InputBorder.none,
+                              hintText: '나이 입력(숫자만)',
+                              hintStyle: TextStyle(
+                                color: Color(0xFF8A9099),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
+
                       Positioned(
                         left: 32,
                         top: 248,
@@ -238,6 +261,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                           ),
                         ),
                       ),
+
                       Positioned(
                         left: 32,
                         top: 350,
@@ -266,159 +290,139 @@ class _LoginScreen2State extends State<LoginScreen2> {
                           ),
                         ),
                       ),
+
                       Positioned(
                         left: 20,
                         top: 723,
                         child: Container(
                           width: 370,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF65A0FF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              TextButton(
-                                child: Text(
-                                  '다음으로 넘어가기',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.40,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                onPressed: () {
-                                  Get.to(
-                                    () => const Testscreen(),
-                                    transition: Transition.fade,
-                                  );
-                                },
+                          height: 48,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _isFormValid
+                                  ? const Color(0xFF65A0FF)
+                                  : const Color(0xFF1F2124),
+                              disabledBackgroundColor: const Color(0xFF1F2124),
+                              foregroundColor: _isFormValid
+                                  ? Colors.white
+                                  : const Color(0xFF8A9099),
+                              disabledForegroundColor: const Color(0xFF8A9099),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ],
+                            ),
+                            child: Text(
+                              '다음으로 넘어가기',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.40,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            onPressed: _isFormValid
+                                ? () {
+                                    Get.to(
+                                      () => const Testscreen(),
+                                      transition: Transition.fade,
+                                    );
+                                  }
+                                // : null,
+                                : () {
+                                    Get.to(
+                                      () => const Testscreen(), // 디버깅을 위한 임시
+                                      transition: Transition.fade,
+                                    );
+                                  },
                           ),
                         ),
                       ),
+
                       Positioned(
                         left: 16,
                         top: 492,
                         child: Container(
                           width: 380,
                           height: 46,
-                          clipBehavior: Clip.antiAlias,
                           decoration: ShapeDecoration(
                             color: const Color(0xFF1F2124),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                             ),
                           ),
-                          child: Stack(
+                          child: Row(
                             children: [
-                              Positioned(
-                                left: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 190,
-                                  height: 46,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0xFF3D4147),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _gender = 'male';
+                                    });
+                                  },
+                                  child: Container(
+                                    height: double.infinity,
+                                    decoration: ShapeDecoration(
+                                      color: _gender == 'male'
+                                          ? const Color(0xFF2A2D31)
+                                          : Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          100,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '남성',
+                                        style: TextStyle(
+                                          color: _gender == 'male'
+                                              ? Colors.white
+                                              : const Color(0xFFBDC7DB),
+                                          fontSize: 16,
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.40,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                left: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 380,
-                                  height: 46,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          height: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                          ),
-                                          decoration: ShapeDecoration(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            spacing: 8,
-                                            children: [
-                                              Text(
-                                                '남성',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontFamily: 'Pretendard',
-                                                  fontWeight: FontWeight.w500,
-                                                  height: 1.40,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _gender = 'female';
+                                    });
+                                  },
+                                  child: Container(
+                                    height: double.infinity,
+                                    decoration: ShapeDecoration(
+                                      color: _gender == 'female'
+                                          ? const Color(0xFF2A2D31)
+                                          : Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          100,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Container(
-                                          height: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                          ),
-                                          decoration: ShapeDecoration(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            spacing: 8,
-                                            children: [
-                                              Text(
-                                                '여성',
-                                                style: TextStyle(
-                                                  color: const Color(
-                                                    0xFFBDC7DB,
-                                                  ),
-                                                  fontSize: 16,
-                                                  fontFamily: 'Pretendard',
-                                                  fontWeight: FontWeight.w500,
-                                                  height: 1.40,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '여성',
+                                        style: TextStyle(
+                                          color: _gender == 'female'
+                                              ? Colors.white
+                                              : const Color(0xFFBDC7DB),
+                                          fontSize: 16,
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.40,
                                         ),
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -433,34 +437,47 @@ class _LoginScreen2State extends State<LoginScreen2> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          spacing: 12,
                           children: [
-                            Container(
-                              width: 18,
-                              height: 18,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 0.75,
-                                    top: 0.75,
-                                    child: Container(
-                                      width: 16.50,
-                                      height: 16.50,
-                                      decoration: ShapeDecoration(
-                                        shape: OvalBorder(
-                                          side: BorderSide(
-                                            width: 1.50,
-                                            strokeAlign:
-                                                BorderSide.strokeAlignCenter,
-                                            color: const Color(0xFFBDC7DB),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (_gender == 'none') {
+                                    _gender = null;
+                                  } else {
+                                    _gender = 'none';
+                                  }
+                                });
+                              },
+                              child: Container(
+                                width: 18,
+                                height: 18,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: _gender == 'none'
+                                        ? const Color(0xFF66A1FF)
+                                        : const Color(0xFFBDC7DB),
+                                    width: 1.5,
+                                  ),
+                                  color: _gender == 'none'
+                                      ? const Color(0xFF111111)
+                                      : Colors.transparent,
+                                ),
+                                child: _gender == 'none'
+                                    ? Center(
+                                        child: Container(
+                                          width: 8,
+                                          height: 8,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xFF66A1FF),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                      )
+                                    : null,
                               ),
                             ),
+                            const SizedBox(width: 8),
                             Text(
                               '성별을 선택하지 않을래요',
                               style: TextStyle(

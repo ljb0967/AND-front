@@ -149,38 +149,31 @@ class _Testscreen6State extends State<Testscreen6> {
                         top: 723,
                         child: Container(
                           width: 370,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF65A0FF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              TextButton(
-                                child: Text(
-                                  '다음으로 넘어가기',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.40,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                onPressed: () {
-                                  Get.to(
-                                    () => const Testscreen7(),
-                                    transition: Transition.fade,
-                                  );
-                                },
+                          height: 48,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF65A0FF),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ],
+                            ),
+                            child: Text(
+                              '다음으로 넘어가기',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.40,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            onPressed: () {
+                              Get.to(
+                                () => const Testscreen7(),
+                                transition: Transition.fade,
+                              );
+                            },
                           ),
                         ),
                       ),
