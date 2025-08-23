@@ -172,13 +172,13 @@ class _Testscreen6State extends State<Testscreen6> {
                                       transition: Transition.fade,
                                     );
                                   }
-                                // : null,
-                                : () {
-                                    Get.to(
-                                      () => const Testscreen7(), // 디버깅을 위한 임시
-                                      transition: Transition.fade,
-                                    );
-                                  },
+                                : null,
+                            // : () {
+                            //     Get.to(
+                            //       () => const Testscreen7(), // 디버깅을 위한 임시
+                            //       transition: Transition.fade,
+                            //     );
+                            //   },
                           ),
                         ),
                       ),

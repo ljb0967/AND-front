@@ -197,15 +197,15 @@ class _TestscreenState extends State<Testscreen> {
                                       transition: Transition.fade,
                                     );
                                   }
-                                // : null,
-                                : () {
-                                    Get.to(
-                                      () => Testscreen2(
-                                        selectedCategory: _selectedCategory,
-                                      ), // 디버깅을 위한 임시
-                                      transition: Transition.fade,
-                                    );
-                                  },
+                                : null,
+                            // : () {
+                            //     Get.to(
+                            //       () => Testscreen2(
+                            //         selectedCategory: _selectedCategory,
+                            //       ), // 디버깅을 위한 임시
+                            //       transition: Transition.fade,
+                            //     );
+                            //   },
                           ),
                         ),
                       ),

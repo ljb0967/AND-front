@@ -13,6 +13,81 @@ class Loginscreen extends StatefulWidget {
 class _LoginscreenState extends State<Loginscreen> {
   bool _isMember = true; // 회원 탭이 기본 선택
 
+  // 로그인 검증 상태 관리
+  bool _isLoggingIn = false;
+  String _loginError = '';
+
+  // 로그인 검증
+  Future<void> _validateLogin(String email, String password) async {
+    if (email.isEmpty || password.isEmpty) {
+      setState(() {
+        _loginError = '이메일과 비밀번호를 모두 입력해주세요';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoggingIn = true;
+      _loginError = '';
+    });
+
+    try {
+      // TODO: 백엔드 API 호출하여 로그인 검증
+      // final response = await apiService.login(email, password);
+      //
+      // if (response.success) {
+      //   // 로그인 성공 시 다음 화면으로 이동
+      //   Get.to(() => const LoginScreen2(), transition: Transition.fade);
+      // } else {
+      //   setState(() {
+      //     _loginError = '이메일 주소 또는 비밀번호가 일치하지 않아요';
+      //   });
+
+      if (email == 'ljb0967@naver.com' && password == 'a12345678') {
+        //디버깅 용
+        Get.to(() => const LoginScreen2(), transition: Transition.fade);
+      }
+
+      // 임시로 항상 실패로 처리 (백엔드 구현 전)
+      await Future.delayed(const Duration(milliseconds: 500)); // API 호출 시뮬레이션
+      setState(() {
+        _loginError = '이메일 주소 또는 비밀번호가 일치하지 않아요';
+      });
+    } catch (e) {
+      setState(() {
+        _loginError = '로그인 중 오류가 발생했습니다';
+      });
+    } finally {
+      setState(() {
+        _isLoggingIn = false;
+      });
+    }
+  }
+
+  // 로그인 API 호출 (백엔드 구현 필요)
+  Future<void> _performLogin(String email, String password) async {
+    // TODO: 백엔드 API 구현
+    // try {
+    //   final response = await apiService.login({
+    //     'email': email,
+    //     'password': password,
+    //   });
+    //
+    //   if (response.success) {
+    //     Get.to(() => const LoginScreen2(), transition: Transition.fade);
+    //   } else {
+    //     setState(() {
+    //       _loginError = '이메일 주소 또는 비밀번호가 일치하지 않아요';
+    //     });
+    //   }
+    // } catch (e) {
+    //   print('로그인 오류: $e');
+    //   setState(() {
+    //     _loginError = '로그인 중 오류가 발생했습니다';
+    //   });
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController idController = TextEditingController();
@@ -286,6 +361,22 @@ class _LoginscreenState extends State<Loginscreen> {
                           ),
                         ),
 
+                        // 로그인 오류 메시지
+                        if (_loginError.isNotEmpty)
+                          Positioned(
+                            left: 16,
+                            top: 450,
+                            child: Text(
+                              _loginError,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+
                         // 250822 로그인 텍스트버튼 ElevatedButton 로 변경완료. positioned()는 조정 필요.
                         Positioned(
                           left: 16,
@@ -295,28 +386,64 @@ class _LoginscreenState extends State<Loginscreen> {
                             height: 48,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF65A0FF),
+                                backgroundColor: _isLoggingIn
+                                    ? const Color(0xFF7F8694)
+                                    : const Color(0xFF65A0FF),
+                                disabledBackgroundColor: const Color(
+                                  0xFF7F8694,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              child: Text(
-                                '로그인',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.40,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              onPressed: () {
-                                Get.to(
-                                  () => const LoginScreen2(),
-                                  transition: Transition.fade,
-                                );
-                              },
+                              child: _isLoggingIn
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  Colors.white,
+                                                ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '로그인 중...',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontFamily: 'Pretendard',
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.40,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Text(
+                                      '로그인',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.40,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                              onPressed: _isLoggingIn
+                                  ? null
+                                  : () {
+                                      _validateLogin(
+                                        idController.text,
+                                        pwController.text,
+                                      );
+                                    },
                             ),
                           ),
                         ),

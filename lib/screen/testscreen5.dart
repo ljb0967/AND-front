@@ -168,11 +168,11 @@ class _Testscreen5State extends State<Testscreen5> {
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   left: 14,
-                      //   top: 395,
-                      //   child: Image.asset('image/character2.png'),
-                      // ),
+                      Positioned(
+                        left: 14,
+                        top: 345,
+                        child: Image.asset('image/character2.png'),
+                      ),
                       Positioned(
                         left: 34,
                         top: 555,
@@ -184,8 +184,8 @@ class _Testscreen5State extends State<Testscreen5> {
                         child: Image.asset('image/character4.png'),
                       ),
                       Positioned(
-                        left: 114,
-                        top: 255,
+                        left: 154,
+                        top: 235,
                         child: Image.asset('image/character5.png'),
                       ),
                       // Positioned(
