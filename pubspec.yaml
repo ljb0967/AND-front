@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   get: ^4.7.2
   flutter_native_splash: ^2.4.6
+  image_picker: ^1.0.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -83,6 +84,10 @@ flutter:
     - image/character4.png
     - image/character5.png
     - image/cloud.png
+    - image/ex_image1.png
+    - image/ex_image2.png
+    - image/image.png
+    - image/ex_photo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

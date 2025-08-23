@@ -164,24 +164,24 @@ class _Testscreen9State extends State<Testscreen9> {
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   left: 16,
-                      //   top: 268,
-                      //   child: Container(
-                      //     width: 184,
-                      //     height: 184,
-                      //     clipBehavior: Clip.antiAlias,
-                      //     decoration: ShapeDecoration(
-                      //       image: DecorationImage(
-                      //         image: NetworkImage("https://placehold.co/184x184"),
-                      //         fit: BoxFit.cover,
-                      //       ),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Positioned(
+                        left: 16,
+                        top: 268,
+                        child: Container(
+                          width: 184,
+                          height: 184,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: ShapeDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('image/ex_photo.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                      ),
                       Positioned(
                         left: 212,
                         top: 268,
@@ -191,6 +191,9 @@ class _Testscreen9State extends State<Testscreen9> {
                           clipBehavior: Clip.antiAlias,
                           decoration: ShapeDecoration(
                             color: const Color(0xFF1F2124),
+                            image: DecorationImage(
+                              image: AssetImage('image/image.png'),
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -211,6 +214,9 @@ class _Testscreen9State extends State<Testscreen9> {
                                 color: const Color(0xFF232529),
                               ),
                               borderRadius: BorderRadius.circular(10),
+                            ),
+                            image: DecorationImage(
+                              image: AssetImage('image/image.png'),
                             ),
                           ),
                           child: Stack(

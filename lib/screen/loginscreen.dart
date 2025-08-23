@@ -370,14 +370,38 @@ class _LoginscreenState extends State<Loginscreen> {
                                   ),
                                 ),
                               ),
-                              Text(
-                                '회원가입',
-                                style: TextStyle(
-                                  color: const Color(0xFFBDC7DB),
-                                  fontSize: 14,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.40,
+                              // Text(
+                              //   '회원가입',
+                              //   style: TextStyle(
+                              //     color: const Color(0xFFBDC7DB),
+                              //     fontSize: 14,
+                              //     fontFamily: 'Pretendard',
+                              //     fontWeight: FontWeight.w500,
+                              //     height: 1.40,
+                              //   ),
+                              // ),
+                              TextButton(
+                                onPressed: () {
+                                  Get.to(
+                                    () => const Registerscreen(),
+                                    transition: Transition.fade,
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size(0, 0),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: Text(
+                                  '회원가입',
+                                  style: TextStyle(
+                                    color: const Color(0xFFBDC7DB),
+                                    fontSize: 14,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.40,
+                                  ),
                                 ),
                               ),
                             ],

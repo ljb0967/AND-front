@@ -778,6 +778,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                           ),
                           child: TextField(
                             controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
                               color: const Color(0xFF8A9099),
                               fontSize: 16,

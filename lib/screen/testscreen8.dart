@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'homescreen.dart';
 import '../state/survey_controller.dart';
 import 'testscreen7.dart';
@@ -14,6 +16,81 @@ class Testscreen8 extends StatefulWidget {
 
 class _Testscreen8State extends State<Testscreen8> {
   final TextEditingController _toneController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+
+  Future<void> _pickImage() async {
+    try {
+      print('이미지 선택 시작');
+
+      // 사용자에게 갤러리 또는 카메라 선택 옵션 제공
+      final ImageSource? source = await _showImageSourceDialog();
+      if (source == null) {
+        print('이미지 소스가 선택되지 않음');
+        return;
+      }
+
+      final XFile? image = await _picker.pickImage(
+        source: source,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      print('선택된 이미지: ${image?.path}');
+
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+          print('이미지가 성공적으로 선택됨: ${_selectedImage?.path}');
+        });
+      } else {
+        print('이미지가 선택되지 않음');
+        // 사용자에게 안내 메시지 표시
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('이미지를 선택해주세요'),
+            backgroundColor: Colors.blue,
+          ),
+        );
+      }
+    } catch (e) {
+      print('이미지 선택 오류: $e');
+      // 사용자에게 오류 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('이미지 선택 중 오류가 발생했습니다: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<ImageSource?> _showImageSourceDialog() async {
+    return await showDialog<ImageSource>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('이미지 선택'),
+          content: const Text('이미지를 어디서 가져오시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(ImageSource.gallery),
+              child: const Text('갤러리'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(ImageSource.camera),
+              child: const Text('카메라'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(null),
+              child: const Text('취소'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -189,7 +266,7 @@ class _Testscreen8State extends State<Testscreen8> {
                           child: Stack(
                             children: [
                               Positioned(
-                                left: 141,
+                                left: 111,
                                 top: 22,
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -203,6 +280,11 @@ class _Testscreen8State extends State<Testscreen8> {
                                       clipBehavior: Clip.antiAlias,
                                       decoration: BoxDecoration(),
                                       child: Stack(),
+                                    ),
+                                    Icon(
+                                      Icons.add_circle_outline,
+                                      color: const Color(0xFF7F8694),
+                                      size: 24,
                                     ),
                                     Text(
                                       '텍스트 추가',
@@ -238,9 +320,7 @@ class _Testscreen8State extends State<Testscreen8> {
                                   clipBehavior: Clip.antiAlias,
                                   decoration: ShapeDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage(
-                                        "https://placehold.co/119x119",
-                                      ),
+                                      image: AssetImage('image/ex_image1.png'),
                                       fit: BoxFit.cover,
                                     ),
                                     shape: RoundedRectangleBorder(
@@ -255,9 +335,7 @@ class _Testscreen8State extends State<Testscreen8> {
                                   clipBehavior: Clip.antiAlias,
                                   decoration: ShapeDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage(
-                                        "https://placehold.co/119x119",
-                                      ),
+                                      image: AssetImage('image/ex_image2.png'),
                                       fit: BoxFit.fill,
                                     ),
                                     shape: RoundedRectangleBorder(
@@ -267,32 +345,61 @@ class _Testscreen8State extends State<Testscreen8> {
                                 ),
                               ),
                               Expanded(
-                                child: Container(
-                                  height: 118.67,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: ShapeDecoration(
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                        width: 2,
-                                        color: const Color(0xFF232529),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _pickImage();
+                                  },
+                                  child: Container(
+                                    height: 118.67,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: ShapeDecoration(
+                                      image: DecorationImage(
+                                        image: _selectedImage != null
+                                            ? FileImage(_selectedImage!)
+                                            : const AssetImage(
+                                                    'image/image.png', //image.png 두개 겹침.
+                                                  )
+                                                  as ImageProvider,
+                                        // fit: BoxFit.cover,
                                       ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 47.67,
-                                        top: 47,
-                                        child: Container(
-                                          width: 24,
-                                          height: 24,
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(),
-                                          child: Stack(),
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                          width: 2,
+                                          color: const Color(0xFF232529),
                                         ),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                    ],
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        if (_selectedImage == null)
+                                          Positioned(
+                                            left: 47.67,
+                                            top: 47,
+                                            child: Container(
+                                              width: 24,
+                                              height: 24,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(),
+                                              child: Stack(),
+                                            ),
+                                          ),
+
+                                        Container(
+                                          color: Colors.transparent,
+                                          child: Center(
+                                            child: _selectedImage == null
+                                                ? Icon(
+                                                    Icons.add_photo_alternate,
+                                                    color: Colors.white
+                                                        .withOpacity(0.3),
+                                                    size: 32,
+                                                  )
+                                                : null,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -302,7 +409,7 @@ class _Testscreen8State extends State<Testscreen8> {
                       ),
                       Positioned(
                         left: 16,
-                        top: 282,
+                        top: 292,
                         child: Container(
                           width: 380,
                           height: 68,
@@ -316,26 +423,30 @@ class _Testscreen8State extends State<Testscreen8> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 8,
-                            children: [
-                              SizedBox(
-                                width: 348,
-                                child: Text(
-                                  '텍스트를 입력하세요 (복사/붙여넣기 가능)',
-                                  style: TextStyle(
-                                    color: const Color(0xFF8A9099),
-                                    fontSize: 16,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.40,
-                                  ),
+                          child: SizedBox(
+                            width: 348,
+                            child: TextField(
+                              controller: _toneController,
+                              style: const TextStyle(
+                                color: const Color(0xFF8A9099),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                              ),
+                              decoration: InputDecoration(
+                                isCollapsed: true,
+                                border: InputBorder.none,
+                                hintText: '텍스트를 입력하세요 (복사/붙여넣기 가능)',
+                                hintStyle: TextStyle(
+                                  color: const Color(0xFF8A9099),
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.40,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
@@ -368,7 +479,7 @@ class _Testscreen8State extends State<Testscreen8> {
                         ),
                       ),
                       Positioned(
-                        left: 32,
+                        left: 12,
                         top: 488,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -384,7 +495,7 @@ class _Testscreen8State extends State<Testscreen8> {
                               child: Stack(),
                             ),
                             Text(
-                              '정확한 텍스트 인식을 위해 메신저 화면 캡쳐를 권장드려요',
+                              '① 정확한 텍스트 인식을 위해 메신저 화면 캡쳐를 권장드려요',
                               style: TextStyle(
                                 color: const Color(0xFFBDC7DB),
                                 fontSize: 14,
@@ -421,124 +532,6 @@ class _Testscreen8State extends State<Testscreen8> {
           },
         ),
       ),
-      // backgroundColor: const Color(0xFFEFF5FF),
-      // body: SafeArea(
-      //   child: Padding(
-      //     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.stretch,
-      //       children: [
-      //         const SizedBox(height: 8),
-      //         Align(
-      //           alignment: Alignment.topCenter,
-      //           child: Text(
-      //             '&',
-      //             style: TextStyle(
-      //               fontSize: 28,
-      //               color: Colors.blue.shade200,
-      //               fontWeight: FontWeight.w600,
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(height: 12),
-      //         Container(
-      //           padding: const EdgeInsets.symmetric(vertical: 10),
-      //           decoration: BoxDecoration(
-      //             color: Colors.white,
-      //             borderRadius: BorderRadius.circular(8),
-      //           ),
-      //           child: const Center(
-      //             child: Text(
-      //               '사용자 기본 정보',
-      //               style: TextStyle(fontWeight: FontWeight.w600),
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(height: 20),
-      //         const Text(
-      //           '상대의 평상시 말투',
-      //           style: TextStyle(
-      //             color: Color(0xFF2E5AAC),
-      //             fontWeight: FontWeight.w700,
-      //             fontSize: 16,
-      //           ),
-      //         ),
-      //         const SizedBox(height: 16),
-      //         const Text(
-      //           '직접 입력',
-      //           style: TextStyle(
-      //             color: Color(0xFF2E5AAC),
-      //             fontWeight: FontWeight.w600,
-      //           ),
-      //         ),
-      //         const SizedBox(height: 6),
-      //         Container(
-      //           decoration: BoxDecoration(
-      //             color: const Color(0xFFE6E9EE),
-      //             borderRadius: BorderRadius.circular(8),
-      //           ),
-      //           padding: const EdgeInsets.symmetric(horizontal: 8),
-      //           child: TextField(
-      //             controller: _toneController,
-      //             decoration: const InputDecoration(
-      //               hintText: '남/여',
-      //               border: InputBorder.none,
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(height: 16),
-      //         const Text(
-      //           '사진 첨부',
-      //           style: TextStyle(
-      //             color: Color(0xFF2E5AAC),
-      //             fontWeight: FontWeight.w600,
-      //           ),
-      //         ),
-      //         const SizedBox(height: 6),
-      //         InkWell(
-      //           onTap: () {
-      //             ScaffoldMessenger.of(context).showSnackBar(
-      //               const SnackBar(content: Text('사진 첨부 기능은 추후 추가 예정입니다.')),
-      //             );
-      //           },
-      //           child: Container(
-      //             height: 40,
-      //             decoration: BoxDecoration(
-      //               color: const Color(0xFFE6E9EE),
-      //               borderRadius: BorderRadius.circular(8),
-      //             ),
-      //           ),
-      //         ),
-      //         const Spacer(),
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.end,
-      //           children: [
-      //             SizedBox(
-      //               width: 88,
-      //               height: 36,
-      //               child: ElevatedButton(
-      //                 style: ElevatedButton.styleFrom(
-      //                   backgroundColor: const Color(0xFF5C84D5),
-      //                   foregroundColor: Colors.white,
-      //                   elevation: 0,
-      //                   shape: RoundedRectangleBorder(
-      //                     borderRadius: BorderRadius.circular(18),
-      //                   ),
-      //                 ),
-      //                 onPressed: () {
-      //                   SurveyController.to.desiredWords = _toneController.text
-      //                       .trim();
-      //                   Get.offAll(() => const Homescreen());
-      //                 },
-      //                 child: const Text('완료'),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
