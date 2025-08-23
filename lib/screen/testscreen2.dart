@@ -5,14 +5,22 @@ import 'testscreen3.dart';
 import '../state/survey_controller.dart';
 
 class Testscreen2 extends StatefulWidget {
-  const Testscreen2({super.key});
+  final String? selectedCategory;
+  const Testscreen2({Key? key, required this.selectedCategory})
+    : super(key: key);
 
   @override
   State<Testscreen2> createState() => _Testscreen2State();
 }
 
 class _Testscreen2State extends State<Testscreen2> {
-  String? _selected; // '가족', '연인', '반려동물', '친구'
+  // String? _selected; // '가족', '연인', '반려동물', '친구'
+  String? _selectedReason;
+
+  bool get _canProceed {
+    final hasValidBreakupSelection = _selectedReason != null;
+    return hasValidBreakupSelection;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +121,7 @@ class _Testscreen2State extends State<Testscreen2> {
                               child: IconButton(
                                 icon: Image.asset('image/arrow-left.png'),
                                 onPressed: () {
-                                  Get.to(
-                                    () => const Testscreen(),
-                                    transition: Transition.fade,
-                                  );
+                                  Get.back();
                                 },
                               ),
                             ),
@@ -141,7 +146,15 @@ class _Testscreen2State extends State<Testscreen2> {
                           height: 48,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF65A0FF),
+                              backgroundColor: _canProceed
+                                  ? const Color(0xFF65A0FF)
+                                  : const Color(0xFF1F2124),
+                              disabledBackgroundColor: const Color(0xFF1F2124),
+                              foregroundColor: _canProceed
+                                  ? Colors.white
+                                  : const Color(0xFF8A9099),
+                              disabledForegroundColor: const Color(0xFF8A9099),
+                              elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -149,7 +162,6 @@ class _Testscreen2State extends State<Testscreen2> {
                             child: Text(
                               '다음으로 넘어가기',
                               style: TextStyle(
-                                color: Colors.white,
                                 fontSize: 16,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w600,
@@ -157,15 +169,191 @@ class _Testscreen2State extends State<Testscreen2> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            onPressed: () {
-                              Get.to(
-                                () => const Testscreen3(),
-                                transition: Transition.fade,
-                              );
-                            },
+                            onPressed: _canProceed
+                                ? () {
+                                    Get.to(
+                                      () => const Testscreen3(),
+                                      transition: Transition.fade,
+                                    );
+                                  }
+                                // : null,
+                                : () {
+                                    Get.to(
+                                      () => const Testscreen3(), // 디버깅을 위한 임시
+                                      transition: Transition.fade,
+                                    );
+                                  },
                           ),
                         ),
                       ),
+                      if (widget.selectedCategory == '가족') ...[
+                        Positioned(
+                          left: 16,
+                          top: 270,
+                          child: Container(
+                            width: 380,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF111111),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          _buildReasonOption('사망 (자연사)'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption(
+                                            '사망 (사고사, 급작스러운 상실)',
+                                          ),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('관계 단절'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('이혼 / 가족 구조 해체'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption(
+                                            '장기적 거리감 (연락두절, 이민, 실종 등)',
+                                          ),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption(
+                                            '정확히 모르겠어요 / 복합적이에요',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ] else if (widget.selectedCategory == '연인') ...[
+                        Positioned(
+                          left: 16,
+                          top: 270,
+                          child: Container(
+                            width: 380,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF111111),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          _buildReasonOption('상대의 마음이 식었어요'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('내가 마음이 떠났어요'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('성격, 가치관 차이'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('바람이나 배신'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('상황/환경 문제'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption(
+                                            '정확히 모르겠어요 / 복합적이에요',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ] else if (widget.selectedCategory == '친구') ...[
+                        Positioned(
+                          left: 16,
+                          top: 270,
+                          child: Container(
+                            width: 380,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF111111),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          _buildReasonOption('큰 싸움으로 인한 연락 두절'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('갑작스러운 차단 / 멀어짐'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('자연스러운 멀어짐'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('친구에게 상처를 받음'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption(
+                                            '정확히 모르겠어요 / 복합적이에요',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ] else ...[
+                        Positioned(
+                          left: 16,
+                          top: 270,
+                          child: Container(
+                            width: 380,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF111111),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          _buildReasonOption('자연사(노화)'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption(
+                                            '질병/사고로 인한 갑작스러운 죽음',
+                                          ),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('안락사 결정'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption('실종'),
+                                          const SizedBox(height: 10),
+                                          _buildReasonOption(
+                                            '정확히 모르겠어요 / 복합적이에요',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+
                       Positioned(
                         left: 32,
                         top: 248,
@@ -177,382 +365,6 @@ class _Testscreen2State extends State<Testscreen2> {
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w500,
                             height: 1.40,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 16,
-                        top: 280,
-                        child: Container(
-                          width: 380,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 24,
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFF65A0FF,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  left: 4.50,
-                                                  top: 4.50,
-                                                  child: Container(
-                                                    width: 9,
-                                                    height: 9,
-                                                    decoration: ShapeDecoration(
-                                                      color: const Color(
-                                                        0xFF65A0FF,
-                                                      ),
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          color: const Color(
-                                                            0xFF65A0FF,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '사망 (자연사)',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '사망 (사고사, 급작스러운 상실)',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '관계 단절',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '이혼 / 가족 구조 해체',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '장기적 거리감 (연락두절, 이민, 실종 등)',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '정확히 모르겠어요 / 복합적이에요',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),
@@ -580,144 +392,79 @@ class _Testscreen2State extends State<Testscreen2> {
           },
         ),
       ),
-      // backgroundColor: const Color(0xFFEFF5FF),
-      // body: SafeArea(
-      //   child: Padding(
-      //     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.stretch,
-      //       children: [
-      //         const SizedBox(height: 8),
-      //         Align(
-      //           alignment: Alignment.topCenter,
-      //           child: Text(
-      //             '&',
-      //             style: TextStyle(
-      //               fontSize: 28,
-      //               color: Colors.blue.shade200,
-      //               fontWeight: FontWeight.w600,
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(height: 12),
-      //         Container(
-      //           padding: const EdgeInsets.symmetric(vertical: 10),
-      //           decoration: BoxDecoration(
-      //             color: Colors.white,
-      //             borderRadius: BorderRadius.circular(8),
-      //           ),
-      //           child: const Center(
-      //             child: Text(
-      //               '사용자 기본 정보',
-      //               style: TextStyle(fontWeight: FontWeight.w600),
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(height: 20),
-      //         const Text(
-      //           '이별 상대 선택',
-      //           style: TextStyle(
-      //             color: Color(0xFF2E5AAC),
-      //             fontWeight: FontWeight.w600,
-      //           ),
-      //         ),
-      //         const SizedBox(height: 8),
-      //         _RadioLine(
-      //           title: '가족',
-      //           groupValue: _selected,
-      //           onChanged: (v) => setState(() => _selected = v),
-      //         ),
-      //         const SizedBox(height: 12),
-      //         _RadioLine(
-      //           title: '연인',
-      //           groupValue: _selected,
-      //           onChanged: (v) => setState(() => _selected = v),
-      //         ),
-      //         const SizedBox(height: 12),
-      //         _RadioLine(
-      //           title: '반려동물',
-      //           groupValue: _selected,
-      //           onChanged: (v) => setState(() => _selected = v),
-      //         ),
-      //         const SizedBox(height: 12),
-      //         _RadioLine(
-      //           title: '친구',
-      //           groupValue: _selected,
-      //           onChanged: (v) => setState(() => _selected = v),
-      //         ),
-      //         const Spacer(),
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.end,
-      //           children: [
-      //             SizedBox(
-      //               width: 88,
-      //               height: 36,
-      //               child: ElevatedButton(
-      //                 style: ElevatedButton.styleFrom(
-      //                   backgroundColor: const Color(0xFF5C84D5),
-      //                   foregroundColor: Colors.white,
-      //                   elevation: 0,
-      //                   shape: RoundedRectangleBorder(
-      //                     borderRadius: BorderRadius.circular(18),
-      //                   ),
-      //                 ),
-      //                 onPressed: () {
-      //                   if (_selected == null) {
-      //                     ScaffoldMessenger.of(context).showSnackBar(
-      //                       const SnackBar(content: Text('이별 상대를 선택해 주세요.')),
-      //                     );
-      //                     return;
-      //                   }
-      //                   SurveyController.to.relationshipCategory = _selected;
-      //                   if (_selected == '가족') {
-      //                     Get.to(() => const Testscreen2_1());
-      //                   } else {
-      //                     Get.to(() => const Testscreen3());
-      //                   }
-      //                 },
-      //                 child: const Text('다음'),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
+    );
+  }
+
+  Widget _buildReasonOption(String text) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (_selectedReason == text) {
+            _selectedReason = null;
+          } else {
+            _selectedReason = text;
+          }
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+        decoration: BoxDecoration(
+          color: _selectedReason == text
+              ? const Color(0xFF2A2D31)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            // color: _selectedFamilyMember == text
+            //     ? const Color(0xFF65A0FF)                    //선택하면 배경 테두리 바뀌게 하는 부분
+            //     : Colors.transparent,
+            color: Colors.transparent,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                color: _selectedReason == text
+                    ? const Color(0xFF111111)
+                    : Colors.transparent,
+                border: Border.all(
+                  color: _selectedReason == text
+                      ? const Color(0xFF65A0FF)
+                      : const Color(0xFFBDC7DB),
+                  width: 1.5,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: _selectedReason == text
+                  ? Center(
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF66A1FF),
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              text,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-
-// class _RadioLine extends StatelessWidget {
-//   final String title;
-//   final String? groupValue;
-//   final ValueChanged<String?> onChanged;
-//   const _RadioLine({
-//     required this.title,
-//     required this.groupValue,
-//     required this.onChanged,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Radio<String>(
-//           value: title,
-//           groupValue: groupValue,
-//           onChanged: onChanged,
-//           visualDensity: VisualDensity.compact,
-//           fillColor: MaterialStateProperty.all(const Color(0xFFDCE6FA)),
-//         ),
-//         const SizedBox(width: 8),
-//         Text(
-//           title,
-//           style: const TextStyle(
-//             color: Color(0xFF2E5AAC),
-//             fontWeight: FontWeight.w600,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }

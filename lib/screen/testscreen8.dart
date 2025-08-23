@@ -120,10 +120,7 @@ class _Testscreen8State extends State<Testscreen8> {
                               child: IconButton(
                                 icon: Image.asset('image/arrow-left.png'),
                                 onPressed: () {
-                                  Get.to(
-                                    () => const Testscreen7(),
-                                    transition: Transition.fade,
-                                  );
+                                  Get.back();
                                 },
                               ),
                             ),

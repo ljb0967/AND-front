@@ -36,7 +36,7 @@ class _TestscreenState extends State<Testscreen> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _nameController.dispose(); //메모리 해제
     _ageController.dispose();
     super.dispose();
   }
@@ -140,10 +140,7 @@ class _TestscreenState extends State<Testscreen> {
                               child: IconButton(
                                 icon: Image.asset('image/arrow-left.png'),
                                 onPressed: () {
-                                  Get.to(
-                                    () => const LoginScreen2(),
-                                    transition: Transition.fade,
-                                  );
+                                  Get.back();
                                 },
                               ),
                             ),
@@ -194,14 +191,18 @@ class _TestscreenState extends State<Testscreen> {
                             onPressed: _canProceed
                                 ? () {
                                     Get.to(
-                                      () => const Testscreen2(),
+                                      () => Testscreen2(
+                                        selectedCategory: _selectedCategory,
+                                      ),
                                       transition: Transition.fade,
                                     );
                                   }
                                 // : null,
                                 : () {
                                     Get.to(
-                                      () => const Testscreen2(), // 디버깅을 위한 임시
+                                      () => Testscreen2(
+                                        selectedCategory: _selectedCategory,
+                                      ), // 디버깅을 위한 임시
                                       transition: Transition.fade,
                                     );
                                   },

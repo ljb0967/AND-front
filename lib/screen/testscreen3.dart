@@ -11,7 +11,13 @@ class Testscreen3 extends StatefulWidget {
 }
 
 class _Testscreen3State extends State<Testscreen3> {
-  String? _selected; // 기간 선택 값
+  // String? _selected; // 기간 선택 값
+  String? _selectedTime;
+
+  bool get _canProceed {
+    final hasValidBreakupSelection = _selectedTime != null;
+    return hasValidBreakupSelection;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,10 +118,7 @@ class _Testscreen3State extends State<Testscreen3> {
                               child: IconButton(
                                 icon: Image.asset('image/arrow-left.png'),
                                 onPressed: () {
-                                  Get.to(
-                                    () => const Testscreen2(),
-                                    transition: Transition.fade,
-                                  );
+                                  Get.back();
                                 },
                               ),
                             ),
@@ -140,7 +143,15 @@ class _Testscreen3State extends State<Testscreen3> {
                           height: 48,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF65A0FF),
+                              backgroundColor: _canProceed
+                                  ? const Color(0xFF65A0FF)
+                                  : const Color(0xFF1F2124),
+                              disabledBackgroundColor: const Color(0xFF1F2124),
+                              foregroundColor: _canProceed
+                                  ? Colors.white
+                                  : const Color(0xFF8A9099),
+                              disabledForegroundColor: const Color(0xFF8A9099),
+                              elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -148,7 +159,6 @@ class _Testscreen3State extends State<Testscreen3> {
                             child: Text(
                               '다음으로 넘어가기',
                               style: TextStyle(
-                                color: Colors.white,
                                 fontSize: 16,
                                 fontFamily: 'Pretendard',
                                 fontWeight: FontWeight.w600,
@@ -156,345 +166,56 @@ class _Testscreen3State extends State<Testscreen3> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            onPressed: () {
-                              Get.to(
-                                () => const Testscreen4(),
-                                transition: Transition.fade,
-                              );
-                            },
+                            onPressed: _canProceed
+                                ? () {
+                                    Get.to(
+                                      () => const Testscreen4(),
+                                      transition: Transition.fade,
+                                    );
+                                  }
+                                // : null,
+                                : () {
+                                    Get.to(
+                                      () => const Testscreen4(), // 디버깅을 위한 임시
+                                      transition: Transition.fade,
+                                    );
+                                  },
                           ),
                         ),
                       ),
                       Positioned(
                         left: 16,
-                        top: 280,
+                        top: 270,
                         child: Container(
                           width: 380,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF111111),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 24,
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '1~6개월',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        _buildTimeOption('1~6개월'),
+                                        const SizedBox(height: 10),
+                                        _buildTimeOption('6개월~1년'),
+                                        const SizedBox(height: 10),
+                                        _buildTimeOption('1~2년'),
+                                        const SizedBox(height: 10),
+                                        _buildTimeOption('2~5년'),
+                                        const SizedBox(height: 10),
+                                        _buildTimeOption('5~10년'),
+                                        const SizedBox(height: 10),
+                                        _buildTimeOption('10년 이상'),
+                                      ],
                                     ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '6개월~1년',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '1~2년',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '2~5년',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '5~10년',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  left: 0.75,
-                                                  top: 0.75,
-                                                  child: Container(
-                                                    width: 16.50,
-                                                    height: 16.50,
-                                                    decoration: ShapeDecoration(
-                                                      shape: OvalBorder(
-                                                        side: BorderSide(
-                                                          width: 1.50,
-                                                          strokeAlign: BorderSide
-                                                              .strokeAlignCenter,
-                                                          color: const Color(
-                                                            0xFFBDC7DB,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            '10년 이상',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Pretendard',
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -538,99 +259,79 @@ class _Testscreen3State extends State<Testscreen3> {
           },
         ),
       ),
-      // backgroundColor: const Color(0xFFEFF5FF),
-      // body: SafeArea(
-      //   child: Padding(
-      //     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.stretch,
-      //       children: [
-      //         const SizedBox(height: 8),
-      //         Align(
-      //           alignment: Alignment.topCenter,
-      //           child: Text(
-      //             '&',
-      //             style: TextStyle(
-      //               fontSize: 28,
-      //               color: Colors.blue.shade200,
-      //               fontWeight: FontWeight.w600,
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(height: 12),
-      //         Container(
-      //           padding: const EdgeInsets.symmetric(vertical: 10),
-      //           decoration: BoxDecoration(
-      //             color: Colors.white,
-      //             borderRadius: BorderRadius.circular(8),
-      //           ),
-      //           child: const Center(
-      //             child: Text(
-      //               '사용자 기본 정보',
-      //               style: TextStyle(fontWeight: FontWeight.w600),
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(height: 20),
-      //         const Text(
-      //           '상대와 함께한 기간',
-      //           style: TextStyle(
-      //             color: Color(0xFF2E5AAC),
-      //             fontWeight: FontWeight.w600,
-      //           ),
-      //         ),
-      //         const SizedBox(height: 8),
-      //         ...[
-      //           '1 ~ 6개월',
-      //           '6개월 ~ 1년',
-      //           '1 ~ 2년',
-      //           '2 ~ 5년',
-      //           '5 ~ 10년',
-      //           '10년 이상',
-      //         ].map(
-      //           (title) => Padding(
-      //             padding: const EdgeInsets.only(bottom: 14.0),
-      //             child: _RadioLine(
-      //               title: title,
-      //               groupValue: _selected,
-      //               onChanged: (v) => setState(() => _selected = v),
-      //             ),
-      //           ),
-      //         ),
-      //         const Spacer(),
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.end,
-      //           children: [
-      //             SizedBox(
-      //               width: 88,
-      //               height: 36,
-      //               child: ElevatedButton(
-      //                 style: ElevatedButton.styleFrom(
-      //                   backgroundColor: const Color(0xFF5C84D5),
-      //                   foregroundColor: Colors.white,
-      //                   elevation: 0,
-      //                   shape: RoundedRectangleBorder(
-      //                     borderRadius: BorderRadius.circular(18),
-      //                   ),
-      //                 ),
-      //                 onPressed: () {
-      //                   if (_selected == null) {
-      //                     ScaffoldMessenger.of(context).showSnackBar(
-      //                       const SnackBar(content: Text('기간을 선택해 주세요.')),
-      //                     );
-      //                     return;
-      //                   }
-      //                   Get.to(() => const Testscreen4());
-      //                 },
-      //                 child: const Text('다음'),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
+    );
+  }
+
+  Widget _buildTimeOption(String text) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (_selectedTime == text) {
+            _selectedTime = null;
+          } else {
+            _selectedTime = text;
+          }
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+        decoration: BoxDecoration(
+          color: _selectedTime == text
+              ? const Color(0xFF2A2D31)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            // color: _selectedFamilyMember == text
+            //     ? const Color(0xFF65A0FF)                    //선택하면 배경 테두리 바뀌게 하는 부분
+            //     : Colors.transparent,
+            color: Colors.transparent,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                color: _selectedTime == text
+                    ? const Color(0xFF111111)
+                    : Colors.transparent,
+                border: Border.all(
+                  color: _selectedTime == text
+                      ? const Color(0xFF65A0FF)
+                      : const Color(0xFFBDC7DB),
+                  width: 1.5,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: _selectedTime == text
+                  ? Center(
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF66A1FF),
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              text,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

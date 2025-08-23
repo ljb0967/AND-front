@@ -120,10 +120,7 @@ class _Testscreen7State extends State<Testscreen7> {
                               child: IconButton(
                                 icon: Image.asset('image/arrow-left.png'),
                                 onPressed: () {
-                                  Get.to(
-                                    () => const Testscreen6(),
-                                    transition: Transition.fade,
-                                  );
+                                  Get.back();
                                 },
                               ),
                             ),
@@ -165,10 +162,8 @@ class _Testscreen7State extends State<Testscreen7> {
                               textAlign: TextAlign.center,
                             ),
                             onPressed: () {
-                              Get.to(
-                                () => const Testscreen5(),
-                                transition: Transition.fade,
-                              );
+                              Get.back();
+                              Get.back();
                             },
                           ),
                         ),

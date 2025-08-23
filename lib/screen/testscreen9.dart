@@ -111,10 +111,7 @@ class _Testscreen9State extends State<Testscreen9> {
                               child: IconButton(
                                 icon: Image.asset('image/arrow-left.png'),
                                 onPressed: () {
-                                  Get.to(
-                                    () => const Testscreen8(),
-                                    transition: Transition.fade,
-                                  );
+                                  Get.back();
                                 },
                               ),
                             ),
@@ -156,9 +153,12 @@ class _Testscreen9State extends State<Testscreen9> {
                               textAlign: TextAlign.center,
                             ),
                             onPressed: () {
-                              Get.to(
-                                () => const Homescreen(),
-                                transition: Transition.fade,
+                              Get.offUntil(
+                                MaterialPageRoute(
+                                  builder: (_) => Homescreen(),
+                                ), //로그인 페이지 외에 이전 모든 페이지 스택에서 pop
+                                (route) =>
+                                    route.settings.name == "/Loginscreen",
                               );
                             },
                           ),

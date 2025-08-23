@@ -11,30 +11,6 @@ class LoginScreen2 extends StatefulWidget {
 }
 
 class _LoginScreen2State extends State<LoginScreen2> {
-  // bool requiredA = true;
-  // bool requiredB = false;
-  // bool optionalA = false;
-  // bool optionalB = false;
-  // bool allAgree = false;
-
-  // bool get isAllRequiredChecked => requiredA && requiredB;
-
-  // void _syncAllAgree() {
-  //   setState(() {
-  //     allAgree = requiredA && requiredB && optionalA && optionalB;
-  //   });
-  // }
-
-  // void _toggleAll(bool value) {
-  //   setState(() {
-  //     allAgree = value;
-  //     requiredA = value;
-  //     requiredB = value;
-  //     optionalA = value;
-  //     optionalB = value;
-  //   });
-  // }
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   String? _gender;
@@ -44,6 +20,13 @@ class _LoginScreen2State extends State<LoginScreen2> {
     return nameController.text.trim().isNotEmpty &&
         ageController.text.trim().isNotEmpty &&
         _gender != null;
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose(); //메모리 해제
+    ageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -145,10 +128,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                               child: IconButton(
                                 icon: Image.asset('image/arrow-left.png'),
                                 onPressed: () {
-                                  Get.to(
-                                    () => const Loginscreen(),
-                                    transition: Transition.fade,
-                                  );
+                                  Get.back();
                                 },
                               ),
                             ),
