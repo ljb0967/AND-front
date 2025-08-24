@@ -4,6 +4,8 @@ import 'testscreen6.dart';
 import 'testscreen4.dart';
 import '../state/survey_controller.dart';
 
+// 반응형 UI 수정 아직 안됨
+
 class Testscreen5 extends StatefulWidget {
   const Testscreen5({super.key});
 

@@ -22,241 +22,198 @@ class _Testscreen3State extends State<Testscreen3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF111111),
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final double screenWidth = constraints.maxWidth;
-            const double designWidth = 412.0;
-            const double designHeight = 917.0;
-            final double scale = screenWidth / designWidth;
-            final double scaledHeight = designHeight * scale;
+        child: Column(
+          children: [
+            // 상단 헤더 영역
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 28, 12, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(),
+                    child: IconButton(
+                      icon: Image.asset('image/arrow-left.png'),
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ),
+                  Text(
+                    '이별 사유 선택',
+                    style: TextStyle(
+                      color: const Color(0xFFBDC7DB),
+                      fontSize: 14,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      height: 1.40,
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-            final Widget scaledContent = FittedBox(
-              alignment: Alignment.topLeft,
-              fit: BoxFit.fitWidth,
-              child: SizedBox(
-                width: designWidth,
-                height: designHeight,
-                child: Container(
-                  width: 412,
-                  height: 917,
-                  clipBehavior: Clip.none,
-                  decoration: BoxDecoration(color: const Color(0xFF111111)),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Positioned(
-                        left: 32,
-                        top: 132,
+            // 프로그레스 바
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Row(
+                children: [
+                  Container(
+                    width: 217.14,
+                    height: 4,
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFF65A0FF),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 4,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFF232529),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // 메인 콘텐츠 영역 (스크롤 가능)
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20),
+
+                    // 메인 타이틀
+                    Text(
+                      '이별한 사람과\n얼마나 오래 함께하셨나요?',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w600,
+                        height: 1.40,
+                        letterSpacing: -0.50,
+                      ),
+                    ),
+
+                    SizedBox(height: 20),
+
+                    // 서브 타이틀
+                    Text(
+                      'AND와의 여정을 위해 소중한 당신의 이야기를 들려주세요',
+                      style: TextStyle(
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.40,
+                        letterSpacing: -0.35,
+                      ),
+                    ),
+
+                    SizedBox(height: 32),
+
+                    // 이별 상대와 함께한 기간 라벨
+                    Text(
+                      '이별 상대와 함께한 기간',
+                      style: TextStyle(
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.40,
+                      ),
+                    ),
+
+                    SizedBox(height: 16),
+
+                    // 기간 선택 옵션들
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF111111),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTimeOption('1~6개월'),
+                          const SizedBox(height: 10),
+                          _buildTimeOption('6개월~1년'),
+                          const SizedBox(height: 10),
+                          _buildTimeOption('1~2년'),
+                          const SizedBox(height: 10),
+                          _buildTimeOption('2~5년'),
+                          const SizedBox(height: 10),
+                          _buildTimeOption('5~10년'),
+                          const SizedBox(height: 10),
+                          _buildTimeOption('10년 이상'),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 110),
+
+                    // 다음으로 넘어가기 버튼
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _canProceed
+                              ? const Color(0xFF65A0FF)
+                              : const Color(0xFF1F2124),
+                          disabledBackgroundColor: const Color(0xFF1F2124),
+                          foregroundColor: _canProceed
+                              ? Colors.white
+                              : const Color(0xFF8A9099),
+                          disabledForegroundColor: const Color(0xFF8A9099),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         child: Text(
-                          '이별한 사람과\n얼마나 오래 함께하셨나요?',
+                          '다음으로 넘어가기',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 16,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w600,
                             height: 1.40,
-                            letterSpacing: -0.50,
                           ),
+                          textAlign: TextAlign.center,
                         ),
+                        onPressed: _canProceed
+                            ? () {
+                                Get.to(
+                                  () => const Testscreen4(),
+                                  transition: Transition.fade,
+                                );
+                              }
+                            : null,
                       ),
-                      Positioned(
-                        left: 32,
-                        top: 196,
-                        child: Text(
-                          'AND와의 여정을 위해 소중한 당신의 이야기를 들려주세요',
-                          style: TextStyle(
-                            color: const Color(0xFFBDC7DB),
-                            fontSize: 14,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
-                            letterSpacing: -0.35,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 16,
-                        top: 96,
-                        child: Container(
-                          width: 380,
-                          height: 4,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF232529),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 16,
-                        top: 96,
-                        child: Container(
-                          width: 217.14,
-                          height: 4,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF65A0FF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 12,
-                        top: 28,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          // spacing: 1,
-                          children: [
-                            Container(
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(),
-                              child: IconButton(
-                                icon: Image.asset('image/arrow-left.png'),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                              ),
-                            ),
-                            Text(
-                              '이별 사유 선택',
-                              style: TextStyle(
-                                color: const Color(0xFFBDC7DB),
-                                fontSize: 14,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        left: 20,
-                        top: 723,
-                        child: Container(
-                          width: 370,
-                          height: 48,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: _canProceed
-                                  ? const Color(0xFF65A0FF)
-                                  : const Color(0xFF1F2124),
-                              disabledBackgroundColor: const Color(0xFF1F2124),
-                              foregroundColor: _canProceed
-                                  ? Colors.white
-                                  : const Color(0xFF8A9099),
-                              disabledForegroundColor: const Color(0xFF8A9099),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              '다음으로 넘어가기',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                height: 1.40,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            onPressed: _canProceed
-                                ? () {
-                                    Get.to(
-                                      () => const Testscreen4(),
-                                      transition: Transition.fade,
-                                    );
-                                  }
-                                : null,
-                            // : () {
-                            //     Get.to(
-                            //       () => const Testscreen4(), // 디버깅을 위한 임시
-                            //       transition: Transition.fade,
-                            //     );
-                            //   },
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 16,
-                        top: 270,
-                        child: Container(
-                          width: 380,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF111111),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        _buildTimeOption('1~6개월'),
-                                        const SizedBox(height: 10),
-                                        _buildTimeOption('6개월~1년'),
-                                        const SizedBox(height: 10),
-                                        _buildTimeOption('1~2년'),
-                                        const SizedBox(height: 10),
-                                        _buildTimeOption('2~5년'),
-                                        const SizedBox(height: 10),
-                                        _buildTimeOption('5~10년'),
-                                        const SizedBox(height: 10),
-                                        _buildTimeOption('10년 이상'),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 32,
-                        top: 248,
-                        child: Text(
-                          '이별 상대와 함께한 기간',
-                          style: TextStyle(
-                            color: const Color(0xFFBDC7DB),
-                            fontSize: 14,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+
+                    SizedBox(height: 32),
+                  ],
                 ),
               ),
-            );
-
-            if (scaledHeight > constraints.maxHeight) {
-              return SingleChildScrollView(
-                child: SizedBox(
-                  width: screenWidth,
-                  height: scaledHeight,
-                  child: scaledContent,
-                ),
-              );
-            } else {
-              return SizedBox(
-                width: screenWidth,
-                height: scaledHeight,
-                child: scaledContent,
-              );
-            }
-          },
+            ),
+          ],
         ),
       ),
     );

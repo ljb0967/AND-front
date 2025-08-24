@@ -37,16 +37,43 @@ class _HomescreenState extends State<Homescreen> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: '대화하기'),
-          BottomNavigationBarItem(icon: Icon(Icons.quiz), label: '일일문답'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: '이별일기'),
-          BottomNavigationBarItem(icon: Icon(Icons.store), label: '이별상점'),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Image.asset('image/message-circle.png'),
+            label: '대화하기',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('image/edit.png'),
+            label: '일일문답',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('image/home.png'),
+            label: '홈',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('image/book.png'),
+            label: '이별일기',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset('image/shopping-bag.png'),
+            label: '이별상점',
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: const Color(0xFF8A9099),
+        selectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontFamily: 'Pretendard',
+          fontWeight: FontWeight.w600,
+          height: 2.20,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontFamily: 'Pretendard',
+          fontWeight: FontWeight.w600,
+          height: 2.20,
+        ),
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,

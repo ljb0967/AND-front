@@ -1,16 +1,46 @@
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('대화하기')),
-      body: const Center(
-        child: Text('대화하기 페이지 내용', style: TextStyle(color: Colors.white)),
+      backgroundColor: Color(0xFF111111),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 25.0,
+                  vertical: 50.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('image/home_image.png', height: 20),
+                    Row(
+                      children: [
+                        Image.asset('image/Bell.png', height: 30),
+                        SizedBox(width: 12),
+                        Image.asset('image/GearSix.png', height: 30),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      backgroundColor: Colors.black,
     );
   }
 }

@@ -40,7 +40,7 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
                 bottom: Radius.circular(20.0),
               ),
               image: DecorationImage(
-                image: AssetImage('image/Frame 2.jpg'),
+                image: AssetImage('image/ex_photo.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -70,9 +70,9 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
                   Image.asset('image/home_image.png', height: 20),
                   Row(
                     children: [
-                      Icon(Icons.notifications_none, color: Colors.white),
+                      Image.asset('image/Bell.png', height: 30),
                       SizedBox(width: 12),
-                      Icon(Icons.settings, color: Colors.white),
+                      Image.asset('image/GearSix.png', height: 30),
                     ],
                   ),
                 ],
@@ -89,16 +89,26 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
               children: [
                 Text(
                   _todayString(), // 동적 현재 날짜
-                  style: TextStyle(color: Colors.white70, fontSize: 15),
+                  style: TextStyle(
+                    color: const Color(0xFFB8BFCC),
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1.40,
+                    letterSpacing: -0.35,
+                  ),
                 ),
                 SizedBox(height: 8),
                 Expanded(
                   child: Text(
-                    '앤디 야,어서오렴\n오늘은 햇살이 좋은 날이구나', // <---------api
+                    '앤디 야, 어서오렴\n오늘은 햇살이 좋은 날이구나', // <---------api
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w600,
+                      height: 1.40,
+                      letterSpacing: -0.50,
                     ),
                   ),
                 ),
@@ -108,14 +118,25 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
                   children: [
                     Text(
                       '사랑하는 내 할아버지', // <---------api
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                      style: TextStyle(
+                        color: const Color(0xFFB8BFCC),
+                        fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.40,
+                        letterSpacing: -0.40,
+                      ),
                     ),
                     Text(
                       _andDaysText(), // AND+경과일
+                      textAlign: TextAlign.right,
                       style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF65A0FF),
                         fontSize: 20,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w600,
+                        height: 1.40,
+                        letterSpacing: -0.50,
                       ),
                     ),
                   ],

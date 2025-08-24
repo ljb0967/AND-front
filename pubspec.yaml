@@ -88,6 +88,13 @@ flutter:
     - image/ex_image2.png
     - image/image.png
     - image/ex_photo.png
+    - image/Bell.png
+    - image/book.png
+    - image/edit.png
+    - image/GearSix.png
+    - image/home.png
+    - image/message-circle.png
+    - image/shopping-bag.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
