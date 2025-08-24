@@ -334,7 +334,7 @@ class _RegisterscreenState extends State<Registerscreen> {
             // 메인 콘텐츠 영역 (스크롤 가능)
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -683,26 +683,49 @@ class _RegisterscreenState extends State<Registerscreen> {
                     SizedBox(height: 24),
 
                     // 개별 약관 동의 항목들
-                    Column(
+                    Row(
                       children: [
-                        _buildTermItem('service', '(필수) 서비스 이용약관 동의'),
-                        SizedBox(height: 8),
-                        _buildTermItem('privacy', '(필수) 개인정보 수집 및 이용 동의'),
-                        SizedBox(height: 8),
-                        _buildTermItem('photoGallery', '(필수) 사진/갤러리 접근 권한 동의'),
-                        SizedBox(height: 8),
-                        _buildTermItem('sensitiveInfo', '(필수) 민감정보 처리 동의'),
-                        SizedBox(height: 8),
-                        _buildTermItem(
-                          'outsourcing',
-                          '(필수) 개인정보 처리 위탁 및 제3자 제공 동의',
-                        ),
-                        SizedBox(height: 8),
-                        _buildTermItem('pushNotification', '(필수) 푸시 알림 수신 동의'),
-                        SizedBox(height: 8),
-                        _buildTermItem(
-                          'additionalService',
-                          '(필수) 부가 서비스 이용 동의',
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            child: Column(
+                              children: [
+                                _buildTermItem('service', '(필수) 서비스 이용약관 동의'),
+                                SizedBox(height: 8),
+                                _buildTermItem(
+                                  'privacy',
+                                  '(필수) 개인정보 수집 및 이용 동의',
+                                ),
+                                SizedBox(height: 8),
+                                _buildTermItem(
+                                  'photoGallery',
+                                  '(필수) 사진/갤러리 접근 권한 동의',
+                                ),
+                                SizedBox(height: 8),
+                                _buildTermItem(
+                                  'sensitiveInfo',
+                                  '(필수) 민감정보 처리 동의',
+                                ),
+                                SizedBox(height: 8),
+                                _buildTermItem(
+                                  'outsourcing',
+                                  '(필수) 개인정보 처리 위탁 및 제3자 제공 동의',
+                                ),
+                                SizedBox(height: 8),
+                                _buildTermItem(
+                                  'pushNotification',
+                                  '(필수) 푸시 알림 수신 동의',
+                                ),
+                                SizedBox(height: 8),
+                                _buildTermItem(
+                                  'additionalService',
+                                  '(필수) 부가 서비스 이용 동의',
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),

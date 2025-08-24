@@ -58,7 +58,7 @@ class _Testscreen6State extends State<Testscreen6> {
 
             // 프로그레스 바
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
               child: Row(
                 children: [
                   Container(
@@ -89,7 +89,7 @@ class _Testscreen6State extends State<Testscreen6> {
             // 메인 콘텐츠 영역 (스크롤 가능)
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -128,7 +128,7 @@ class _Testscreen6State extends State<Testscreen6> {
                     // 선택지 옵션들
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(6),
+                      //padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         color: const Color(0xFF111111),
                         borderRadius: BorderRadius.circular(8),
@@ -216,7 +216,7 @@ class _Testscreen6State extends State<Testscreen6> {
       },
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
         decoration: BoxDecoration(
           color: _selectedOption == text1
               ? const Color(0xFF2A2D31)
@@ -232,11 +232,12 @@ class _Testscreen6State extends State<Testscreen6> {
         ),
         child: Container(
           width: 380,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          height: 68,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           decoration: ShapeDecoration(
             color: const Color(0xFF1F2124),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
           child: Row(
@@ -269,7 +270,7 @@ class _Testscreen6State extends State<Testscreen6> {
                     text2,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w500,
                       height: 1.40,

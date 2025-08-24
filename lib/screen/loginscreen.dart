@@ -229,7 +229,7 @@ class _LoginscreenState extends State<Loginscreen> {
             // 메인 콘텐츠 영역 (스크롤 가능)
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   children: [
                     // 회원 로그인 섹션

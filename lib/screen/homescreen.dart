@@ -39,23 +39,28 @@ class _HomescreenState extends State<Homescreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Image.asset('image/message-circle.png'),
+            //icon: Image.asset('image/message-circle.png'),
+            icon: Icon(Icons.message_outlined),
             label: '대화하기',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('image/edit.png'),
+            //icon: Image.asset('image/edit.png'),
+            icon: Icon(Icons.edit_outlined),
             label: '일일문답',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('image/home.png'),
+            // icon: Image.asset('image/home.png'),
+            icon: Icon(Icons.home_outlined),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('image/book.png'),
+            //icon: Image.asset('image/book.png'),
+            icon: Icon(Icons.book_outlined),
             label: '이별일기',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('image/shopping-bag.png'),
+            //icon: Image.asset('image/shopping-bag.png'),
+            icon: Icon(Icons.shopping_bag_outlined),
             label: '이별상점',
           ),
         ],

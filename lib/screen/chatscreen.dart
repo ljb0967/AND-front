@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 25.0,
-                vertical: 50.0,
+                vertical: 30.0,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,10 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           // 채팅 헤더 (사랑하는 우리 아빠)
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 12.0,
-            ),
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
             decoration: BoxDecoration(color: Color(0xFF111111)),
             child: Row(
               children: [
@@ -153,7 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Container(
               color: Color(0xFF111111),
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
                   final message = _messages[index];
@@ -178,7 +175,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
           // 메시지 입력 영역
           Container(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(4.0),
             color: Color(0xFF1F2124),
             child: Row(
               children: [

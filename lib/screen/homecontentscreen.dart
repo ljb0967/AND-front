@@ -79,220 +79,250 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
           SliverList(
             delegate: SliverChildListDelegate([
               SizedBox(height: 20.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  width: double.infinity, // 부모 너비 전체 사용
-                  height: 80.0, // 높이 136px (제공된 레이아웃 정보)
-                  padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1F2124), // 배경색 #1F2124
-                    borderRadius: BorderRadius.circular(
-                      10.0,
-                    ), // 반경 10px (모서리 둥글게)
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '바람도 쐴 겸, 이곳은 어때요?',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w600,
-                          height: 1.40,
-                          letterSpacing: -0.40,
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        // 부모 너비 전체 사용
+                        height: 80.0, // 높이 136px (제공된 레이아웃 정보)
+                        padding: const EdgeInsets.fromLTRB(
+                          16.0,
+                          12.0,
+                          16.0,
+                          12.0,
                         ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        '오늘의 추천 장소 보러가기',
-                        style: TextStyle(
-                          color: const Color(0xFFB8BFCC),
-                          fontSize: 14,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
-                          letterSpacing: -0.35,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1F2124), // 배경색 #1F2124
+                          borderRadius: BorderRadius.circular(
+                            10.0,
+                          ), // 반경 10px (모서리 둥글게)
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20.0),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  padding: const EdgeInsets.all(16.0), // 내부 패딩
-                  color: Colors.black,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            '오늘의 이별 극복 퀘스트',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
-                            ),
-                          ),
-                          SizedBox(width: 140.0),
-                          Image.asset('image/character1.png', height: 25),
-                        ],
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        '이별을 혼자서 감당하는 억누르기형을 위한 맞춤 퀘스트', //<---- API
-                        style: TextStyle(
-                          color: const Color(0xFFB8BFCC),
-                          fontSize: 14,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  16.0,
-                  20.0,
-                  16.0,
-                  20.0,
-                ), // 상단/하단 여백 20px 추가
-                child: Container(
-                  width: double.infinity, // 부모 너비 전체 사용
-                  height: 140.0, // 높이 136px (제공된 레이아웃 정보)
-                  padding: const EdgeInsets.all(16.0), // 내부 패딩 16px
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1F2124), // 배경색 #1F2124
-                    borderRadius: BorderRadius.circular(10.0), // 반경 10px
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildChecklistItem(0, '힘이 되는 사람과 30분 이상 대화하기'),
-                      const SizedBox(height: 8.0),
-                      _buildChecklistItem(1, '1시간 이상 바깥 공기 쐬고 오기'),
-                      const SizedBox(height: 8.0),
-                      _buildChecklistItem(2, '함께한 추억이 담긴 기록 살펴보기'),
-                      const Spacer(), // 남은 공간을 채워 프로그레스 바를 아래로 밀어냄
-                      // 프로그레스 바
-                      Row(
-                        children: [
-                          Expanded(
-                            child: LinearProgressIndicator(
-                              value: progress, // 33.3% 진행률
-                              backgroundColor: Colors.grey[700],
-                              valueColor: const AlwaysStoppedAnimation<Color>(
-                                Color(0xFF65A0FF),
-                              ), // 진행바 색상
-                              minHeight: 4.0, // 진행바 높이
-                            ),
-                          ),
-                          const SizedBox(width: 8.0),
-                          Text(
-                            '${(progress * 100).toStringAsFixed(1)}%',
-                            style: TextStyle(
-                              color: const Color(0xFF65A0FF),
-                              fontSize: 12,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16.0), // 내부 패딩
-                  color: Colors.black,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            '오늘도, 이별 나누기',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
-                            ),
-                          ),
-                          SizedBox(width: 120.0),
-                          Container(
-                            child: TextButton(
-                              onPressed: () {}, // ---> 일기 공유 커뮤니티로
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(
-                                  const Color(0xFF1F2124),
-                                ),
-                              ),
-                              child: Text(
-                                '더보기',
-                                //textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.40,
-                                ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '바람도 쐴 겸, 이곳은 어때요?',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.40,
+                                letterSpacing: -0.40,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 2.0),
-                      Text(
-                        '나와 유사한 이별을 한, 나와 비슷한 사람들의 이별일기',
-                        style: TextStyle(
-                          color: const Color(0xFFB8BFCC),
-                          fontSize: 14,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
+                            SizedBox(height: 8.0),
+                            Text(
+                              '오늘의 추천 장소 보러가기',
+                              style: TextStyle(
+                                color: const Color(0xFFB8BFCC),
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                                letterSpacing: -0.35,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 20.0),
-
-                      // 일기 카드 가로 스크롤뷰
-                      Container(
-                        height: 240.0,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(right: 6.0),
-                          itemCount: 5, // 일기 카드 개수
-                          itemBuilder: (context, index) {
-                            return _buildDiaryCard(index);
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
+              ),
+
+              const SizedBox(height: 2.0),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0), // 내부 패딩
+                        color: Colors.black,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  '오늘의 이별 극복 퀘스트',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.40,
+                                  ),
+                                ),
+                                SizedBox(width: 115.0),
+                                Image.asset('image/character1.png', height: 25),
+                              ],
+                            ),
+                            SizedBox(height: 8.0),
+                            Text(
+                              '이별을 혼자서 감당하는 억누르기형을 위한 맞춤 퀘스트', //<---- API
+                              style: TextStyle(
+                                color: const Color(0xFFB8BFCC),
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        8.0,
+                        10.0,
+                        8.0,
+                        10.0,
+                      ), // 상단/하단 여백 20px 추가
+                      child: Container(
+                        //width: double.infinity, // 부모 너비 전체 사용
+                        height: 140.0, // 높이 136px (제공된 레이아웃 정보)
+                        padding: const EdgeInsets.all(16.0), // 내부 패딩 16px
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1F2124), // 배경색 #1F2124
+                          borderRadius: BorderRadius.circular(10.0), // 반경 10px
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildChecklistItem(0, '힘이 되는 사람과 30분 이상 대화하기'),
+                            const SizedBox(height: 8.0),
+                            _buildChecklistItem(1, '1시간 이상 바깥 공기 쐬고 오기'),
+                            const SizedBox(height: 8.0),
+                            _buildChecklistItem(2, '함께한 추억이 담긴 기록 살펴보기'),
+                            const Spacer(), // 남은 공간을 채워 프로그레스 바를 아래로 밀어냄
+                            // 프로그레스 바
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: LinearProgressIndicator(
+                                    value: progress, // 33.3% 진행률
+                                    backgroundColor: Colors.grey[700],
+                                    valueColor:
+                                        const AlwaysStoppedAnimation<Color>(
+                                          Color(0xFF65A0FF),
+                                        ), // 진행바 색상
+                                    minHeight: 4.0, // 진행바 높이
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                Text(
+                                  '${(progress * 100).toStringAsFixed(1)}%',
+                                  style: TextStyle(
+                                    color: const Color(0xFF65A0FF),
+                                    fontSize: 12,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.40,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0), // 내부 패딩
+                        color: Colors.black,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  '오늘도, 이별 나누기',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.40,
+                                  ),
+                                ),
+                                SizedBox(width: 110.0),
+                                Container(
+                                  child: TextButton(
+                                    onPressed: () {}, // ---> 일기 공유 커뮤니티로
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          WidgetStateProperty.all<Color>(
+                                            const Color(0xFF1F2124),
+                                          ),
+                                    ),
+                                    child: Text(
+                                      '더보기',
+                                      //textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.40,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 2.0),
+                            Text(
+                              '나와 유사한 이별을 한, 나와 비슷한 사람들의 이별일기',
+                              style: TextStyle(
+                                color: const Color(0xFFB8BFCC),
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                              ),
+                            ),
+                            SizedBox(height: 20.0),
+
+                            // 일기 카드 가로 스크롤뷰
+                            Container(
+                              height: 200.0,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.only(right: 6.0),
+                                itemCount: 5, // 일기 카드 개수
+                                itemBuilder: (context, index) {
+                                  return _buildDiaryCard(index);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
 
               //Container(color: Colors.white, height: 200.0),
@@ -367,8 +397,8 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
     final data = diaryData[index % diaryData.length];
 
     return Container(
-      width: 280.0,
-      margin: EdgeInsets.only(right: 16.0),
+      width: 270.0,
+      margin: EdgeInsets.only(right: 8.0),
       child: Stack(
         children: [
           // 배경 이미지
@@ -429,7 +459,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                       ],
                     ),
 
-                    SizedBox(width: 87.0),
+                    SizedBox(width: 105.0),
 
                     //좋아요 아이콘
                     GestureDetector(
@@ -528,20 +558,20 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 12.0),
+                // SizedBox(height: 12.0),
 
-                Text(
-                  data['content'],
-                  style: TextStyle(
-                    color: const Color(0xFFB8BFCC),
-                    fontSize: 12,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w500,
-                    height: 1.40,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                // Text(
+                //   data['content'],
+                //   style: TextStyle(
+                //     color: const Color(0xFFB8BFCC),
+                //     fontSize: 12,
+                //     fontFamily: 'Pretendard',
+                //     fontWeight: FontWeight.w500,
+                //     height: 1.40,
+                //   ),
+                //   maxLines: 2,
+                //   overflow: TextOverflow.ellipsis,
+                // ),
               ],
             ),
           ),

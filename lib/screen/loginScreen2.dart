@@ -74,7 +74,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
 
             // 프로그레스 바
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
                   Container(
@@ -105,7 +105,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
             // 메인 콘텐츠 영역 (스크롤 가능)
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -407,7 +407,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ],
                     ),
 
-                    SizedBox(height: 110),
+                    SizedBox(height: 70),
 
                     // 다음으로 넘어가기 버튼
                     SizedBox(

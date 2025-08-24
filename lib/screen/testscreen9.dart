@@ -178,7 +178,7 @@ class _Testscreen9State extends State<Testscreen9> {
 
             // 프로그레스 바
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
               child: Container(
                 width: double.infinity,
                 height: 4,
@@ -194,7 +194,7 @@ class _Testscreen9State extends State<Testscreen9> {
             // 메인 콘텐츠 영역 (스크롤 가능)
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

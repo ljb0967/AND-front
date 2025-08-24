@@ -19,263 +19,201 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF111111),
       body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 25.0,
-                  vertical: 50.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset('image/home_image.png', height: 20),
-                    Row(
-                      children: [
-                        Image.asset('image/Bell.png', height: 30),
-                        SizedBox(width: 12),
-                        Image.asset('image/GearSix.png', height: 30),
-                      ],
-                    ),
-                  ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25.0,
+                    vertical: 30.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset('image/home_image.png', height: 20),
+                      Row(
+                        children: [
+                          Image.asset('image/Bell.png', height: 30),
+                          SizedBox(width: 12),
+                          Image.asset('image/GearSix.png', height: 30),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: Text(
+                        '오늘의 1일 1문답',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w600,
+                          height: 1.40,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(140, 0, 0, 0),
+                      child: Text(
+                        '10',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  child: Text(
+                    '나에게 던지는, 오늘 하루 소중한 질문',
+                    style: TextStyle(
+                      color: const Color(0xFFB8BFCC),
+                      fontSize: 14,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      height: 1.40,
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  // 회원 탭
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isActive = true;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          '1일 1문답',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.40,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // 비회원 탭
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isActive = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          '문답보관함',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.40,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: _isActive
+                            ? Colors.white
+                            : const Color(0xFF232529),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: !_isActive
+                            ? Colors.white
+                            : const Color(0xFF232529),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (_isActive) ...[
+                // 1일 1문답
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  child: Container(
                     child: Text(
-                      '오늘의 1일 1문답',
+                      'Question',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                        color: const Color(0xFF65A0FF),
+                        fontSize: 16,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w600,
                         height: 1.40,
+                        letterSpacing: -0.40,
                       ),
                     ),
                   ),
                 ),
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(170, 0, 0, 0),
-                    child: Text(
-                      '10',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Text(
-              '나에게 던지는, 오늘 하루 소중한 질문',
-              style: TextStyle(
-                color: const Color(0xFFB8BFCC),
-                fontSize: 14,
-                fontFamily: 'Pretendard',
-                fontWeight: FontWeight.w500,
-                height: 1.40,
-              ),
-            ),
-            Row(
-              children: [
-                // 회원 탭
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isActive = true;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        '1일 1문답',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                // 비회원 탭
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isActive = false;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        '문답보관함',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 2,
-                    decoration: BoxDecoration(
-                      color: _isActive ? Colors.white : const Color(0xFF232529),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 2,
-                    decoration: BoxDecoration(
-                      color: !_isActive
-                          ? Colors.white
-                          : const Color(0xFF232529),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            if (_isActive) ...[
-              // 1일 1문답
-              Text(
-                'Question',
-                style: TextStyle(
-                  color: const Color(0xFF65A0FF),
-                  fontSize: 16,
-                  fontFamily: 'Pretendard',
-                  fontWeight: FontWeight.w600,
-                  height: 1.40,
-                  letterSpacing: -0.40,
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: Container(
-                        width: 348,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFF1F2124),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        child: Container(
+                          width: 348,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
                           ),
-                        ),
-                        child: Text(
-                          '오늘 나의 감정을 색깔로 표현한다면 어떤 색일까요? 그 이유는 무엇인가요?',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
-                            letterSpacing: -0.40,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF1F2124),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                'Answer',
-                style: TextStyle(
-                  color: const Color(0xFF65A0FF),
-                  fontSize: 16,
-                  fontFamily: 'Pretendard',
-                  fontWeight: FontWeight.w600,
-                  height: 1.40,
-                  letterSpacing: -0.40,
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '100자 이상 입력하면 1&를 받을 수 있어요',
-                        style: TextStyle(
-                          color: const Color(0xFFB8BFCC),
-                          fontSize: 14,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
-                          letterSpacing: -0.35,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: Container(
-                        width: 348,
-                        height: 285,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFF1F2124),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: TextField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
-                            letterSpacing: -0.40,
-                          ),
-                          decoration: InputDecoration(
-                            isCollapsed: true,
-                            border: InputBorder.none,
-                            hintText: '답변을 입력하세요',
-                            hintStyle: TextStyle(
-                              color: const Color(0xFFB8BFCC),
+                          child: Text(
+                            '오늘 나의 감정을 색깔로 표현한다면 어떤 색일까요? 그 이유는 무엇인가요?',
+                            style: TextStyle(
+                              color: Colors.white,
                               fontSize: 16,
                               fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w500,
@@ -283,96 +221,178 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                               letterSpacing: -0.40,
                             ),
                           ),
-                          controller: _answerController,
                         ),
                       ),
                     ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: Container(
+                    child: Text(
+                      'Answer',
+                      style: TextStyle(
+                        color: const Color(0xFF65A0FF),
+                        fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w600,
+                        height: 1.40,
+                        letterSpacing: -0.40,
+                      ),
+                    ),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFF1F2124),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                        child: Text(
+                          '100자 이상 입력하면 1&를 받을 수 있어요',
+                          style: TextStyle(
+                            color: const Color(0xFFB8BFCC),
+                            fontSize: 14,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.40,
+                            letterSpacing: -0.35,
                           ),
                         ),
-                        child: Center(
-                          child: Text(
-                            '작성 취소하기',
-                            style: TextStyle(
-                              color: const Color(0xFFB8BFCC),
-                              fontSize: 14,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
-                              letterSpacing: -0.35,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        child: Container(
+                          width: 348,
+                          height: 215,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF1F2124),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFF65A0FF),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '답변 저장하기',
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               height: 1.40,
-                              letterSpacing: -0.35,
+                              letterSpacing: -0.40,
+                            ),
+                            decoration: InputDecoration(
+                              isCollapsed: true,
+                              border: InputBorder.none,
+                              hintText: '답변을 입력하세요',
+                              hintStyle: TextStyle(
+                                color: const Color(0xFFB8BFCC),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                                letterSpacing: -0.40,
+                              ),
+                            ),
+                            controller: _answerController,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF1F2124),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '작성 취소하기',
+                              style: TextStyle(
+                                color: const Color(0xFFB8BFCC),
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.40,
+                                letterSpacing: -0.35,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-            if (!_isActive) ...[
-              // 문답보관함
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFF65A0FF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '답변 저장하기',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.40,
+                                letterSpacing: -0.35,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.0),
+              ],
+              if (!_isActive) ...[
+                // 문답보관함
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // 문답보관함 제목
 
                     // 문답보관함 설명
-                    SizedBox(height: 24.0),
+                    // SizedBox(height: 12.0),
 
                     // 날짜별 일기 가로 스크롤뷰
                     Container(
-                      height: 420.0,
+                      height: 375.0,
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.only(right: 16.0),
                         itemCount: 7, // 일주일치 일기
                         itemBuilder: (context, index) {
                           return _buildDiaryArchiveCard(index);
@@ -427,9 +447,9 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                     ),
                   ],
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -494,13 +514,12 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
 
     return Container(
       width: 300.0,
-      margin: EdgeInsets.only(right: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 날짜 헤더
           Padding(
-            padding: const EdgeInsets.fromLTRB(32.0, 0, 0, 0),
+            padding: const EdgeInsets.fromLTRB(24.0, 0, 0, 0),
             child: Container(
               child: Text(
                 '${data['date']} (${data['weekday']})',
@@ -519,81 +538,94 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
           SizedBox(height: 8.0),
 
           // 질문 카드
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1F2124),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      data['question'],
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                        letterSpacing: -0.40,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: Container(
+                    width: 348,
+                    padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1F2124),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            data['question'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                              letterSpacing: -0.40,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        SizedBox(width: 12.0),
+                        // 확장/축소 아이콘
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              // 확장/축소 상태 토글
+                              _expandedStates[index] = !_expandedStates[index];
+                            });
+                          },
+                          child: Icon(
+                            _expandedStates[index]
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                            color: const Color(0xFFB8BFCC),
+                            size: 20.0,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(width: 12.0),
-                  // 확장/축소 아이콘
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        // 확장/축소 상태 토글
-                        _expandedStates[index] = !_expandedStates[index];
-                      });
-                    },
-                    child: Icon(
-                      _expandedStates[index]
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
-                      color: const Color(0xFFB8BFCC),
-                      size: 20.0,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
           SizedBox(height: 16.0),
 
           // 답변 내용 (확장 시에만 표시)
           if (_expandedStates[index]) ...[
             SizedBox(height: 12.0),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-              child: Container(
-                height: 320,
-                width: double.infinity,
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1F2124),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Text(
-                  data['answer'],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w500,
-                    height: 1.40,
-                    letterSpacing: -0.40,
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: Container(
+                      height: 320,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1F2124),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text(
+                        data['answer'],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
+                          letterSpacing: -0.40,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
+            SizedBox(height: 12.0),
           ],
         ],
       ),

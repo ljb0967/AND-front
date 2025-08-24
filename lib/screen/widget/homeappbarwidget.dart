@@ -61,7 +61,7 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 25.0,
-                vertical: 50.0,
+                vertical: 30.0,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
