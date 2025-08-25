@@ -184,7 +184,9 @@ class _Testscreen6State extends State<Testscreen6> {
                         onPressed: _canProceed
                             ? () {
                                 Get.to(
-                                  () => const Testscreen7(),
+                                  () => Testscreen7(
+                                    selectedOption: _selectedOption,
+                                  ),
                                   transition: Transition.fade,
                                 );
                               }

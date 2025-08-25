@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test1/screen/loginscreen.dart';
 import 'package:get/get.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});
@@ -13,6 +15,11 @@ class _RegisterscreenState extends State<Registerscreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController pwController = TextEditingController();
   final TextEditingController pwoConfirmController = TextEditingController();
+
+  // API 서비스
+  // Android 에뮬레이터: 10.0.2.2, 실제 기기: 컴퓨터 IP 주소
+  static const String _baseUrl = 'http://10.0.2.2:8080';
+  static const String _lossCasesEndpoint = '/auth/signup';
 
   // 약관 동의 상태 관리
   bool _allTermsAgreed = false;
@@ -68,8 +75,8 @@ class _RegisterscreenState extends State<Registerscreen> {
       return;
     }
 
-    // TODO: 백엔드 API 호출하여 이미 가입된 이메일인지 확인
-    // _checkEmailAvailability(email);
+    // 백엔드 API 호출하여 이미 가입된 이메일인지 확인
+    _checkEmailAvailability(email);
 
     setState(() {
       _isEmailValid = true;
@@ -96,8 +103,8 @@ class _RegisterscreenState extends State<Registerscreen> {
       return;
     }
 
-    // TODO: 백엔드 API 호출하여 이미 사용된 비밀번호인지 확인
-    // _checkPasswordAvailability(password);
+    // 백엔드 API 호출하여 이미 사용된 비밀번호인지 확인
+    _checkPasswordAvailability(password);
 
     setState(() {
       _isPasswordValid = true;
@@ -139,36 +146,84 @@ class _RegisterscreenState extends State<Registerscreen> {
 
   // 이메일 가용성 확인 (백엔드 API 호출)
   Future<void> _checkEmailAvailability(String email) async {
-    // TODO: 백엔드 API 구현
-    // try {
-    //   final response = await apiService.checkEmailAvailability(email);
-    //   setState(() {
-    //     _isEmailRegistered = response.isRegistered;
-    //     if (_isEmailRegistered) {
-    //       _isEmailValid = false;
-    //       _emailError = '이미 가입된 이메일 주소예요';
-    //     }
-    //   });
-    // } catch (e) {
-    //   print('이메일 가용성 확인 오류: $e');
-    // }
+    try {
+      final response = await http.get(
+        Uri.parse('$_baseUrl/users/check-email?email=$email'),
+        headers: {'Content-Type': 'application/json', 'accept': '*/*'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final isRegistered = data['exists'] ?? false;
+
+        setState(() {
+          _isEmailRegistered = isRegistered;
+          if (_isEmailRegistered) {
+            _isEmailValid = false;
+            _emailError = '이미 가입된 이메일 주소예요';
+          } else {
+            _isEmailValid = true;
+            _emailError = '';
+          }
+        });
+      } else {
+        // API 응답이 실패한 경우, 기본적으로 사용 가능한 것으로 처리
+        setState(() {
+          _isEmailRegistered = false;
+          _isEmailValid = true;
+          _emailError = '';
+        });
+      }
+    } catch (e) {
+      print('이메일 가용성 확인 오류: $e');
+      // 네트워크 오류 등의 경우, 기본적으로 사용 가능한 것으로 처리
+      setState(() {
+        _isEmailRegistered = false;
+        _isEmailValid = true;
+        _emailError = '';
+      });
+    }
   }
 
   // 비밀번호 가용성 확인 (백엔드 API 호출)
   Future<void> _checkPasswordAvailability(String password) async {
-    // TODO: 백엔드 API 구현
-    // try {
-    //   final response = await apiService.checkPasswordAvailability(password);
-    //   setState(() {
-    //     _isPasswordRegistered = response.isRegistered;
-    //     if (_isPasswordRegistered) {
-    //       _isPasswordValid = false;
-    //       _passwordError = '이미 사용된 비밀번호예요';
-    //     }
-    //   });
-    // } catch (e) {
-    //   print('비밀번호 가용성 확인 오류: $e');
-    // }
+    try {
+      final response = await http.get(
+        Uri.parse('$_baseUrl/users/check-password?password=$password'),
+        headers: {'Content-Type': 'application/json', 'accept': '*/*'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final isRegistered = data['exists'] ?? false;
+
+        setState(() {
+          _isPasswordRegistered = isRegistered;
+          if (_isPasswordRegistered) {
+            _isPasswordValid = false;
+            _passwordError = '이미 사용된 비밀번호예요';
+          } else {
+            _isPasswordValid = true;
+            _passwordError = '';
+          }
+        });
+      } else {
+        // API 응답이 실패한 경우, 기본적으로 사용 가능한 것으로 처리
+        setState(() {
+          _isPasswordRegistered = false;
+          _isPasswordValid = true;
+          _passwordError = '';
+        });
+      }
+    } catch (e) {
+      print('비밀번호 가용성 확인 오류: $e');
+      // 네트워크 오류 등의 경우, 기본적으로 사용 가능한 것으로 처리
+      setState(() {
+        _isPasswordRegistered = false;
+        _isPasswordValid = true;
+        _passwordError = '';
+      });
+    }
   }
 
   // 전체 약관 동의 처리
@@ -243,43 +298,74 @@ class _RegisterscreenState extends State<Registerscreen> {
   }
 
   // 회원가입 처리
-  void _handleSignup() {
+  void _handleSignup() async {
     if (!_isFormComplete) {
       // 모든 필수 항목이 완료되지 않은 경우 처리
       return;
     }
 
-    // TODO: 백엔드 API 호출하여 회원가입 처리
-    // _performSignup();
+    // 백엔드 API 호출하여 회원가입 처리
+    final success = await _performSignup();
 
-    // 성공 시 로그인 화면으로 이동
-    Get.to(() => const Loginscreen(), transition: Transition.fade);
+    if (success) {
+      // 성공 시 로그인 화면으로 이동
+      Get.to(() => const Loginscreen(), transition: Transition.fade);
+    }
   }
 
-  // 회원가입 API 호출 (백엔드 구현 필요)
-  Future<void> _performSignup() async {
-    // TODO: 백엔드 API 구현
-    // try {
-    //   final response = await apiService.signup({
-    //     'email': emailController.text.trim(),
-    //     'password': pwController.text,
-    //     'termsAgreed': {
-    //       'service': _serviceTermsAgreed,
-    //       'privacy': _privacyTermsAgreed,
-    //       'photoGallery': _photoGalleryAgreed,
-    //       'sensitiveInfo': _sensitiveInfoAgreed,
-    //       'outsourcing': _outsourcingTermsAgreed,
-    //       'pushNotification': _pushNotificationAgreed,
-    //       'additionalService': _additionalServiceAgreed,
-    //     },
-    //   });
-    //
-    //   if (response.success) {
-    //     Get.to(() => const Loginscreen(), transition: Transition.fade);
-    //   }
-    // } catch (e) {
-    //   print('회원가입 오류: $e');
-    // }
+  // 회원가입 API 호출 (백엔드 구현)
+  Future<bool> _performSignup() async {
+    try {
+      // API 명세서에 따른 요청 데이터 구성
+      final requestData = {
+        "email": emailController.text.trim(),
+        "password": pwController.text,
+        "name": "string",
+        "age": 0,
+        "gender": "string",
+      };
+
+      // 요청 데이터 로그 출력
+      print('요청 데이터: ${json.encode(requestData)}');
+
+      final response = await http.post(
+        Uri.parse('$_baseUrl$_lossCasesEndpoint'),
+        headers: {'Content-Type': 'application/json', 'accept': '*/*'},
+        body: json.encode(requestData),
+      );
+
+      // 응답 상세 로그 출력
+      print('응답 상태 코드: ${response.statusCode}');
+      print('응답 헤더: ${response.headers}');
+      print('응답 본문: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('회원가입 성공: ${response.body}');
+        return true;
+      } else {
+        print('회원가입 실패: ${response.statusCode} - ${response.body}');
+
+        // 400 오류인 경우 더 자세한 정보 표시
+        if (response.statusCode == 400) {
+          try {
+            final errorData = json.decode(response.body);
+            final errorMessage =
+                errorData['message'] ?? errorData['error'] ?? '잘못된 요청입니다.';
+            _showErrorDialog('회원가입 실패: $errorMessage');
+          } catch (e) {
+            _showErrorDialog('회원가입에 실패했습니다. (400 오류)\n서버 로그를 확인해주세요.');
+          }
+        } else {
+          _showErrorDialog('회원가입에 실패했습니다. 다시 시도해주세요.');
+        }
+        return false;
+      }
+    } catch (e) {
+      print('회원가입 오류: $e');
+      // 사용자에게 오류 메시지 표시
+      _showErrorDialog('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+      return false;
+    }
   }
 
   @override
@@ -774,6 +860,50 @@ class _RegisterscreenState extends State<Registerscreen> {
           ],
         ),
       ),
+    );
+  }
+
+  // 오류 다이얼로그 표시
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF1F2124),
+          title: Text(
+            '오류',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: Text(
+            message,
+            style: TextStyle(
+              color: const Color(0xFFBDC7DB),
+              fontSize: 14,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                '확인',
+                style: TextStyle(
+                  color: const Color(0xFF65A0FF),
+                  fontSize: 16,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

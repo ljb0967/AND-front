@@ -15,6 +15,9 @@ class _LoginScreen2State extends State<LoginScreen2> {
   final TextEditingController ageController = TextEditingController();
   String? _gender;
 
+  static const String _baseUrl = 'http://10.0.2.2:8080';
+  static const String _lossCasesEndpoint = '/auth/signup';
+
   bool get _isFormValid {
     return nameController.text.trim().isNotEmpty &&
         ageController.text.trim().isNotEmpty &&

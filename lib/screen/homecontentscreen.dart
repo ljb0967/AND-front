@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widget/homeappbarwidget.dart';
+import 'package:get/get.dart';
+import 'homediaryscreen.dart';
 
 class Homecontentscreen extends StatefulWidget {
   const Homecontentscreen({super.key});
@@ -270,7 +272,12 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                                 SizedBox(width: 110.0),
                                 Container(
                                   child: TextButton(
-                                    onPressed: () {}, // ---> 일기 공유 커뮤니티로
+                                    onPressed: () {
+                                      Get.to(
+                                        () => const Homediaryscreen(),
+                                        transition: Transition.fade,
+                                      );
+                                    }, // ---> 일기 공유 커뮤니티로
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
@@ -462,23 +469,22 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                     SizedBox(width: 105.0),
 
                     //좋아요 아이콘
-                    GestureDetector(
-                      onTap: () {
-                        // 북마크 토글 기능 (실제로는 상태 관리 필요)
-                        setState(() {
-                          // 여기서 북마크 상태를 토글할 수 있습니다
-                        });
-                      },
-                      child: Icon(
-                        data['isBookmarked']
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: Color(0xFFB8BFCC),
-                        size: 20.0,
-                      ),
-                    ),
-
-                    SizedBox(width: 10.0),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     // 북마크 토글 기능 (실제로는 상태 관리 필요)
+                    //     setState(() {
+                    //       // 여기서 북마크 상태를 토글할 수 있습니다
+                    //     });
+                    //   },
+                    //   child: Icon(
+                    //     data['isBookmarked']
+                    //         ? Icons.favorite
+                    //         : Icons.favorite_border,
+                    //     color: Color(0xFFB8BFCC),
+                    //     size: 20.0,
+                    //   ),
+                    // ),
+                    SizedBox(width: 20.0),
 
                     // 북마크 아이콘
                     GestureDetector(

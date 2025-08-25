@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'loginScreen2.dart';
 import 'registerscreen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -11,7 +13,12 @@ class Loginscreen extends StatefulWidget {
 }
 
 class _LoginscreenState extends State<Loginscreen> {
+  final TextEditingController idController = TextEditingController();
+  final TextEditingController pwController = TextEditingController();
   bool _isMember = true; // 회원 탭이 기본 선택
+
+  static const String _baseUrl = 'http://10.0.2.2:8080';
+  static const String _lossCasesEndpoint = '/auth/login';
 
   // 로그인 검증 상태 관리
   bool _isLoggingIn = false;
@@ -33,20 +40,44 @@ class _LoginscreenState extends State<Loginscreen> {
 
     try {
       // TODO: 백엔드 API 호출하여 로그인 검증
-      // final response = await apiService.login(email, password);
-      //
-      // if (response.success) {
-      //   // 로그인 성공 시 다음 화면으로 이동
-      //   Get.to(() => const LoginScreen2(), transition: Transition.fade);
-      // } else {
-      //   setState(() {
-      //     _loginError = '이메일 주소 또는 비밀번호가 일치하지 않아요';
-      //   });
+      final requestData = {
+        "email": idController.text.trim(),
+        "password": pwController.text,
+      };
+
+      final response = await http.post(
+        Uri.parse('$_baseUrl$_lossCasesEndpoint'),
+        headers: {'Content-Type': 'application/json', 'accept': '*/*'},
+        body: json.encode(requestData),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('로그인 성공: ${response.body}');
+        Get.to(() => const LoginScreen2(), transition: Transition.fade);
+      } else {
+        print('로그인 실패: ${response.statusCode} - ${response.body}');
+      }
+
+      if (response.statusCode == 400) {
+        try {
+          final errorData = json.decode(response.body);
+          final errorMessage =
+              errorData['message'] ?? errorData['error'] ?? '잘못된 요청입니다.';
+          _showErrorDialog('로그인 실패: $errorMessage');
+        } catch (e) {
+          _showErrorDialog('로그인에 실패했습니다. (400 오류)\n서버 로그를 확인해주세요.');
+        }
+      } else {
+        _showErrorDialog('로그인에 실패했습니다. 다시 시도해주세요.');
+      }
+      /////////////////////////////////////////////////////////
 
       if (email == 'ljb0967@naver.com' && password == 'a12345678') {
         //디버깅 용
         Get.to(() => const LoginScreen2(), transition: Transition.fade);
       }
+
+      ////////////////////////////////////////////////////////////
 
       // 임시로 항상 실패로 처리 (백엔드 구현 전)
       await Future.delayed(const Duration(milliseconds: 500)); // API 호출 시뮬레이션
@@ -90,9 +121,6 @@ class _LoginscreenState extends State<Loginscreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController idController = TextEditingController();
-    final TextEditingController pwController = TextEditingController();
-
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
       body: SafeArea(
@@ -685,6 +713,49 @@ class _LoginscreenState extends State<Loginscreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF1F2124),
+          title: Text(
+            '오류',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: Text(
+            message,
+            style: TextStyle(
+              color: const Color(0xFFBDC7DB),
+              fontSize: 14,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                '확인',
+                style: TextStyle(
+                  color: const Color(0xFF65A0FF),
+                  fontSize: 16,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

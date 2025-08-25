@@ -334,7 +334,7 @@ class _Testscreen9State extends State<Testscreen9> {
                       ],
                     ),
 
-                    SizedBox(height: 110),
+                    SizedBox(height: 80),
 
                     // AND 시작하기 버튼
                     SizedBox(
