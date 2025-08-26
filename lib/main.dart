@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:test1/screen/intro_screen.dart';
 import 'package:get/get.dart';
+import 'package:test1/state/user_controller.dart';
 
 void main() {
+  // UserController 초기화
+  Get.put(UserController());
+
   runApp(const MyApp());
 }
 

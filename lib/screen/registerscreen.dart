@@ -341,6 +341,7 @@ class _RegisterscreenState extends State<Registerscreen> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('회원가입 성공: ${response.body}');
+        _showErrorDialog('회원가입 성공! 로그인 화면으로 이동합니다.');
         return true;
       } else {
         print('회원가입 실패: ${response.statusCode} - ${response.body}');

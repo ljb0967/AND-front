@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen.dart';
 import 'loginscreen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../state/user_controller.dart';
 
 class LoginScreen2 extends StatefulWidget {
   const LoginScreen2({super.key});
@@ -15,6 +18,9 @@ class _LoginScreen2State extends State<LoginScreen2> {
   final TextEditingController ageController = TextEditingController();
   String? _gender;
 
+  // UserController 가져오기
+  final UserController userController = Get.find<UserController>();
+
   static const String _baseUrl = 'http://10.0.2.2:8080';
   static const String _lossCasesEndpoint = '/auth/signup';
 
@@ -24,6 +30,56 @@ class _LoginScreen2State extends State<LoginScreen2> {
         _gender != null;
   }
   // 검증 함수
+
+  Future<bool> _performSignup() async {
+    try {
+      // API 명세서에 따른 요청 데이터 구성
+      final requestData = {
+        "email": userController.userEmail.value,
+        "password": userController.userPassword.value,
+        "name": nameController.text.trim(),
+        "age": int.parse(ageController.text.trim()),
+        "gender": _gender,
+      };
+
+      // 요청 데이터 로그 출력
+      print('요청 데이터: ${json.encode(requestData)}');
+
+      final response = await http.post(
+        Uri.parse('$_baseUrl$_lossCasesEndpoint'),
+        headers: {'Content-Type': 'application/json', 'accept': '*/*'},
+        body: json.encode(requestData),
+      );
+
+      // 응답 상세 로그 출력
+      print('응답 상태 코드: ${response.statusCode}');
+      print('응답 헤더: ${response.headers}');
+      print('응답 본문: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('정보 입력 성공: ${response.body}');
+        //Get.to(() => const Testscreen(), transition: Transition.fade);
+        return true;
+      } else {
+        print('정보 입력 실패: ${response.statusCode} - ${response.body}');
+
+        // 400 오류인 경우 더 자세한 정보 표시
+        if (response.statusCode == 400) {
+          try {
+            final errorData = json.decode(response.body);
+            final errorMessage =
+                errorData['message'] ?? errorData['error'] ?? '잘못된 요청입니다.';
+          } catch (e) {}
+        } else {}
+        return false;
+      }
+    } catch (e) {
+      print('정보 입력 오류: $e');
+      // 사용자에게 오류 메시지 표시
+
+      return false;
+    }
+  }
 
   @override
   void initState() {
@@ -443,10 +499,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                         ),
                         onPressed: _isFormValid
                             ? () {
-                                Get.to(
-                                  () => const Testscreen(),
-                                  transition: Transition.fade,
-                                );
+                                _performSignup();
                               }
                             : null,
                       ),

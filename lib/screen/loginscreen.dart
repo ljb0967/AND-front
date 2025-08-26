@@ -4,6 +4,7 @@ import 'loginScreen2.dart';
 import 'registerscreen.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../state/user_controller.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -51,9 +52,24 @@ class _LoginscreenState extends State<Loginscreen> {
         body: json.encode(requestData),
       );
 
+      //String token = response.body['accessToken'];
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('로그인 성공: ${response.body}');
-        Get.to(() => const LoginScreen2(), transition: Transition.fade);
+
+        // 서버 응답 파싱
+        try {
+          final responseData = json.decode(response.body);
+
+          // 토큰과 사용자 정보 저장
+          await _saveUserData(responseData);
+
+          print('사용자 정보 저장 완료');
+          Get.to(() => const LoginScreen2(), transition: Transition.fade);
+        } catch (e) {
+          print('응답 파싱 오류: $e');
+          _showErrorDialog('로그인 응답 처리 중 오류가 발생했습니다.');
+        }
       } else {
         print('로그인 실패: ${response.statusCode} - ${response.body}');
       }
@@ -68,7 +84,7 @@ class _LoginscreenState extends State<Loginscreen> {
           _showErrorDialog('로그인에 실패했습니다. (400 오류)\n서버 로그를 확인해주세요.');
         }
       } else {
-        _showErrorDialog('로그인에 실패했습니다. 다시 시도해주세요.');
+        // _showErrorDialog('로그인에 실패했습니다. 다시 시도해주세요.');
       }
       /////////////////////////////////////////////////////////
 
@@ -117,6 +133,20 @@ class _LoginscreenState extends State<Loginscreen> {
     //     _loginError = '로그인 중 오류가 발생했습니다';
     //   });
     // }
+  }
+
+  // 사용자 데이터 저장
+  Future<void> _saveUserData(Map<String, dynamic> responseData) async {
+    try {
+      // UserController에 로그인 정보 저장
+      final userController = Get.put(UserController());
+      userController.setLoginData(responseData, pwController.text);
+
+      print('사용자 데이터 저장 완료: ${responseData['user']?['email']}');
+    } catch (e) {
+      print('사용자 데이터 저장 실패: $e');
+      throw Exception('사용자 데이터 저장에 실패했습니다: $e');
+    }
   }
 
   @override
