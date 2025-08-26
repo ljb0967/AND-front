@@ -58,7 +58,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('정보 입력 성공: ${response.body}');
-        //Get.to(() => const Testscreen(), transition: Transition.fade);
+        Get.to(() => const Testscreen(), transition: Transition.fade);
         return true;
       } else {
         print('정보 입력 실패: ${response.statusCode} - ${response.body}');
@@ -229,7 +229,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ),
                       child: TextField(
                         controller: nameController,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.text,
                         style: const TextStyle(
                           color: const Color(0xFF8A9099),
                           fontSize: 16,
@@ -283,7 +283,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ),
                       child: TextField(
                         controller: ageController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.name,
                         style: const TextStyle(
                           color: const Color(0xFF8A9099),
                           fontSize: 16,
@@ -500,6 +500,10 @@ class _LoginScreen2State extends State<LoginScreen2> {
                         onPressed: _isFormValid
                             ? () {
                                 _performSignup();
+                                Get.to(
+                                  () => const Testscreen(),
+                                  transition: Transition.fade,
+                                );
                               }
                             : null,
                       ),

@@ -6,6 +6,8 @@ import 'homescreen.dart';
 import '../state/survey_controller.dart';
 import 'testscreen7.dart';
 import 'testscreen9.dart';
+import '../state/loss_case_controller.dart';
+import 'dart:convert';
 
 class Testscreen8 extends StatefulWidget {
   const Testscreen8({super.key});
@@ -19,19 +21,27 @@ class _Testscreen8State extends State<Testscreen8> {
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
 
+  // LossCaseController 가져오기
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
+
+  String _convertToBase64(File imageFile) {
+    final bytes = imageFile.readAsBytesSync(); // 이미지 바이트 읽기
+    return base64Encode(bytes); // Base64 문자열로 변환
+  }
+
   Future<void> _pickImage() async {
     try {
       print('이미지 선택 시작');
 
       // 사용자에게 갤러리 또는 카메라 선택 옵션 제공
-      final ImageSource? source = await _showImageSourceDialog();
-      if (source == null) {
-        print('이미지 소스가 선택되지 않음');
-        return;
-      }
+      // final ImageSource? source = await _showImageSourceDialog();
+      // if (source == null) {
+      //   print('이미지 소스가 선택되지 않음');
+      //   return;
+      // }
 
       final XFile? image = await _picker.pickImage(
-        source: source,
+        source: ImageSource.gallery,
         maxWidth: 1024,
         maxHeight: 1024,
         imageQuality: 85,
@@ -45,14 +55,14 @@ class _Testscreen8State extends State<Testscreen8> {
           print('이미지가 성공적으로 선택됨: ${_selectedImage?.path}');
         });
       } else {
-        print('이미지가 선택되지 않음');
-        // 사용자에게 안내 메시지 표시
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('이미지를 선택해주세요'),
-            backgroundColor: Colors.blue,
-          ),
-        );
+        // print('이미지가 선택되지 않음');
+        // // 사용자에게 안내 메시지 표시
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     content: Text('이미지를 선택해주세요'),
+        //     backgroundColor: Colors.blue,
+        //   ),
+        // );
       }
     } catch (e) {
       print('이미지 선택 오류: $e');
@@ -435,6 +445,18 @@ class _Testscreen8State extends State<Testscreen8> {
                           textAlign: TextAlign.center,
                         ),
                         onPressed: () {
+                          if (_selectedImage != null) {
+                            final base64Image = _convertToBase64(
+                              _selectedImage!,
+                            );
+                            lossCaseController.setPhoto(
+                              base64Image,
+                            ); // Base64 문자열 저장
+                          }
+
+                          print('Testscreen8 데이터 저장 완료');
+                          lossCaseController.printCurrentData();
+
                           Get.to(
                             () => const Testscreen9(),
                             transition: Transition.fade,

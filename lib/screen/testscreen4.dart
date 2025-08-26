@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'testscreen5.dart';
 import '../state/survey_controller.dart';
 import 'testscreen3.dart';
+import '../state/loss_case_controller.dart';
+import 'package:flutter/cupertino.dart';
 
 class Testscreen4 extends StatefulWidget {
   const Testscreen4({super.key});
@@ -14,6 +16,8 @@ class Testscreen4 extends StatefulWidget {
 class _Testscreen4State extends State<Testscreen4> {
   DateTime _selectedDate = DateTime.now();
   DateTime _currentMonth = DateTime.now();
+
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
 
   bool get _canProceed {
     return !_selectedDate.isAfter(DateTime.now());
@@ -48,6 +52,32 @@ class _Testscreen4State extends State<Testscreen4> {
     setState(() {
       _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
     });
+  }
+
+  void _showYearMonthPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return _YearMonthPicker(
+          currentYear: _currentMonth.year,
+          currentMonth: _currentMonth.month,
+          onYearMonthSelected: (int year, int month) {
+            setState(() {
+              // 현재 월을 선택된 연도와 월로 업데이트
+              _currentMonth = DateTime(year, month);
+
+              // 선택된 날짜가 새로운 월에 없으면 1일로 설정
+              if (_selectedDate.month != month || _selectedDate.year != year) {
+                _selectedDate = DateTime(year, month, 1);
+              }
+            });
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
   List<DateTime> _getDaysInMonth() {
@@ -262,6 +292,50 @@ class _Testscreen4State extends State<Testscreen4> {
 
                     SizedBox(height: 16),
 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: _previousMonth,
+                          icon: Icon(
+                            Icons.chevron_left,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              '${_currentMonth.year}.${_currentMonth.month.toString().padLeft(2, '0')}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: _showYearMonthPicker,
+                              child: Icon(
+                                Icons.calendar_today,
+                                color: const Color(0xFFFFFFFF),
+                                size: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          onPressed: _nextMonth,
+                          icon: Icon(
+                            Icons.chevron_right,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ],
+                    ),
+
                     // 달력 컨테이너
                     Container(
                       width: double.infinity,
@@ -283,47 +357,6 @@ class _Testscreen4State extends State<Testscreen4> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 월 네비게이션
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                onPressed: _previousMonth,
-                                icon: Icon(
-                                  Icons.chevron_left,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    '${_currentMonth.year}.${_currentMonth.month.toString().padLeft(2, '0')}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontFamily: 'Pretendard',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Icon(
-                                    Icons.calendar_today,
-                                    color: const Color(0xFFFFFFFF),
-                                    size: 16,
-                                  ),
-                                ],
-                              ),
-                              IconButton(
-                                onPressed: _nextMonth,
-                                icon: Icon(
-                                  Icons.chevron_right,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-                            ],
-                          ),
                           const SizedBox(height: 16),
 
                           // 요일 헤더
@@ -451,6 +484,12 @@ class _Testscreen4State extends State<Testscreen4> {
                         ),
                         onPressed: _canProceed
                             ? () {
+                                lossCaseController.setLossDate(
+                                  '${_selectedDate.year}-${_selectedDate.month.toString().padLeft(2, '0')}-${_selectedDate.day.toString().padLeft(2, '0')}',
+                                );
+
+                                print('Testscreen4 데이터 저장 완료');
+                                lossCaseController.printCurrentData();
                                 Get.to(
                                   () => const Testscreen5(),
                                   transition: Transition.fade,
@@ -467,6 +506,250 @@ class _Testscreen4State extends State<Testscreen4> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _YearMonthPicker extends StatefulWidget {
+  final int currentYear;
+  final int currentMonth;
+  final Function(int year, int month) onYearMonthSelected;
+
+  const _YearMonthPicker({
+    required this.currentYear,
+    required this.currentMonth,
+    required this.onYearMonthSelected,
+  });
+
+  @override
+  State<_YearMonthPicker> createState() => _YearMonthPickerState();
+}
+
+class _YearMonthPickerState extends State<_YearMonthPicker> {
+  late FixedExtentScrollController _yearController;
+  late FixedExtentScrollController _monthController;
+  late int _selectedYear;
+  late int _selectedMonth;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedYear = widget.currentYear;
+    _selectedMonth = widget.currentMonth;
+    _yearController = FixedExtentScrollController(
+      initialItem: _selectedYear - 1900,
+    );
+    _monthController = FixedExtentScrollController(
+      initialItem: _selectedMonth - 1,
+    );
+  }
+
+  @override
+  void dispose() {
+    _yearController.dispose();
+    _monthController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFF2A2D31),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 드래그 핸들
+          Container(
+            margin: const EdgeInsets.only(top: 12, bottom: 20),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: const Color(0xFF7F8694),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // 연도와 월 선택 영역
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Row(
+              children: [
+                // 연도 선택
+                Expanded(
+                  child: Column(
+                    children: [
+                      // 위쪽 화살표
+                      Icon(
+                        Icons.keyboard_arrow_up,
+                        color: const Color(0xFF7F8694),
+                        size: 24,
+                      ),
+
+                      // 연도 리스트
+                      Container(
+                        height: 120,
+                        child: CupertinoPicker(
+                          scrollController: _yearController,
+                          itemExtent: 40,
+                          onSelectedItemChanged: (index) {
+                            setState(() {
+                              _selectedYear = 1900 + index;
+                            });
+                          },
+                          children: List.generate(200, (index) {
+                            final year = 1900 + index;
+                            final isSelected = year == _selectedYear;
+                            return Center(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? const Color(0xFF1F2124)
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  '$year',
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : const Color(0xFF7F8694),
+                                    fontSize: 18,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+
+                      // 아래쪽 화살표
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        color: const Color(0xFF7F8694),
+                        size: 24,
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(width: 40),
+
+                // 월 선택
+                Expanded(
+                  child: Column(
+                    children: [
+                      // 위쪽 화살표
+                      Icon(
+                        Icons.keyboard_arrow_up,
+                        color: const Color(0xFF7F8694),
+                        size: 24,
+                      ),
+
+                      // 월 리스트
+                      Container(
+                        height: 120,
+                        child: CupertinoPicker(
+                          scrollController: _monthController,
+                          itemExtent: 40,
+                          onSelectedItemChanged: (index) {
+                            setState(() {
+                              _selectedMonth = index + 1;
+                            });
+                          },
+                          children: List.generate(12, (index) {
+                            final month = index + 1;
+                            final isSelected = month == _selectedMonth;
+                            return Center(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? const Color(0xFF1F2124)
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  '${month.toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : const Color(0xFF7F8694),
+                                    fontSize: 18,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+
+                      // 아래쪽 화살표
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        color: const Color(0xFF7F8694),
+                        size: 24,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 30),
+
+          // 확인 버튼 추가
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF65A0FF),
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  // 사용자가 선택한 연도와 월로 콜백 호출
+                  widget.onYearMonthSelected(_selectedYear, _selectedMonth);
+                },
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w600,
+                    height: 1.40,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

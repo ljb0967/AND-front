@@ -13,7 +13,7 @@ class Homecontentscreen extends StatefulWidget {
 class _HomecontentscreenState extends State<Homecontentscreen> {
   @override
   final List<bool> _checklistStates = [
-    true, // "힘이 되는 사람과 30분 이상 대화하기" (기본적으로 체크됨)
+    false, // "힘이 되는 사람과 30분 이상 대화하기" (기본적으로 체크됨)
     false, // "1시간 이상 바깥 공기 쐬고 오기"
     false, // "함께한 추억이 담긴 기록 살펴보기"
   ];

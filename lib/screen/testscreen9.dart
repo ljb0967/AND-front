@@ -5,6 +5,11 @@ import 'dart:io';
 import '../state/survey_controller.dart';
 import 'testscreen8.dart';
 import 'homescreen.dart';
+import 'analysis_animation_screen.dart';
+import '../state/loss_case_controller.dart';
+import '../state/user_controller.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Testscreen9 extends StatefulWidget {
   const Testscreen9({super.key});
@@ -18,19 +23,23 @@ class _Testscreen9State extends State<Testscreen9> {
   File? _selectedImage;
   File? _selectedImage2;
 
+  // LossCaseController와 UserController 가져오기
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
+  final UserController userController = Get.find<UserController>();
+
   Future<void> _pickImage() async {
     try {
       print('이미지 선택 시작');
 
       // 사용자에게 갤러리 또는 카메라 선택 옵션 제공
-      final ImageSource? source = await _showImageSourceDialog();
-      if (source == null) {
-        print('이미지 소스가 선택되지 않음');
-        return;
-      }
+      // final ImageSource? source = await _showImageSourceDialog();
+      // if (source == null) {
+      //   print('이미지 소스가 선택되지 않음');
+      //   return;
+      // }
 
       final XFile? image = await _picker.pickImage(
-        source: source,
+        source: ImageSource.gallery,
         maxWidth: 1024,
         maxHeight: 1024,
         imageQuality: 85,
@@ -44,14 +53,14 @@ class _Testscreen9State extends State<Testscreen9> {
           print('이미지가 성공적으로 선택됨: ${_selectedImage?.path}');
         });
       } else {
-        print('이미지가 선택되지 않음');
-        // 사용자에게 안내 메시지 표시
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('이미지를 선택해주세요'),
-            backgroundColor: Colors.blue,
-          ),
-        );
+        // print('이미지가 선택되지 않음');
+        // // 사용자에게 안내 메시지 표시
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     content: Text('이미지를 선택해주세요'),
+        //     backgroundColor: Colors.blue,
+        //   ),
+        // );
       }
     } catch (e) {
       print('이미지 선택 오류: $e');
@@ -70,14 +79,14 @@ class _Testscreen9State extends State<Testscreen9> {
       print('이미지 선택 시작');
 
       // 사용자에게 갤러리 또는 카메라 선택 옵션 제공
-      final ImageSource? source = await _showImageSourceDialog();
-      if (source == null) {
-        print('이미지 소스가 선택되지 않음');
-        return;
-      }
+      // final ImageSource? source = await _showImageSourceDialog();
+      // if (source == null) {
+      //   print('이미지 소스가 선택되지 않음');
+      //   return;
+      // }
 
       final XFile? image = await _picker.pickImage(
-        source: source,
+        source: ImageSource.gallery,
         maxWidth: 1024,
         maxHeight: 1024,
         imageQuality: 85,
@@ -91,14 +100,14 @@ class _Testscreen9State extends State<Testscreen9> {
           print('이미지가 성공적으로 선택됨: ${_selectedImage2?.path}');
         });
       } else {
-        print('이미지가 선택되지 않음');
-        // 사용자에게 안내 메시지 표시
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('이미지를 선택해주세요'),
-            backgroundColor: Colors.blue,
-          ),
-        );
+        // print('이미지가 선택되지 않음');
+        // // 사용자에게 안내 메시지 표시
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     content: Text('이미지를 선택해주세요'),
+        //     backgroundColor: Colors.blue,
+        //   ),
+        // );
       }
     } catch (e) {
       print('이미지 선택 오류: $e');
@@ -136,6 +145,58 @@ class _Testscreen9State extends State<Testscreen9> {
         );
       },
     );
+  }
+
+  // 최종 데이터를 서버로 전송
+  Future<void> _submitFinalData() async {
+    try {
+      // LossCaseController에서 최종 데이터 가져오기
+      final requestData = lossCaseController.toJson();
+      // users 제거
+      // requestData.remove('users');
+      // // lossCaseId 제거
+      // requestData.remove('lossCaseId');
+
+      final headers = userController.getAuthHeaders();
+
+      print('최종 전송 데이터: ${json.encode(requestData)}');
+
+      // API 엔드포인트 호출
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8080/loss-cases'),
+        headers: userController.getAuthHeaders(),
+        body: json.encode(requestData),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Loss Case 생성 성공: ${response.body}');
+
+        // 성공 시 홈 화면으로 이
+        Get.offUntil(
+          MaterialPageRoute(
+            builder: (_) => Homescreen(),
+          ), //로그인 페이지 외에 이전 모든 페이지 스택에서 pop
+          (route) => route.settings.name == "/Loginscreen",
+        );
+      } else {
+        print('Loss Case 생성 실패: ${response.statusCode} - ${response.body}');
+        // 실패 시 사용자에게 알림
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('데이터 전송에 실패했습니다: ${response.statusCode}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      //print('데이터 전송 오류: $e');
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('데이터 전송 중 오류가 발생했습니다: $e'),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
+    }
   }
 
   @override
@@ -359,12 +420,14 @@ class _Testscreen9State extends State<Testscreen9> {
                           textAlign: TextAlign.center,
                         ),
                         onPressed: () {
+                          // 최종 데이터를 서버로 전송
                           Get.offUntil(
                             MaterialPageRoute(
-                              builder: (_) => Homescreen(),
-                            ), //로그인 페이지 외에 이전 모든 페이지 스택에서 pop
+                              builder: (_) => AnalysisAnimationScreen(),
+                            ), //애니메이션 페이지로 이동
                             (route) => route.settings.name == "/Loginscreen",
                           );
+                          _submitFinalData();
                         },
                       ),
                     ),

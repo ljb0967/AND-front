@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test1/screen/loginScreen2.dart';
 import 'testscreen2.dart';
+import '../state/loss_case_controller.dart';
+import '../state/user_controller.dart';
 
 class Testscreen extends StatefulWidget {
   const Testscreen({super.key});
@@ -18,6 +20,10 @@ class _TestscreenState extends State<Testscreen> {
   // 이별 상대 선택 관련 상태 변수
   String? _selectedCategory; // '가족', '연인', '친구', '반려동물'
   String? _selectedFamilyMember; // 가족 세부 선택 (아버지, 어머니 등)
+
+  // 컨트롤러 가져오기
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
+  final UserController userController = Get.find<UserController>();
 
   bool _isNumeric(String value) => RegExp(r'^\d+$').hasMatch(value);
 
@@ -559,6 +565,29 @@ class _TestscreenState extends State<Testscreen> {
                         ),
                         onPressed: _canProceed
                             ? () {
+                                // 선택된 카테고리를 LossCaseController에 저장
+                                if (_selectedCategory == '가족') {
+                                  lossCaseController.setSubject('FAMILY');
+                                } else if (_selectedCategory == '연인') {
+                                  lossCaseController.setSubject('LOVER');
+                                } else if (_selectedCategory == '친구') {
+                                  lossCaseController.setSubject('FRIEND');
+                                } else if (_selectedCategory == '반려동물') {
+                                  lossCaseController.setSubject('PET');
+                                }
+
+                                // 사용자 정보도 함께 저장
+                                lossCaseController.setUserInfo(
+                                  email: userController.userEmail.value,
+                                  pw: userController.userPassword.value,
+                                  name: userController.userName.value,
+                                  age: userController.userAge.value,
+                                  gender: userController.userGender.value,
+                                );
+
+                                print('Testscreen1 데이터 저장 완료');
+                                lossCaseController.printCurrentData();
+
                                 Get.to(
                                   () => Testscreen2(
                                     selectedCategory: _selectedCategory,

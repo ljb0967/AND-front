@@ -104,7 +104,7 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 180, 0),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 140, 0),
                               child: Container(
                                 child: Text(
                                   '홈 화면',
@@ -580,7 +580,7 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
                         ],
                       ),
 
-                      SizedBox(width: 195.0),
+                      SizedBox(width: 155.0),
 
                       GestureDetector(
                         onTap: () {

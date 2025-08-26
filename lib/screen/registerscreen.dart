@@ -908,6 +908,49 @@ class _RegisterscreenState extends State<Registerscreen> {
     );
   }
 
+  void _showErrorDialog2(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF1F2124),
+          title: Text(
+            '약관 내용',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: Text(
+            message,
+            style: TextStyle(
+              color: const Color(0xFFBDC7DB),
+              fontSize: 14,
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                '확인',
+                style: TextStyle(
+                  color: const Color(0xFF65A0FF),
+                  fontSize: 16,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // 개별 약관 동의 항목 위젯
   Widget _buildTermItem(String termType, String title) {
     bool isAgreed = false;
@@ -1005,10 +1048,15 @@ class _RegisterscreenState extends State<Registerscreen> {
               ],
             ),
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: const Color(0xFF7F8694),
-            size: 16,
+          GestureDetector(
+            onTap: () {
+              _showErrorDialog2(suffix);
+            },
+            child: Icon(
+              Icons.arrow_forward_ios,
+              color: Color(0xFF7F8694),
+              size: 16,
+            ),
           ),
         ],
       ),

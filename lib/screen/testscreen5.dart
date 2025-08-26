@@ -19,6 +19,8 @@ class Testscreen5 extends StatefulWidget {
 class _Testscreen5State extends State<Testscreen5> {
   String? _selected; // 억누르기형/표출형/회피형/분석형
 
+  // LossCaseController 가져오기
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

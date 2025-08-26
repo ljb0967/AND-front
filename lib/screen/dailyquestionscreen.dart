@@ -10,9 +10,16 @@ class DailyQuestionScreen extends StatefulWidget {
 class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
   bool _isActive = true;
   final TextEditingController _answerController = TextEditingController();
+  //int _selectedIndex = 1;
 
   // 각 일기 카드의 확장 상태를 관리하는 리스트
   final List<bool> _expandedStates = List.generate(7, (index) => false);
+
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -452,6 +459,48 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
           ),
         ),
       ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: ImageIcon(AssetImage('image/message-circle.png')),
+      //       label: '대화하기',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: ImageIcon(AssetImage('image/edit.png')),
+      //       label: '일일문답',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: ImageIcon(AssetImage('image/home.png')),
+      //       label: '홈',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: ImageIcon(AssetImage('image/book.png')),
+      //       label: '이별일기',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: ImageIcon(AssetImage('image/shopping-bag.png')),
+      //       label: '이별상점',
+      //     ),
+      //   ],
+      //   currentIndex: _selectedIndex,
+      //   selectedItemColor: Colors.white,
+      //   unselectedItemColor: const Color(0xFF8A9099),
+      //   selectedLabelStyle: const TextStyle(
+      //     fontSize: 12,
+      //     fontFamily: 'Pretendard',
+      //     fontWeight: FontWeight.w600,
+      //     height: 2.20,
+      //   ),
+      //   unselectedLabelStyle: const TextStyle(
+      //     fontSize: 12,
+      //     fontFamily: 'Pretendard',
+      //     fontWeight: FontWeight.w600,
+      //     height: 2.20,
+      //   ),
+      //   onTap: _onItemTapped,
+      //   type: BottomNavigationBarType.fixed,
+      //   backgroundColor: Colors.black,
+      // ),
     );
   }
 

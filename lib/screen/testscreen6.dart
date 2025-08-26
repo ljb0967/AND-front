@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen7.dart';
-import 'testscreen5.dart';
+import '../state/loss_case_controller.dart';
 
 class Testscreen6 extends StatefulWidget {
   const Testscreen6({super.key});
@@ -12,6 +12,9 @@ class Testscreen6 extends StatefulWidget {
 
 class _Testscreen6State extends State<Testscreen6> {
   String? _selectedOption;
+
+  // LossCaseController 가져오기
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
 
   bool get _canProceed {
     final hasValidBreakupSelection = _selectedOption != null;
@@ -183,6 +186,19 @@ class _Testscreen6State extends State<Testscreen6> {
                         ),
                         onPressed: _canProceed
                             ? () {
+                                if (_selectedOption == 'A.') {
+                                  lossCaseController.setCopeWay('SUPPRESS');
+                                } else if (_selectedOption == 'B.') {
+                                  lossCaseController.setCopeWay('SUPPRESS');
+                                } else if (_selectedOption == 'C.') {
+                                  lossCaseController.setCopeWay('SUPPRESS');
+                                } else if (_selectedOption == 'D.') {
+                                  lossCaseController.setCopeWay('SUPPRESS');
+                                }
+                                // 선택된 옵션을 LossCaseController에 저장 (필요한 경우)
+                                print('Testscreen6 데이터 저장 완료');
+                                lossCaseController.printCurrentData();
+
                                 Get.to(
                                   () => Testscreen7(
                                     selectedOption: _selectedOption,

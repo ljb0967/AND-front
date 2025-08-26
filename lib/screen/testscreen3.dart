@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen4.dart';
 import 'testscreen2.dart';
+import '../state/loss_case_controller.dart';
 
 class Testscreen3 extends StatefulWidget {
   const Testscreen3({super.key});
@@ -13,6 +14,9 @@ class Testscreen3 extends StatefulWidget {
 class _Testscreen3State extends State<Testscreen3> {
   // String? _selected; // 기간 선택 값
   String? _selectedTime;
+
+  // LossCaseController 가져오기
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
 
   bool get _canProceed {
     final hasValidBreakupSelection = _selectedTime != null;
@@ -199,6 +203,24 @@ class _Testscreen3State extends State<Testscreen3> {
                         ),
                         onPressed: _canProceed
                             ? () {
+                                // 선택된 기간을 LossCaseController에 저장
+                                if (_selectedTime == '1~6개월') {
+                                  lossCaseController.setWithTime('LESS_6M');
+                                } else if (_selectedTime == '6개월~1년') {
+                                  lossCaseController.setWithTime('6M_TO_1Y');
+                                } else if (_selectedTime == '1년~2년') {
+                                  lossCaseController.setWithTime('1Y_TO_2Y');
+                                } else if (_selectedTime == '2년~5년') {
+                                  lossCaseController.setWithTime('2Y_TO_5Y');
+                                } else if (_selectedTime == '5년~10년') {
+                                  lossCaseController.setWithTime('5Y_TO_5Y');
+                                } else if (_selectedTime == '10년 이상') {
+                                  lossCaseController.setWithTime('MORE_10Y');
+                                }
+
+                                print('Testscreen3 데이터 저장 완료');
+                                lossCaseController.printCurrentData();
+
                                 Get.to(
                                   () => const Testscreen4(),
                                   transition: Transition.fade,

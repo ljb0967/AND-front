@@ -83,67 +83,52 @@ class _IntroScreenState extends State<IntroScreen>
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final double screenWidth = constraints.maxWidth;
-            const double designWidth = 412.0;
-            const double designHeight = 917.0;
-            final double scale = screenWidth / designWidth;
-            final double scaledHeight = designHeight * scale;
+            return Column(
+              children: [
+                // 상단 여백을 위한 Flexible
+                Flexible(flex: 1, child: Container()),
 
-            final Widget scaledContent = FittedBox(
-              alignment: Alignment.topLeft,
-              fit: BoxFit.fitWidth,
-              child: SizedBox(
-                width: designWidth,
-                height: designHeight,
-                child: Container(
-                  width: 412,
-                  height: 917,
-                  clipBehavior: Clip.none,
-                  decoration: BoxDecoration(color: const Color(0xFF111111)),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    alignment: Alignment.center,
-                    children: [
-                      // 중앙 텍스트 "END" -> "AND" 애니메이션
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: 1200),
-                        opacity: _textOpacity,
-                        child: _buildAnimatedText(),
-                      ),
-
-                      // 로고 페이드 인
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: 1200),
-                        opacity: _logoOpacity,
-                        child: Center(
-                          child: SizedBox(
-                            width: 320,
-                            height: 320,
-                            child: Image.asset('image/home_image.png'),
+                // 중앙 콘텐츠 영역
+                Expanded(
+                  flex: 8,
+                  child: Center(
+                    child: FractionallySizedBox(
+                      widthFactor: 0.9,
+                      heightFactor: 0.8,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // 중앙 텍스트 "END" -> "AND" 애니메이션
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 1200),
+                            opacity: _textOpacity,
+                            child: _buildAnimatedText(),
                           ),
-                        ),
+
+                          // 로고 페이드 인
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 1200),
+                            opacity: _logoOpacity,
+                            child: FractionallySizedBox(
+                              widthFactor:
+                                  0.18, // 320/412 ≈ 0.78            //코드 다시 보기
+                              heightFactor: 0.35, // 320/917 ≈ 0.35
+                              child: Image.asset(
+                                'image/home_image.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            );
 
-            if (scaledHeight > constraints.maxHeight) {
-              return SingleChildScrollView(
-                child: SizedBox(
-                  width: screenWidth,
-                  height: scaledHeight,
-                  child: scaledContent,
-                ),
-              );
-            } else {
-              return SizedBox(
-                width: screenWidth,
-                height: scaledHeight,
-                child: scaledContent,
-              );
-            }
+                // 하단 여백을 위한 Flexible
+                Flexible(flex: 1, child: Container()),
+              ],
+            );
           },
         ),
       ),

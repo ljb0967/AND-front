@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:test1/screen/testscreen.dart';
 import 'testscreen3.dart';
 import '../state/survey_controller.dart';
+import '../state/loss_case_controller.dart';
 
 class Testscreen2 extends StatefulWidget {
   final String? selectedCategory;
@@ -16,6 +17,9 @@ class Testscreen2 extends StatefulWidget {
 class _Testscreen2State extends State<Testscreen2> {
   // String? _selected; // '가족', '연인', '반려동물', '친구'
   String? _selectedReason;
+
+  // LossCaseController 가져오기
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
 
   bool get _canProceed {
     final hasValidBreakupSelection = _selectedReason != null;
@@ -275,6 +279,20 @@ class _Testscreen2State extends State<Testscreen2> {
                         ),
                         onPressed: _canProceed
                             ? () {
+                                // 선택된 이별 이유를 LossCaseController에 저장
+                                if (_selectedReason == '상대의 마음이 식었어요') {
+                                  lossCaseController.setLossReason(
+                                    'PARTNER_LOST_FEELINGS',
+                                  );
+                                } else if (_selectedReason == '상대방이 감정을 잃음') {
+                                  lossCaseController.setLossReason(
+                                    'PARTNER_LOST_FEELINGS',
+                                  );
+                                }
+
+                                print('Testscreen2 데이터 저장 완료');
+                                lossCaseController.printCurrentData();
+
                                 Get.to(
                                   () => const Testscreen3(),
                                   transition: Transition.fade,
