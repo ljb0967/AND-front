@@ -66,20 +66,25 @@ class _Testscreen2State extends State<Testscreen2> {
 
             // 프로그레스 바
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Container(
-                    width: 162.86,
-                    height: 4,
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFF65A0FF),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
+                  // 파란색 = 1
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      height: 4,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFF65A0FF),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
                       ),
                     ),
                   ),
+                  // 검은색 = 10
                   Expanded(
+                    flex: 10,
                     child: Container(
                       height: 4,
                       decoration: ShapeDecoration(

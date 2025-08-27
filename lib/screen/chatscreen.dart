@@ -4,6 +4,7 @@ import 'dailyquestionscreen.dart';
 import 'homecontentscreen.dart';
 import 'farewelldiaryscreen.dart';
 import 'farewellshopscreen.dart';
+import 'chatprofilescreen.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -126,7 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 // 프로필 사진
                 CircleAvatar(
                   radius: 20.0,
-                  backgroundImage: AssetImage('image/character1.png'),
+                  child: Icon(Icons.person, color: Colors.grey, size: 20.0),
                 ),
 
                 SizedBox(width: 12.0),
@@ -137,10 +138,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     '사랑하는 우리 아빠',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 16,
                       fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w600,
                       height: 1.40,
+                      letterSpacing: -0.40,
                     ),
                   ),
                 ),
@@ -149,16 +151,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.search, color: Colors.white, size: 24.0),
-                      onPressed: () {},
-                    ),
-                    IconButton(
                       icon: Icon(
                         Icons.more_vert,
                         color: Colors.white,
                         size: 24.0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => Chatprofilescreen());
+                      },
                     ),
                   ],
                 ),
@@ -201,15 +201,6 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Row(
               children: [
                 // 갤러리 아이콘
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF111111),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Icon(Icons.image, color: Colors.white, size: 20.0),
-                ),
-
                 SizedBox(width: 12.0),
 
                 // 메시지 입력 필드
@@ -234,10 +225,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       decoration: InputDecoration(
                         hintText: '메시지를 입력하세요',
                         hintStyle: TextStyle(
-                          color: Color(0xFFB8BFCC),
+                          color: const Color(0xFF7F8694),
                           fontSize: 16,
                           fontFamily: 'Pretendard',
                           fontWeight: FontWeight.w500,
+                          height: 1.40,
+                          letterSpacing: -0.40,
                         ),
                         border: InputBorder.none,
                         isCollapsed: true,
@@ -248,6 +241,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
 
                 SizedBox(width: 12.0),
+
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF111111),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Icon(Icons.image, color: Colors.white, size: 20.0),
+                ),
 
                 // 전송 버튼 (메시지 입력 시에만 표시)
                 if (_isTyping)
@@ -332,10 +334,12 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Text(
                 message['timestamp'],
                 style: TextStyle(
-                  color: Color(0xFFB8BFCC),
+                  color: const Color(0xFFBDC7DB),
                   fontSize: 12,
                   fontFamily: 'Pretendard',
                   fontWeight: FontWeight.w500,
+                  height: 1.40,
+                  letterSpacing: -0.30,
                 ),
               ),
             ),
@@ -356,6 +360,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   fontFamily: 'Pretendard',
                   fontWeight: FontWeight.w500,
                   height: 1.40,
+                  letterSpacing: -0.40,
                 ),
               ),
             ),
@@ -374,7 +379,7 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: EdgeInsets.only(right: 8.0),
               child: CircleAvatar(
                 radius: 16.0,
-                backgroundImage: AssetImage('image/character1.png'),
+                child: Icon(Icons.person, color: Colors.grey, size: 20.0),
               ),
             )
           else
@@ -392,10 +397,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Text(
                       '사랑하는 우리 아빠',
                       style: TextStyle(
-                        color: Color(0xFFB8BFCC),
-                        fontSize: 12,
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
                         fontFamily: 'Pretendard',
                         fontWeight: FontWeight.w500,
+                        height: 1.40,
+                        letterSpacing: -0.35,
                       ),
                     ),
                   )
@@ -424,6 +431,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w500,
                             height: 1.40,
+                            letterSpacing: -0.40,
                           ),
                         ),
                       ),
@@ -436,10 +444,12 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Text(
                           message['timestamp'],
                           style: TextStyle(
-                            color: Color(0xFFB8BFCC),
+                            color: const Color(0xFFBDC7DB),
                             fontSize: 12,
                             fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w500,
+                            height: 1.40,
+                            letterSpacing: -0.30,
                           ),
                         ),
                       ),

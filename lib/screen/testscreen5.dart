@@ -96,7 +96,7 @@ class _Testscreen5State extends State<Testscreen5> {
                         left: 16,
                         top: 96,
                         child: Container(
-                          width: 325.71,
+                          width: 165.71,
                           height: 4,
                           decoration: ShapeDecoration(
                             color: const Color(0xFF65A0FF),
