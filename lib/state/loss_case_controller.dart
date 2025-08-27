@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class LossCaseController extends GetxController {
   // Loss Case 데이터
   RxString subject = ''.obs;
   RxString withTime = ''.obs;
-  RxString lossDate = ''.obs;
+  Rx<DateTime> lossDate = DateTime.now().obs;
   RxString lossReason = ''.obs;
   RxString copeWay = ''.obs;
   RxString photo = ''.obs;
@@ -23,7 +24,7 @@ class LossCaseController extends GetxController {
   // Loss Case 데이터 설정
   void setSubject(String value) => subject.value = value;
   void setWithTime(String value) => withTime.value = value;
-  void setLossDate(String value) => lossDate.value = value;
+  void setLossDate(DateTime value) => lossDate.value = value;
   void setLossReason(String value) => lossReason.value = value;
   void setCopeWay(String value) => copeWay.value = value;
   void setPhoto(String value) => photo.value = value;
@@ -51,7 +52,7 @@ class LossCaseController extends GetxController {
       "lossCaseId": lossCaseId.value,
       "subject": subject.value,
       "withTime": withTime.value,
-      "lossDate": lossDate.value,
+      "lossDate": DateFormat('yyyy-MM-dd').format(lossDate.value),
       "lossReason": lossReason.value,
       "copeWay": copeWay.value,
       "photo": photo.value.isEmpty ? null : photo.value,
@@ -70,7 +71,7 @@ class LossCaseController extends GetxController {
   void reset() {
     subject.value = '';
     withTime.value = '';
-    lossDate.value = '';
+    lossDate.value = DateTime.now();
     lossReason.value = '';
     copeWay.value = '';
     photo.value = '';

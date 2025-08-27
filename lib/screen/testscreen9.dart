@@ -10,6 +10,7 @@ import '../state/loss_case_controller.dart';
 import '../state/user_controller.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'homecontentscreen.dart';
 
 class Testscreen9 extends StatefulWidget {
   const Testscreen9({super.key});
@@ -174,7 +175,7 @@ class _Testscreen9State extends State<Testscreen9> {
         // 성공 시 홈 화면으로 이
         Get.offUntil(
           MaterialPageRoute(
-            builder: (_) => Homescreen(),
+            builder: (_) => Homecontentscreen(),
           ), //로그인 페이지 외에 이전 모든 페이지 스택에서 pop
           (route) => route.settings.name == "/Loginscreen",
         );

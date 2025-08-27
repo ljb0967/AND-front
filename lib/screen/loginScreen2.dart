@@ -32,6 +32,12 @@ class _LoginScreen2State extends State<LoginScreen2> {
   // 검증 함수
 
   Future<bool> _performSignup() async {
+    // userController.setuserId(userController.userId.value);
+    // userController.setEmail(userController.userEmail.value);
+    userController.setuserName(nameController.text.trim());
+    userController.setuserAge(int.parse(ageController.text.trim()));
+    userController.setuserGender(_gender ?? '');
+
     try {
       // API 명세서에 따른 요청 데이터 구성
       final requestData = {

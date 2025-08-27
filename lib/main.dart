@@ -3,11 +3,13 @@ import 'package:test1/screen/intro_screen.dart';
 import 'package:get/get.dart';
 import 'package:test1/state/user_controller.dart';
 import 'package:test1/state/loss_case_controller.dart';
+import 'package:test1/state/quiz_controller.dart';
 
 void main() {
   // UserController와 LossCaseController 초기화
   Get.put(UserController());
   Get.put(LossCaseController());
+  Get.put(QuizController());
 
   runApp(const MyApp());
 }

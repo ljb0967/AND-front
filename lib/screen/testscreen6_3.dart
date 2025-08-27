@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen7.dart';
-import 'testscreen6_1.dart';
 import '../state/loss_case_controller.dart';
 import '../state/quiz_controller.dart';
 
-class Testscreen6 extends StatefulWidget {
-  const Testscreen6({super.key});
+class Testscreen6_3 extends StatefulWidget {
+  const Testscreen6_3({super.key});
 
   @override
-  State<Testscreen6> createState() => _Testscreen6State();
+  State<Testscreen6_3> createState() => _Testscreen6_3State();
 }
 
-class _Testscreen6State extends State<Testscreen6> {
+class _Testscreen6_3State extends State<Testscreen6_3> {
   String? _selectedOption;
 
   // LossCaseController 가져오기
@@ -24,15 +23,17 @@ class _Testscreen6State extends State<Testscreen6> {
     return hasValidBreakupSelection;
   }
 
+  @override
   void initState() {
     super.initState();
     // ✅ 이미 저장된 선택 복원
-    final saved = quiz.answers[1];
+    final saved = quiz.answers[4];
     if (saved != null) {
       _selectedOption = _optionToLabel(saved); // A./B./C./D. 로 변환
     }
   }
 
+  // AnswerOption <-> 'A.' 변환
   String _optionToLabel(AnswerOption o) {
     switch (o) {
       case AnswerOption.A:
@@ -140,7 +141,7 @@ class _Testscreen6State extends State<Testscreen6> {
 
                     // 메인 타이틀
                     Text(
-                      'Q. 01\n마음이 힘들 때 나는...',
+                      'Q. 04\n이별 후 밤에 잠이 오지 않을 때 나는…',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -179,15 +180,18 @@ class _Testscreen6State extends State<Testscreen6> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildOption('A.', '감정을 숨기고 혼자 견딘다'),
+                          _buildOption(
+                            'A.',
+                            '억지로 마음을 다잡고 \‘괜찮아질 거야\’ 하며 꾹 참고 버틴다',
+                          ),
                           const SizedBox(height: 12),
-                          _buildOption('B.', '다른 일에 몰두해 아예 생각을 차단한다'),
+                          _buildOption('B.', '유튜브, 넷플릭스 등 아무거나 보면서 그냥 잊으려 한다'),
                           const SizedBox(height: 12),
-                          _buildOption('C.', '글을 쓰거나 노래를 듣고 울어버린다'),
+                          _buildOption('C.', '울거나 음악 틀어놓고 감정을 다 쏟아낸다'),
                           const SizedBox(height: 12),
                           _buildOption(
                             'D.',
-                            '당시 상황을 떠올리며 \'여기서 뭐가 잘못됐지?\'하고 따\n져본다',
+                            '노트나 메모장에 이별 과정을 하나하나 정리하며 원인\n을 분석한다',
                           ),
                         ],
                       ),
@@ -226,21 +230,28 @@ class _Testscreen6State extends State<Testscreen6> {
                         ),
                         onPressed: _canProceed
                             ? () {
-                                // if (_selectedOption == 'A.') {
-                                //   lossCaseController.setCopeWay('SUPPRESS');
-                                // } else if (_selectedOption == 'B.') {
-                                //   lossCaseController.setCopeWay('REJECT');
-                                // } else if (_selectedOption == 'C.') {
-                                //   lossCaseController.setCopeWay('SUPPRESS');
-                                // } else if (_selectedOption == 'D.') {
-                                //   lossCaseController.setCopeWay('SUPPRESS');
-                                // }
-                                // // 선택된 옵션을 LossCaseController에 저장 (필요한 경우)
-                                // print('Testscreen6 데이터 저장 완료');
-                                // lossCaseController.printCurrentData();
+                                // 선택된 옵션을 LossCaseController에 저장 (필요한 경우)
+
+                                final quiz = Get.find<QuizController>();
+                                final result = quiz.decide();
+
+                                if (result.styleName == '억누르기형') {
+                                  lossCaseController.setCopeWay('SUPPRESS');
+                                } else if (result.styleName == '회피형') {
+                                  lossCaseController.setCopeWay('REJECT');
+                                } else if (result.styleName == '표출형') {
+                                  lossCaseController.setCopeWay('SUPPRESS');
+                                } else if (result.styleName == '분석형') {
+                                  lossCaseController.setCopeWay('SUPPRESS');
+                                }
+
+                                print('Testscreen6 데이터 저장 완료');
+                                lossCaseController.printCurrentData();
 
                                 Get.to(
-                                  () => Testscreen6_1(),
+                                  () => Testscreen7(
+                                    selectedOption: result.styleName,
+                                  ),
                                   transition: Transition.fade,
                                 );
                               }
@@ -265,10 +276,10 @@ class _Testscreen6State extends State<Testscreen6> {
         setState(() {
           if (_selectedOption == text1) {
             _selectedOption = null;
-            quiz.answers[1] = null;
+            quiz.answers[4] = null;
           } else {
             _selectedOption = text1;
-            quiz.select(1, _labelToOption(text1));
+            quiz.select(4, _labelToOption(text1));
           }
         });
       },

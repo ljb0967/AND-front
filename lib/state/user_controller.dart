@@ -12,6 +12,12 @@ class UserController extends GetxController {
   RxString userGender = ''.obs;
   RxBool isLoggedIn = false.obs;
 
+  void setuserId(int value) => userId.value = value;
+  void setEmail(String value) => userEmail.value = value;
+  void setuserName(String value) => userName.value = value;
+  void setuserAge(int value) => userAge.value = value;
+  void setuserGender(String value) => userGender.value = value;
+
   // 로그인 정보 저장
   void setLoginData(Map<String, dynamic> responseData, String userPassword) {
     this.userPassword.value = userPassword;

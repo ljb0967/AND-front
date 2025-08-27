@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'homescreen.dart';
+import 'homecontentscreen.dart';
 
 class AnalysisAnimationScreen extends StatefulWidget {
   const AnalysisAnimationScreen({super.key});
@@ -80,7 +80,7 @@ class _AnalysisAnimationScreenState extends State<AnalysisAnimationScreen>
     // 애니메이션 완료 후 홈 화면으로 이동
     await Future.delayed(const Duration(milliseconds: 2000));
     if (mounted) {
-      Get.offAll(() => const Homescreen());
+      Get.offAll(() => const Homecontentscreen());
     }
   }
 

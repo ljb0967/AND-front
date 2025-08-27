@@ -5,6 +5,7 @@ import 'chatscreen.dart';
 import 'dailyquestionscreen.dart';
 import 'farewelldiaryscreen.dart';
 import 'farewellshopscreen.dart';
+import 'homecontentscreen.dart';
 
 class Homediaryscreen extends StatefulWidget {
   const Homediaryscreen({super.key});
@@ -17,6 +18,21 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
   final List<String> categoryData = ['작성일 순', '이별상대', '이별대처유형', '이별공감', '스크랩'];
   String? _selectedOption = '작성일 순';
   int _selectedIndex = 2;
+  final List<Widget> _pages = [
+    const ChatScreen(), // 인덱스 0: 대화하기
+    const DailyQuestionScreen(), // 인덱스 1: 일일문답
+    const Homecontentscreen(), // 인덱스 2: 홈 (기존 CustomScrollView 내용)
+    const FarewellDiaryScreen(), // 인덱스 3: 이별일기
+    const FarewellShopScreen(), // 인덱스 4: 이별상점
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
+    });
+    Get.off(_pages[index], transition: Transition.fade);
+  }
+
   bool _isExpanded = false; // 플로팅 버튼 확장 상태
   final List<Map<String, dynamic>> diaryData = [
     {
@@ -328,7 +344,7 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
                       ),
                       Center(
                         child: Text(
-                          '아직 이별 공감한\n이별 일기가 없어요',
+                          '아직 스크랩한\n이별 일기가 없어요',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: const Color(0xFF7F8694),
@@ -454,7 +470,7 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
           fontWeight: FontWeight.w600,
           height: 2.20,
         ),
-        //onTap: _onItemTapped,
+        onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,
       ),

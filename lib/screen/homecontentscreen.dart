@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'widget/homeappbarwidget.dart';
+import 'homeappbarwidget.dart';
 import 'package:get/get.dart';
 import 'homediaryscreen.dart';
+import '../state/loss_case_controller.dart';
+import 'chatscreen.dart';
+import 'dailyquestionscreen.dart';
+import 'farewelldiaryscreen.dart';
+import 'farewellshopscreen.dart';
 
 class Homecontentscreen extends StatefulWidget {
   const Homecontentscreen({super.key});
@@ -11,6 +16,29 @@ class Homecontentscreen extends StatefulWidget {
 }
 
 class _HomecontentscreenState extends State<Homecontentscreen> {
+  int _selectedIndex = 2;
+
+  final List<Widget> _pages = [
+    const ChatScreen(), // 인덱스 0: 대화하기
+    const DailyQuestionScreen(), // 인덱스 1: 일일문답
+    const Homecontentscreen(), // 인덱스 2: 홈 (기존 CustomScrollView 내용)
+    const FarewellDiaryScreen(), // 인덱스 3: 이별일기
+    const FarewellShopScreen(), // 인덱스 4: 이별상점
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
+    });
+    Get.off(_pages[index], transition: Transition.fade);
+  }
+
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
+  String copeWay = Get.find<LossCaseController>().copeWay.value;
+
+  bool _visible1 = false;
+  bool _visible2 = false;
+
   @override
   final List<bool> _checklistStates = [
     false, // "힘이 되는 사람과 30분 이상 대화하기" (기본적으로 체크됨)
@@ -53,6 +81,19 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 시간차로 순차적으로 위젯 보이기
+    Future.delayed(const Duration(milliseconds: 600), () {
+      setState(() => _visible1 = true);
+    });
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      setState(() => _visible2 = true);
+    });
   }
 
   Widget build(BuildContext context) {
@@ -150,6 +191,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   '오늘의 이별 극복 퀘스트',
@@ -161,13 +203,31 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                                     height: 1.40,
                                   ),
                                 ),
-                                SizedBox(width: 115.0),
-                                Image.asset('image/character1.png', height: 25),
+                                if (copeWay == "SUPPRESS")
+                                  Image.asset(
+                                    'image/character1.png',
+                                    height: 25,
+                                  ),
+                                if (copeWay == "EXPRESS")
+                                  Image.asset(
+                                    'image/character1-1.png',
+                                    height: 25,
+                                  ),
+                                if (copeWay == "ACCEPT")
+                                  Image.asset(
+                                    'image/character1-3.png',
+                                    height: 25,
+                                  ),
+                                if (copeWay == "REJECT")
+                                  Image.asset(
+                                    'image/character1-2.png',
+                                    height: 25,
+                                  ),
                               ],
                             ),
                             SizedBox(height: 8.0),
                             Text(
-                              '이별을 혼자서 감당하는 억누르기형을 위한 맞춤 퀘스트', //<---- API
+                              '이별을 혼자서 감당하는 ${copeWay}형을 위한 맞춤 퀘스트', //<---- API
                               style: TextStyle(
                                 color: const Color(0xFFB8BFCC),
                                 fontSize: 14,
@@ -184,80 +244,91 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                 ],
               ),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        8.0,
-                        10.0,
-                        8.0,
-                        10.0,
-                      ), // 상단/하단 여백 20px 추가
-                      child: Container(
-                        //width: double.infinity, // 부모 너비 전체 사용
-                        height: 140.0, // 높이 136px (제공된 레이아웃 정보)
-                        padding: const EdgeInsets.all(16.0), // 내부 패딩 16px
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1F2124), // 배경색 #1F2124
-                          borderRadius: BorderRadius.circular(10.0), // 반경 10px
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildChecklistItem(0, '힘이 되는 사람과 30분 이상 대화하기'),
-                            const SizedBox(height: 8.0),
-                            _buildChecklistItem(1, '1시간 이상 바깥 공기 쐬고 오기'),
-                            const SizedBox(height: 8.0),
-                            _buildChecklistItem(2, '함께한 추억이 담긴 기록 살펴보기'),
-                            const Spacer(), // 남은 공간을 채워 프로그레스 바를 아래로 밀어냄
-                            // 프로그레스 바
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: LinearProgressIndicator(
-                                    value: progress, // 33.3% 진행률
-                                    backgroundColor: Colors.grey[700],
-                                    valueColor:
-                                        const AlwaysStoppedAnimation<Color>(
-                                          Color(0xFF65A0FF),
-                                        ), // 진행바 색상
-                                    minHeight: 4.0, // 진행바 높이
-                                  ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 500),
+                opacity: _visible1 ? 1.0 : 0.0,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          8.0,
+                          10.0,
+                          8.0,
+                          10.0,
+                        ), // 상단/하단 여백 20px 추가
+                        child: Container(
+                          //width: double.infinity, // 부모 너비 전체 사용
+                          height: 140.0, // 높이 136px (제공된 레이아웃 정보)
+                          padding: const EdgeInsets.all(16.0), // 내부 패딩 16px
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1F2124), // 배경색 #1F2124
+                            borderRadius: BorderRadius.circular(
+                              10.0,
+                            ), // 반경 10px
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start, // api
+                            children: [
+                              _buildChecklistItem(0, '힘이 되는 사람과 30분 이상 대화하기'),
+                              const SizedBox(height: 8.0),
+                              _buildChecklistItem(1, '1시간 이상 바깥 공기 쐬고 오기'),
+                              const SizedBox(height: 8.0),
+                              _buildChecklistItem(2, '함께한 추억이 담긴 기록 살펴보기'),
+                              const Spacer(), // 남은 공간을 채워 프로그레스 바를 아래로 밀어냄
+                              // 프로그레스 바
+                              AnimatedOpacity(
+                                duration: const Duration(milliseconds: 500),
+                                opacity: _visible2 ? 1.0 : 0.0,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: LinearProgressIndicator(
+                                        value: progress, // 33.3% 진행률
+                                        backgroundColor: Colors.grey[700],
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                              Color(0xFF65A0FF),
+                                            ), // 진행바 색상
+                                        minHeight: 4.0, // 진행바 높이
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8.0),
+                                    Text(
+                                      '${(progress * 100).toStringAsFixed(1)}%',
+                                      style: TextStyle(
+                                        color: const Color(0xFF65A0FF),
+                                        fontSize: 12,
+                                        fontFamily: 'Pretendard',
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.40,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 8.0),
-                                Text(
-                                  '${(progress * 100).toStringAsFixed(1)}%',
-                                  style: TextStyle(
-                                    color: const Color(0xFF65A0FF),
-                                    fontSize: 12,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.40,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ), // 첫 번째 위젯
               ),
 
               Row(
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      padding: const EdgeInsets.fromLTRB(26, 0, 8, 0),
                       child: Container(
-                        padding: const EdgeInsets.all(16.0), // 내부 패딩
+                        //padding: const EdgeInsets.all(16.0), // 내부 패딩
                         color: Colors.black,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   '오늘도, 이별 나누기',
@@ -269,7 +340,6 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                                     height: 1.40,
                                   ),
                                 ),
-                                SizedBox(width: 110.0),
                                 Container(
                                   child: TextButton(
                                     onPressed: () {
@@ -336,6 +406,48 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
             ]),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('image/message-circle.png')),
+            label: '대화하기',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('image/edit.png')),
+            label: '일일문답',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('image/home.png')),
+            label: '홈',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('image/book.png')),
+            label: '이별일기',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('image/shopping-bag.png')),
+            label: '이별상점',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: const Color(0xFF8A9099),
+        selectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontFamily: 'Pretendard',
+          fontWeight: FontWeight.w600,
+          height: 2.20,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontFamily: 'Pretendard',
+          fontWeight: FontWeight.w600,
+          height: 2.20,
+        ),
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
       ),
     );
   }
@@ -443,7 +555,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
               children: [
                 // 상단: 프로필과 북마크
                 Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // 프로필 정보
                     Row(
@@ -465,27 +577,6 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                         ),
                       ],
                     ),
-
-                    SizedBox(width: 105.0),
-
-                    //좋아요 아이콘
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     // 북마크 토글 기능 (실제로는 상태 관리 필요)
-                    //     setState(() {
-                    //       // 여기서 북마크 상태를 토글할 수 있습니다
-                    //     });
-                    //   },
-                    //   child: Icon(
-                    //     data['isBookmarked']
-                    //         ? Icons.favorite
-                    //         : Icons.favorite_border,
-                    //     color: Color(0xFFB8BFCC),
-                    //     size: 20.0,
-                    //   ),
-                    // ),
-                    SizedBox(width: 20.0),
-
                     // 북마크 아이콘
                     GestureDetector(
                       onTap: () {

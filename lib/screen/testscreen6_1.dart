@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen7.dart';
-import 'testscreen6_1.dart';
+import 'testscreen6_2.dart';
 import '../state/loss_case_controller.dart';
 import '../state/quiz_controller.dart';
 
-class Testscreen6 extends StatefulWidget {
-  const Testscreen6({super.key});
+class Testscreen6_1 extends StatefulWidget {
+  const Testscreen6_1({super.key});
 
   @override
-  State<Testscreen6> createState() => _Testscreen6State();
+  State<Testscreen6_1> createState() => _Testscreen6_1State();
 }
 
-class _Testscreen6State extends State<Testscreen6> {
+class _Testscreen6_1State extends State<Testscreen6_1> {
   String? _selectedOption;
 
   // LossCaseController 가져오기
@@ -27,12 +27,13 @@ class _Testscreen6State extends State<Testscreen6> {
   void initState() {
     super.initState();
     // ✅ 이미 저장된 선택 복원
-    final saved = quiz.answers[1];
+    final saved = quiz.answers[2];
     if (saved != null) {
       _selectedOption = _optionToLabel(saved); // A./B./C./D. 로 변환
     }
   }
 
+  // AnswerOption <-> 'A.' 변환
   String _optionToLabel(AnswerOption o) {
     switch (o) {
       case AnswerOption.A:
@@ -140,7 +141,7 @@ class _Testscreen6State extends State<Testscreen6> {
 
                     // 메인 타이틀
                     Text(
-                      'Q. 01\n마음이 힘들 때 나는...',
+                      'Q. 02\n소중히 간직하던 물건을 잃어버렸을 때 나는…',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -179,16 +180,13 @@ class _Testscreen6State extends State<Testscreen6> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildOption('A.', '감정을 숨기고 혼자 견딘다'),
+                          _buildOption('A.', '속상하지만 내색하지 않는다'),
                           const SizedBox(height: 12),
-                          _buildOption('B.', '다른 일에 몰두해 아예 생각을 차단한다'),
+                          _buildOption('B.', '일부러 생각하지 않으려 다른 일에 몰입한다'),
                           const SizedBox(height: 12),
-                          _buildOption('C.', '글을 쓰거나 노래를 듣고 울어버린다'),
+                          _buildOption('C.', '\"내가 진짜 소중하게 여겼는데!\" 하며 티를 낸다'),
                           const SizedBox(height: 12),
-                          _buildOption(
-                            'D.',
-                            '당시 상황을 떠올리며 \'여기서 뭐가 잘못됐지?\'하고 따\n져본다',
-                          ),
+                          _buildOption('D.', '언제 어디서 잃어버렸는지 경로를 되짚는다'),
                         ],
                       ),
                     ),
@@ -240,7 +238,7 @@ class _Testscreen6State extends State<Testscreen6> {
                                 // lossCaseController.printCurrentData();
 
                                 Get.to(
-                                  () => Testscreen6_1(),
+                                  () => Testscreen6_2(),
                                   transition: Transition.fade,
                                 );
                               }
@@ -265,10 +263,10 @@ class _Testscreen6State extends State<Testscreen6> {
         setState(() {
           if (_selectedOption == text1) {
             _selectedOption = null;
-            quiz.answers[1] = null;
+            quiz.answers[2] = null;
           } else {
             _selectedOption = text1;
-            quiz.select(1, _labelToOption(text1));
+            quiz.select(2, _labelToOption(text1));
           }
         });
       },
