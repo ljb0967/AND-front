@@ -18,7 +18,7 @@ class _RegisterscreenState extends State<Registerscreen> {
 
   // API 서비스
   // Android 에뮬레이터: 10.0.2.2, 실제 기기: 컴퓨터 IP 주소
-  static const String _baseUrl = 'http://10.0.2.2:8080';
+  static const String _baseUrl = 'https://and-backend.onrender.com';
   static const String _lossCasesEndpoint = '/auth/signup';
 
   // 약관 동의 상태 관리
@@ -278,14 +278,20 @@ class _RegisterscreenState extends State<Registerscreen> {
       }
 
       // 모든 개별 약관이 동의되었는지 확인하여 전체 동의 상태 업데이트
+      // _allTermsAgreed =
+      //     _serviceTermsAgreed &&
+      //     _privacyTermsAgreed &&
+      //     _photoGalleryAgreed &&
+      //     _sensitiveInfoAgreed &&
+      //     _outsourcingTermsAgreed &&
+      //     _pushNotificationAgreed &&
+      //     _additionalServiceAgreed;
+
       _allTermsAgreed =
           _serviceTermsAgreed &&
           _privacyTermsAgreed &&
           _photoGalleryAgreed &&
-          _sensitiveInfoAgreed &&
-          _outsourcingTermsAgreed &&
-          _pushNotificationAgreed &&
-          _additionalServiceAgreed;
+          _sensitiveInfoAgreed;
     });
   }
 
@@ -325,7 +331,7 @@ class _RegisterscreenState extends State<Registerscreen> {
         "gender": "string",
       };
 
-      // 요청 데이터 로그 출력
+      // 요청 데이터 로그 출력P
       print('요청 데이터: ${json.encode(requestData)}');
 
       final response = await http.post(
@@ -795,20 +801,20 @@ class _RegisterscreenState extends State<Registerscreen> {
                                   'sensitiveInfo',
                                   '(필수) 민감정보 처리 동의',
                                 ),
-                                SizedBox(height: 8),
-                                _buildTermItem(
-                                  'outsourcing',
-                                  '(필수) 개인정보 처리 위탁 및 제3자 제공 동의',
-                                ),
+                                // SizedBox(height: 8),
+                                // _buildTermItem(
+                                //   'outsourcing',
+                                //   '(필수) 개인정보 처리 위탁 및 제3자 제공 동의',
+                                // ),
                                 SizedBox(height: 8),
                                 _buildTermItem(
                                   'pushNotification',
-                                  '(필수) 푸시 알림 수신 동의',
+                                  '(선택) 푸시 알림 수신 동의',
                                 ),
                                 SizedBox(height: 8),
                                 _buildTermItem(
                                   'additionalService',
-                                  '(필수) 부가 서비스 이용 동의',
+                                  '(선택) 부가 서비스 이용 동의',
                                 ),
                               ],
                             ),

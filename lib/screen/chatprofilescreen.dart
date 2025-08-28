@@ -18,10 +18,7 @@ class _ChatprofilescreenState extends State<Chatprofilescreen> {
           children: [
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 25.0,
-                  vertical: 30.0,
-                ),
+                padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,

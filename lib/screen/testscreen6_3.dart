@@ -187,10 +187,13 @@ class _Testscreen6_3State extends State<Testscreen6_3> {
                         children: [
                           _buildOption(
                             'A.',
-                            '억지로 마음을 다잡고 \‘괜찮아질 거야\’ 하며 꾹 참고 버틴다',
+                            '억지로 마음을 다잡고 \‘괜찮아질 거야\’ 하며 꾹 참고\n 버틴다',
                           ),
                           const SizedBox(height: 12),
-                          _buildOption('B.', '유튜브, 넷플릭스 등 아무거나 보면서 그냥 잊으려 한다'),
+                          _buildOption(
+                            'B.',
+                            '유튜브, 넷플릭스 등 아무거나 보면서 그냥 잊으려\n 한다',
+                          ),
                           const SizedBox(height: 12),
                           _buildOption('C.', '울거나 음악 틀어놓고 감정을 다 쏟아낸다'),
                           const SizedBox(height: 12),
