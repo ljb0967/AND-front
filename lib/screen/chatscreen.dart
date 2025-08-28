@@ -5,6 +5,11 @@ import 'homecontentscreen.dart';
 import 'farewelldiaryscreen.dart';
 import 'farewellshopscreen.dart';
 import 'chatprofilescreen.dart';
+import 'package:http/http.dart' as http;
+import '../state/user_controller.dart';
+import '../state/loss_case_controller.dart';
+import '../state/chat_controller.dart';
+import 'dart:convert';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -15,6 +20,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   int _selectedIndex = 0;
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
+  final UserController userController = Get.find<UserController>();
+  final ChatController chatController = Get.find<ChatController>();
   final List<Widget> _pages = [
     const ChatScreen(), // 인덱스 0: 대화하기
     const DailyQuestionScreen(), // 인덱스 1: 일일문답
@@ -27,6 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
     });
+    if (index == 0) return;
     Get.off(_pages[index], transition: Transition.fade);
   }
 
@@ -34,9 +43,99 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<Map<String, dynamic>> _messages = [];
   bool _isTyping = false;
 
+  Future<void> _getchatroomid() async {
+    final id = lossCaseController.lossCaseId.value;
+    final requestData = {"lossCaseId": id};
+
+    final uri = Uri.parse(
+      'http://10.0.2.2:8080/chat/rooms',
+    ).replace(queryParameters: {'lossCaseId': id.toString()});
+
+    final response = await http.post(
+      uri,
+      headers: userController.getAuthHeaders(),
+      body: json.encode(requestData),
+    );
+    print('Chat Room 생성 요청: ${requestData}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final chatRoomId =
+          responseData['chatRoomId'] ?? responseData['body']?['chatRoomId'];
+      if (chatRoomId != null) chatController.setChatRoomId(chatRoomId);
+      debugPrint('Chat Room 생성 성공: ${response.body}');
+    } else {
+      debugPrint('Chat Room 생성 실패 [${response.statusCode}]: ${response.body}');
+    }
+  }
+
+  Future<void> _getchatmessages() async {
+    final roomId = chatController.chatRoomId.value;
+
+    final uri = Uri.parse('http://10.0.2.2:8080/chat/rooms/$roomId/messages');
+
+    final response = await http.get(
+      uri,
+      headers: userController.getAuthHeaders(),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final responseData = jsonDecode(response.body);
+      // 불러온 채팅 내용 버블에 반영해야함. {id = 0} , {id = 1} , {id = 2} ... _messages.add() 함수 사용 예정,
+      print('Chat Message 데이터 불러오기 성공: ${response.body}');
+      for (var message in responseData) {
+        if (message['sender'] == 'User') {
+          final userMessage = {
+            'text': message['text'],
+            'isUser': true,
+            'timestamp': _formatTimestamp(message['createdAt']),
+          };
+          setState(() {
+            _messages.add(userMessage);
+          });
+        } else {
+          final opponentMessage = {
+            'text': message['text'],
+            'isUser': false,
+            'timestamp': _formatTimestamp(message['createdAt']),
+          };
+          setState(() {
+            _messages.add(opponentMessage);
+          });
+        }
+      }
+    } else {
+      print('Chat Message 데이터 불러오기 실패: ${response.body}');
+    }
+  }
+
+  Future<void> _updatemessage(String sender, String text) async {
+    chatController.setSender(sender);
+    chatController.setText(text);
+    chatController.setCreatedAt(DateTime.now());
+    chatController.setUpdatedAt(DateTime.now());
+
+    final requestData = chatController.toJson();
+    final chatRoomId = chatController.chatRoomId.value;
+
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8080/chat/rooms/${chatRoomId}/messages'),
+      headers: userController.getAuthHeaders(),
+      body: json.encode(requestData),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      //서버에서 메시지별 id를 반환하는데 우선은 필요없어서 따로 저장안함.
+      print('메시지 저장 성공: ${response.body}');
+    } else {
+      print('메시지 저장 실패: ${response.body}');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _bootstrap();
     _messageController.addListener(_onTextChanged);
 
     // 샘플 메시지들 (실제로는 API에서 가져올 데이터)
@@ -47,6 +146,15 @@ class _ChatScreenState extends State<ChatScreen> {
     ]);
   }
 
+  Future<void> _bootstrap() async {
+    if (chatController.chatRoomId.value == 0) {
+      await _getchatroomid();
+      await _getchatmessages();
+    } else {
+      await _getchatmessages();
+    }
+  }
+
   void _onTextChanged() {
     setState(() {
       _isTyping = _messageController.text.isNotEmpty;
@@ -54,6 +162,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _sendMessage() async {
+    final input = _messageController.text.trim();
     if (_messageController.text.trim().isEmpty) return;
 
     final userMessage = {
@@ -64,12 +173,67 @@ class _ChatScreenState extends State<ChatScreen> {
 
     setState(() {
       _messages.add(userMessage);
+      _isTyping = true;
+      _updatemessage('User', _messageController.text.trim());
       _messageController.clear();
-      _isTyping = false;
     });
 
-    // TODO: OpenAI GPT API 호출하여 이별 상대의 응답 생성
+    // TODO: OpenAI GPT API 호출하여 이별 상대의 응답 생성 후 _updatemessage 함수 호출에서 Post
+    String prompt =
+        '''You are a chatbot that takes on the role of the user's ex-partner 
+    and comforts the user's feelings through conversation. You must respond in Korean. 
+    Send replies that are not too long, like messages on KakaoTalk or Instagram DM.''';
+
+    String model = 'gpt-5';
+    String apiKey = '';
+
+    var response = await http.post(
+      Uri.parse('https://api.openai.com/v1/chat/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey',
+      },
+      body: jsonEncode({
+        'model': model,
+        'messages': [
+          {'role': 'system', 'content': prompt},
+          {'role': 'user', 'content': input},
+        ],
+        'max_completion_tokens': 1000,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('OpenAI GPT API 호출 성공: ${response.body}');
+      var data = jsonDecode(response.body);
+      Map<String, dynamic> message = {
+        'text': data['choices'][0]['message']['content'],
+        'isUser': false,
+        'timestamp': _getCurrentTime(),
+      };
+      setState(() {
+        _messages.add(message);
+        _isTyping = true;
+        _updatemessage('Opponent', data['choices'][0]['message']['content']);
+      });
+    } else {
+      print('OpenAI GPT API 호출 실패: ${response.body}');
+    }
+
+    // else {
+    //   setState(() {
+    //     _generatedText = "Error: ${response.reasonPhrase}";
+    //   });
+    // }
+
     // await _generateResponse();
+
+    // setState(() {
+    //   _messages.add(userMessage);
+    //   _messageController.clear();
+    //   _isTyping = false;
+    //   _updatemessage('User', _messageController.text.trim());
+    // });
   }
 
   String _getCurrentTime() {
@@ -77,6 +241,17 @@ class _ChatScreenState extends State<ChatScreen> {
     final hour = now.hour;
     final minute = now.minute;
 
+    if (hour < 12) {
+      return '오전 ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+    } else {
+      return '오후 ${(hour - 12).toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+    }
+  }
+
+  String _formatTimestamp(String timestamp) {
+    final messageTime = DateTime.parse(timestamp);
+    final hour = messageTime.hour;
+    final minute = messageTime.minute;
     if (hour < 12) {
       return '오전 ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
     } else {

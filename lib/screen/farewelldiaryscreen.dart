@@ -26,6 +26,7 @@ class _FarewellDiaryScreenState extends State<FarewellDiaryScreen> {
     setState(() {
       _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
     });
+    if (index == 3) return;
     Get.off(_pages[index], transition: Transition.fade);
   }
 

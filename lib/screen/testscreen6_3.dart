@@ -246,11 +246,11 @@ class _Testscreen6_3State extends State<Testscreen6_3> {
                                 if (result.styleName == '억누르기형') {
                                   lossCaseController.setCopeWay('SUPPRESS');
                                 } else if (result.styleName == '회피형') {
-                                  lossCaseController.setCopeWay('REJECT');
+                                  lossCaseController.setCopeWay('AVOID');
                                 } else if (result.styleName == '표출형') {
-                                  lossCaseController.setCopeWay('SUPPRESS');
+                                  lossCaseController.setCopeWay('EXPRESS');
                                 } else if (result.styleName == '분석형') {
-                                  lossCaseController.setCopeWay('SUPPRESS');
+                                  lossCaseController.setCopeWay('ANALYZE');
                                 }
 
                                 print('Testscreen6 데이터 저장 완료');

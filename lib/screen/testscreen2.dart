@@ -289,10 +289,23 @@ class _Testscreen2State extends State<Testscreen2> {
                                   lossCaseController.setLossReason(
                                     'PARTNER_LOST_FEELINGS',
                                   );
-                                } else if (_selectedReason == '상대방이 감정을 잃음') {
+                                } else if (_selectedReason == '내가 마음이 떠났어요') {
                                   lossCaseController.setLossReason(
-                                    'PARTNER_LOST_FEELINGS',
+                                    'I_LOST_FEELINGS',
                                   );
+                                } else if (_selectedReason == '성격, 가치관 차이') {
+                                  lossCaseController.setLossReason(
+                                    'PERSONALITY_GAP',
+                                  );
+                                } else if (_selectedReason == '바람이나 배신') {
+                                  lossCaseController.setLossReason('BETRAYAL');
+                                } else if (_selectedReason == '상황/환경 문제') {
+                                  lossCaseController.setLossReason(
+                                    'SITUATIONAL',
+                                  );
+                                } else if (_selectedReason ==
+                                    '정확히 모르겠어요 / 복합적이에요') {
+                                  lossCaseController.setLossReason('UNKNOWN');
                                 }
 
                                 print('Testscreen2 데이터 저장 완료');

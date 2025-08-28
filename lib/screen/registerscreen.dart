@@ -18,7 +18,7 @@ class _RegisterscreenState extends State<Registerscreen> {
 
   // API 서비스
   // Android 에뮬레이터: 10.0.2.2, 실제 기기: 컴퓨터 IP 주소
-  static const String _baseUrl = 'https://and-backend.onrender.com';
+  static const String _baseUrl = 'http://10.0.2.2:8080';
   static const String _lossCasesEndpoint = '/auth/signup';
 
   // 약관 동의 상태 관리

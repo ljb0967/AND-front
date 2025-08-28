@@ -59,6 +59,7 @@ class _AnalysisAnimationScreenState extends State<AnalysisAnimationScreen>
 
     // 프로그레스바 값 업데이트
     _progressController.addListener(() {
+      if (!mounted) return;
       setState(() {
         _progressValue = _progressAnimation.value;
       });
@@ -66,23 +67,67 @@ class _AnalysisAnimationScreenState extends State<AnalysisAnimationScreen>
 
     // 텍스트 순차적으로 나타나기
     await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
     setState(() => _showText1 = true);
 
     await Future.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
     setState(() => _showText2 = true);
 
     await Future.delayed(const Duration(milliseconds: 1000));
+    if (!mounted) return;
     setState(() => _showText3 = true);
 
     await Future.delayed(const Duration(milliseconds: 1200));
+    if (!mounted) return;
     setState(() => _showDivider = true);
 
     // 애니메이션 완료 후 홈 화면으로 이동
     await Future.delayed(const Duration(milliseconds: 2000));
+    if (!mounted) return;
     if (mounted) {
       Get.offAll(() => const Homecontentscreen());
     }
   }
+
+  // void _startAnimation() async {
+  //   // 진행바 값 반영
+  //   _progressController.addListener(() {
+  //     if (!mounted) return;
+  //     setState(() => _progressValue = _progressAnimation.value);
+  //   });
+
+  //   // 1) 진행바 실행(완료까지 대기하는 Future)
+  //   final progressDone = _progressController.forward(); // <- 완료 Future
+
+  //   // 2) 텍스트 시퀀스(완료까지 대기하는 Future)
+  //   final textsDone = () async {
+  //     await Future.delayed(const Duration(milliseconds: 500));
+  //     if (!mounted) return;
+  //     setState(() => _showText1 = true);
+
+  //     await Future.delayed(const Duration(milliseconds: 800));
+  //     if (!mounted) return;
+  //     setState(() => _showText2 = true);
+
+  //     await Future.delayed(const Duration(milliseconds: 1000));
+  //     if (!mounted) return;
+  //     setState(() => _showText3 = true);
+
+  //     await Future.delayed(const Duration(milliseconds: 1200));
+  //     if (!mounted) return;
+  //     setState(() => _showDivider = true);
+  //   }();
+
+  //   // 3) 두 작업이 모두 끝날 때까지 기다림
+  //   await Future.wait([progressDone, textsDone]);
+
+  //   // 4) 잠깐 멈췄다가 라우팅 (옵션)
+  //   await Future.delayed(const Duration(milliseconds: 800));
+
+  //   if (!mounted) return;
+  //   Get.offAll(() => const Homecontentscreen());
+  // }
 
   @override
   void dispose() {

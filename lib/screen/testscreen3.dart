@@ -212,15 +212,15 @@ class _Testscreen3State extends State<Testscreen3> {
                                 if (_selectedTime == '1~6개월') {
                                   lossCaseController.setWithTime('LESS_6M');
                                 } else if (_selectedTime == '6개월~1년') {
-                                  lossCaseController.setWithTime('6M_TO_1Y');
+                                  lossCaseController.setWithTime('M6_TO_1Y');
                                 } else if (_selectedTime == '1년~2년') {
-                                  lossCaseController.setWithTime('1Y_TO_2Y');
+                                  lossCaseController.setWithTime('Y1_TO_2Y');
                                 } else if (_selectedTime == '2년~5년') {
-                                  lossCaseController.setWithTime('2Y_TO_5Y');
+                                  lossCaseController.setWithTime('Y2_TO_5Y');
                                 } else if (_selectedTime == '5년~10년') {
-                                  lossCaseController.setWithTime('5Y_TO_5Y');
+                                  lossCaseController.setWithTime('Y5_TO_10Y');
                                 } else if (_selectedTime == '10년 이상') {
-                                  lossCaseController.setWithTime('MORE_10Y');
+                                  lossCaseController.setWithTime('OVER_10Y');
                                 }
 
                                 print('Testscreen3 데이터 저장 완료');

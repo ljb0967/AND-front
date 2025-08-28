@@ -162,6 +162,13 @@ class _Testscreen9State extends State<Testscreen9> {
 
       print('최종 전송 데이터: ${json.encode(requestData)}');
 
+      // Get.offUntil(
+      //   MaterialPageRoute(
+      //     builder: (_) => AnalysisAnimationScreen(),
+      //   ), //로그인 페이지 외에 이전 모든 페이지 스택에서 pop  //디버깅용 임시 지워야함.
+      //   (route) => route.settings.name == "/Loginscreen",
+      // );
+
       // API 엔드포인트 호출
       final response = await http.post(
         Uri.parse('http://10.0.2.2:8080/loss-cases'),
@@ -170,12 +177,14 @@ class _Testscreen9State extends State<Testscreen9> {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = jsonDecode(response.body); // String → Map 변환
+        lossCaseController.setLossCaseId(responseData['lossCaseId']);
         print('Loss Case 생성 성공: ${response.body}');
 
         // 성공 시 홈 화면으로 이
         Get.offUntil(
           MaterialPageRoute(
-            builder: (_) => Homecontentscreen(),
+            builder: (_) => AnalysisAnimationScreen(),
           ), //로그인 페이지 외에 이전 모든 페이지 스택에서 pop
           (route) => route.settings.name == "/Loginscreen",
         );
@@ -422,12 +431,12 @@ class _Testscreen9State extends State<Testscreen9> {
                         ),
                         onPressed: () {
                           // 최종 데이터를 서버로 전송
-                          Get.offUntil(
-                            MaterialPageRoute(
-                              builder: (_) => AnalysisAnimationScreen(),
-                            ), //애니메이션 페이지로 이동
-                            (route) => route.settings.name == "/Loginscreen",
-                          );
+                          // Get.offUntil(
+                          //   MaterialPageRoute(
+                          //     builder: (_) => AnalysisAnimationScreen(),
+                          //   ), //애니메이션 페이지로 이동
+                          //   (route) => route.settings.name == "/Loginscreen",
+                          // );
                           _submitFinalData();
                         },
                       ),

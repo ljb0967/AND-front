@@ -3,10 +3,13 @@ import 'homeappbarwidget.dart';
 import 'package:get/get.dart';
 import 'homediaryscreen.dart';
 import '../state/loss_case_controller.dart';
+import '../state/user_controller.dart';
 import 'chatscreen.dart';
 import 'dailyquestionscreen.dart';
 import 'farewelldiaryscreen.dart';
 import 'farewellshopscreen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Homecontentscreen extends StatefulWidget {
   const Homecontentscreen({super.key});
@@ -17,6 +20,9 @@ class Homecontentscreen extends StatefulWidget {
 
 class _HomecontentscreenState extends State<Homecontentscreen> {
   int _selectedIndex = 2;
+  final UserController userController = Get.find<UserController>();
+  final LossCaseController lossCaseController = Get.find<LossCaseController>();
+  List<String> _quests = ['', '', ''];
 
   final List<Widget> _pages = [
     const ChatScreen(), // 인덱스 0: 대화하기
@@ -26,14 +32,40 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
     const FarewellShopScreen(), // 인덱스 4: 이별상점
   ];
 
+  Future<void> _getquest() async {
+    final id = lossCaseController.lossCaseId.value;
+    final uri = Uri.parse(
+      'http://10.0.2.2:8080/quests',
+    ).replace(queryParameters: {'lossCaseId': id.toString()});
+
+    final response = await http.get(
+      uri,
+      headers: userController.getAuthHeaders(),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print('quest 데이터 불러오기 성공: ${response.body}');
+      // for (var quest in data) {
+      //   _quests.add(quest['text']);
+      // }
+      for (int i = 0; i < data.length && i < _quests.length; i++) {
+        _quests[i] = data[i]['text'].toString();
+      }
+
+      setState(() {}); // UI 갱신
+    }
+  }
+
+  //// quest patch 연결 함수
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
     });
+    if (index == 2) return;
     Get.off(_pages[index], transition: Transition.fade);
   }
 
-  final LossCaseController lossCaseController = Get.find<LossCaseController>();
   String copeWay = Get.find<LossCaseController>().copeWay.value;
 
   bool _visible1 = false;
@@ -86,6 +118,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
   @override
   void initState() {
     super.initState();
+    _getquest();
 
     // 시간차로 순차적으로 위젯 보이기
     Future.delayed(const Duration(milliseconds: 600), () {
@@ -270,11 +303,11 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start, // api
                             children: [
-                              _buildChecklistItem(0, '힘이 되는 사람과 30분 이상 대화하기'),
+                              _buildChecklistItem(0, _quests[0]),
                               const SizedBox(height: 8.0),
-                              _buildChecklistItem(1, '1시간 이상 바깥 공기 쐬고 오기'),
+                              _buildChecklistItem(1, _quests[1]),
                               const SizedBox(height: 8.0),
-                              _buildChecklistItem(2, '함께한 추억이 담긴 기록 살펴보기'),
+                              _buildChecklistItem(2, _quests[2]),
                               const Spacer(), // 남은 공간을 채워 프로그레스 바를 아래로 밀어냄
                               // 프로그레스 바
                               AnimatedOpacity(

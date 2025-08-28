@@ -139,7 +139,7 @@ class _LoginscreenState extends State<Loginscreen> {
   Future<void> _saveUserData(Map<String, dynamic> responseData) async {
     try {
       // UserController에 로그인 정보 저장
-      final userController = Get.put(UserController());
+      final userController = Get.find<UserController>();
       userController.setLoginData(responseData, pwController.text);
 
       print('사용자 데이터 저장 완료: ${responseData['user']?['email']}');

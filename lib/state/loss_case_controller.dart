@@ -28,6 +28,7 @@ class LossCaseController extends GetxController {
   void setLossReason(String value) => lossReason.value = value;
   void setCopeWay(String value) => copeWay.value = value;
   void setPhoto(String value) => photo.value = value;
+  void setLossCaseId(int value) => lossCaseId.value = value;
 
   // 사용자 정보 설정
   void setUserInfo({

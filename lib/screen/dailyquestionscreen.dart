@@ -125,6 +125,7 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
     setState(() {
       _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
     });
+    if (index == 1) return;
     Get.off(_pages[index], transition: Transition.fade);
   }
 
