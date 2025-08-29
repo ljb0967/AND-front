@@ -34,10 +34,51 @@ class _FarewellShopScreenState extends State<FarewellShopScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('이별상점')),
       backgroundColor: Color(0xFF111111),
-      body: const Center(
-        child: Text('이별상점 페이지 내용', style: TextStyle(color: Colors.white)),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 25.0,
+                vertical: 30.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset('image/home_image.png', height: 20),
+                  Row(
+                    children: [
+                      Image.asset('image/Bell.png', height: 30),
+                      SizedBox(width: 12),
+                      Image.asset('image/GearSix.png', height: 30),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Expanded(
+          //   child: SingleChildScrollView(
+          //     child: Column(
+          //       children: [
+          //         Text(
+          //           '이별상점',
+          //           style: TextStyle(
+          //             color: Colors.white,
+          //             fontSize: 20,
+          //             fontFamily: 'Pretendard',
+          //             fontWeight: FontWeight.w600,
+          //             height: 1.40,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

@@ -10,6 +10,7 @@ import '../state/user_controller.dart';
 import '../state/loss_case_controller.dart';
 import '../state/chat_controller.dart';
 import 'dart:convert';
+import 'dart:io';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -300,9 +301,29 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Row(
               children: [
                 // 프로필 사진
-                CircleAvatar(
-                  radius: 20.0,
-                  child: Icon(Icons.person, color: Colors.grey, size: 20.0),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(
+                      () => Chatprofilescreen(),
+                      transition: Transition.fade,
+                    );
+                  },
+                  child: chatController.profileImage.value.isNotEmpty
+                      ? ClipOval(
+                          child: Image.file(
+                            File(chatController.profileImage.value),
+                            // ← File로 감싸야 함
+                            width: 40,
+                            height: 40,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Icon(
+                          Icons.person,
+                          color: const Color(0xFF7F8694),
+                          size: 25,
+                        ),
+                  // child: Image.asset(chatController.profileImage.value),
                 ),
 
                 SizedBox(width: 12.0),
@@ -310,7 +331,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 // 연락처 이름
                 Expanded(
                   child: Text(
-                    '사랑하는 우리 아빠',
+                    chatController.profileName.value,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -325,16 +346,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 // 액션 아이콘들
                 Row(
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: Colors.white,
-                        size: 24.0,
-                      ),
-                      onPressed: () {
-                        Get.to(() => Chatprofilescreen());
-                      },
-                    ),
+                    Icon(Icons.more_vert, color: Colors.white, size: 24.0),
                   ],
                 ),
               ],
@@ -552,9 +564,29 @@ class _ChatScreenState extends State<ChatScreen> {
               (index > 0 && _messages[index - 1]['isUser'] == true))
             Padding(
               padding: EdgeInsets.only(right: 8.0),
-              child: CircleAvatar(
-                radius: 16.0,
-                child: Icon(Icons.person, color: Colors.grey, size: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(
+                    () => Chatprofilescreen(),
+                    transition: Transition.fade,
+                  );
+                },
+                child: chatController.profileImage.value.isNotEmpty
+                    ? ClipOval(
+                        child: Image.file(
+                          File(
+                            chatController.profileImage.value,
+                          ), // ← File로 감싸야 함
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Icon(
+                        Icons.person,
+                        color: const Color(0xFF7F8694),
+                        size: 20,
+                      ),
               ),
             )
           else
@@ -570,7 +602,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 8.0, bottom: 4.0),
                     child: Text(
-                      '사랑하는 우리 아빠',
+                      chatController.profileName.value,
                       style: TextStyle(
                         color: const Color(0xFFBDC7DB),
                         fontSize: 14,

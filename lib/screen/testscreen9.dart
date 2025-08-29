@@ -265,7 +265,7 @@ class _Testscreen9State extends State<Testscreen9> {
             // 메인 콘텐츠 영역 (스크롤 가능)
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -430,7 +430,7 @@ class _Testscreen9State extends State<Testscreen9> {
                           textAlign: TextAlign.center,
                         ),
                         onPressed: () {
-                          // 최종 데이터를 서버로 전송
+                          //디버깅용
                           // Get.offUntil(
                           //   MaterialPageRoute(
                           //     builder: (_) => AnalysisAnimationScreen(),

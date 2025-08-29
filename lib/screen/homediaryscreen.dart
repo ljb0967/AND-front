@@ -6,6 +6,8 @@ import 'dailyquestionscreen.dart';
 import 'farewelldiaryscreen.dart';
 import 'farewellshopscreen.dart';
 import 'homecontentscreen.dart';
+import 'diary_detail_screen.dart';
+import '../state/card_controller.dart';
 
 class Homediaryscreen extends StatefulWidget {
   const Homediaryscreen({super.key});
@@ -18,6 +20,7 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
   final List<String> categoryData = ['작성일 순', '이별상대', '이별대처유형', '이별공감', '스크랩'];
   String? _selectedOption = '작성일 순';
   int _selectedIndex = 2;
+  final CardController cardController = Get.find<CardController>();
   final List<Widget> _pages = [
     const ChatScreen(), // 인덱스 0: 대화하기
     const DailyQuestionScreen(), // 인덱스 1: 일일문답
@@ -318,7 +321,7 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
                       ),
                       Center(
                         child: Text(
-                          '아직 이별 공감한\n이별 일기가 없어요',
+                          '아직 이별공감한\n이별 일기가 없어요',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: const Color(0xFF7F8694),
@@ -334,30 +337,98 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
                 ),
               ],
               if (_selectedOption == '스크랩') ...[
-                Container(
-                  height: 330.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Icon(Icons.face, color: const Color(0xFF7F8694)),
-                      ),
-                      Center(
-                        child: Text(
-                          '아직 스크랩한\n이별 일기가 없어요',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: const Color(0xFF7F8694),
-                            fontSize: 16,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
+                Obx(() {
+                  final bookmarkedIds = cardController.bookmarkedCardIds;
+                  if (bookmarkedIds.isEmpty) {
+                    return Container(
+                      height: 330.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Icon(
+                              Icons.face,
+                              color: const Color(0xFF7F8694),
+                            ),
                           ),
-                        ),
+                          Center(
+                            child: Text(
+                              '아직 스크랩한\n이별 일기가 없어요',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: const Color(0xFF7F8694),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    );
+                  } else {
+                    return Container();
+                    // return Container(
+                    //   height: 330.0,
+                    //   child: ListView.builder(
+                    //     scrollDirection: Axis.horizontal,
+                    //     padding: EdgeInsets.only(right: 6.0),
+                    //     itemCount: cardController.bookmarkedCards.length,
+                    //     itemBuilder: (context, index) {
+                    //       try {
+                    //         final bookmarkedCard =
+                    //             cardController.bookmarkedCards[index];
+                    //         if (bookmarkedCard != null) {
+                    //           return _buildBookmarkedDiaryCard(bookmarkedCard);
+                    //         } else {
+                    //           return Container(
+                    //             width: 270.0,
+                    //             height: 230.0,
+                    //             margin: EdgeInsets.only(right: 8.0),
+                    //             decoration: BoxDecoration(
+                    //               color: Color(0xFF1F2124),
+                    //               borderRadius: BorderRadius.circular(12.0),
+                    //             ),
+                    //             child: Center(
+                    //               child: Text(
+                    //                 '카드 데이터 오류',
+                    //                 style: TextStyle(
+                    //                   color: Colors.white,
+                    //                   fontSize: 14,
+                    //                   fontFamily: 'Pretendard',
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           );
+                    //         }
+                    //       } catch (e) {
+                    //         print('북마크 카드 빌드 에러: $e');
+                    //         return Container(
+                    //           width: 270.0,
+                    //           height: 230.0,
+                    //           margin: EdgeInsets.only(right: 8.0),
+                    //           decoration: BoxDecoration(
+                    //             color: Color(0xFF1F2124),
+                    //             borderRadius: BorderRadius.circular(12.0),
+                    //           ),
+                    //           child: Center(
+                    //             child: Text(
+                    //               '카드를 불러올 수 없습니다',
+                    //               style: TextStyle(
+                    //                 color: Colors.white,
+                    //                 fontSize: 14,
+                    //                 fontFamily: 'Pretendard',
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         );
+                    //       }
+                    //     },
+                    //   ),
+                    // );
+                  }
+                }),
               ],
             ],
           ),
@@ -531,188 +602,437 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
   Widget _buildDiaryCard(int index) {
     final data = diaryData[index % diaryData.length];
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Container(
-        height: 230.0,
-        //margin: EdgeInsets.only(right: 8.0),
-        child: Stack(
-          children: [
-            // 배경 이미지
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                image: DecorationImage(
-                  image: AssetImage(data['backgroundImage']),
-                  fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Get.to(
+          () => DiaryDetailScreen(diaryData: data),
+          transition: Transition.fade,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Container(
+          height: 230.0,
+          //margin: EdgeInsets.only(right: 8.0),
+          child: Stack(
+            children: [
+              // 배경 이미지
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.0),
+                  image: DecorationImage(
+                    image: AssetImage(data['backgroundImage']),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
 
-            // 그라데이션 오버레이 (텍스트 가독성을 위해)
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+              // 그라데이션 오버레이 (텍스트 가독성을 위해)
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.0),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                  ),
                 ),
               ),
-            ),
 
-            // 카드 내용
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 상단: 프로필과 북마크
-                  Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 프로필 정보
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 16.0,
-                            backgroundImage: AssetImage(data['profileImage']),
+              // 카드 내용
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 상단: 프로필과 북마크
+                    Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // 프로필 정보
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 16.0,
+                              backgroundImage: AssetImage(data['profileImage']),
+                            ),
+                            SizedBox(width: 8.0),
+                            Text(
+                              data['userName'],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.40,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(width: 145.0),
+
+                        //좋아요 관리
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {});
+                          },
+                          child: Icon(
+                            data['isBookmarked']
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Color(0xFFB8BFCC),
+                            size: 20.0,
                           ),
-                          SizedBox(width: 8.0),
-                          Text(
-                            data['userName'],
+                        ),
+                        SizedBox(width: 20.0),
+
+                        // 북마크 아이콘
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () {
+                              // CardController를 사용하여 북마크 상태 토글 (카드 데이터와 함께)
+                              cardController.toggleBookmark(index, data);
+                            },
+                            child: Icon(
+                              cardController.isBookmarked(index)
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                              color: Color(0xFFB8BFCC),
+                              size: 20.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Spacer(),
+
+                    // 중앙: 날짜
+                    Text(
+                      data['date'],
+                      style: TextStyle(
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.40,
+                      ),
+                    ),
+
+                    SizedBox(height: 8.0),
+
+                    // 하단: 일기 제목
+                    Text(
+                      data['title'],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w600,
+                        height: 1.40,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    SizedBox(height: 12.0),
+
+                    // 해시태그
+                    Wrap(
+                      spacing: 6.0,
+                      runSpacing: 4.0,
+                      children: data['hashtags'].map<Widget>((tag) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF111111),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Text(
+                            tag,
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                              color: const Color(0xFF65A0FF),
+                              fontSize: 12,
                               fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               height: 1.40,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 12.0),
+
+                    Text(
+                      data['content'],
+                      style: TextStyle(
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w400,
+                        height: 1.40,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 북마크된 카드를 위한 별도의 빌드 함수
+  Widget _buildBookmarkedDiaryCard(Map<String, dynamic> bookmarkedCard) {
+    // 데이터 안전성 검사
+    try {
+      // 필수 필드들이 존재하는지 확인
+      if (bookmarkedCard['backgroundImage'] == null ||
+          bookmarkedCard['userName'] == null ||
+          bookmarkedCard['date'] == null ||
+          bookmarkedCard['title'] == null ||
+          bookmarkedCard['hashtags'] == null ||
+          bookmarkedCard['content'] == null) {
+        // 데이터가 불완전한 경우 기본 카드 반환
+        return Container(
+          width: 270.0,
+          height: 230.0,
+          margin: EdgeInsets.only(right: 8.0),
+          decoration: BoxDecoration(
+            color: Color(0xFF1F2124),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Center(
+            child: Text(
+              '데이터를 불러올 수 없습니다',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'Pretendard',
+              ),
+            ),
+          ),
+        );
+      }
+
+      return GestureDetector(
+        onTap: () {
+          Get.to(
+            () => DiaryDetailScreen(diaryData: bookmarkedCard),
+            transition: Transition.fade,
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+            height: 230.0,
+            child: Stack(
+              children: [
+                // 배경 이미지
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    image: DecorationImage(
+                      image: AssetImage(bookmarkedCard['backgroundImage']),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                // 그라데이션 오버레이 (텍스트 가독성을 위해)
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // 카드 내용
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 상단: 프로필과 북마크
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // 프로필 정보
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 16.0,
+                                backgroundImage: AssetImage(
+                                  bookmarkedCard['profileImage'] ??
+                                      'image/character1.png',
+                                ),
+                              ),
+                              SizedBox(width: 8.0),
+                              Text(
+                                bookmarkedCard['userName'] ?? '사용자',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.40,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // 북마크 아이콘 (북마크 해제 가능)
+                          GestureDetector(
+                            onTap: () {
+                              // 북마크 해제
+                              final cardIndex = bookmarkedCard['cardIndex'];
+                              if (cardIndex != null) {
+                                cardController.toggleBookmark(
+                                  cardIndex,
+                                  bookmarkedCard,
+                                );
+                              }
+                            },
+                            child: Icon(
+                              Icons.bookmark, // 항상 북마크된 상태
+                              color: Color(0xFFB8BFCC),
+                              size: 20.0,
                             ),
                           ),
                         ],
                       ),
 
-                      SizedBox(width: 145.0),
+                      Spacer(),
 
-                      GestureDetector(
-                        onTap: () {
-                          // 북마크 토글 기능 (실제로는 상태 관리 필요)
-                          setState(() {
-                            // 여기서 북마크 상태를 토글할 수 있습니다
-                          });
-                        },
-                        child: Icon(
-                          data['isBookmarked']
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: Color(0xFFB8BFCC),
-                          size: 20.0,
+                      // 중앙: 날짜
+                      Text(
+                        bookmarkedCard['date'] ?? '',
+                        style: TextStyle(
+                          color: const Color(0xFFBDC7DB),
+                          fontSize: 14,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
                         ),
                       ),
-                      SizedBox(width: 20.0),
 
-                      // 북마크 아이콘
-                      GestureDetector(
-                        onTap: () {
-                          // 북마크 토글 기능 (실제로는 상태 관리 필요)
-                          setState(() {
-                            // 여기서 북마크 상태를 토글할 수 있습니다
-                          });
-                        },
-                        child: Icon(
-                          data['isBookmarked']
-                              ? Icons.bookmark
-                              : Icons.bookmark_border,
-                          color: Color(0xFFB8BFCC),
-                          size: 20.0,
+                      SizedBox(height: 8.0),
+
+                      // 하단: 일기 제목
+                      Text(
+                        bookmarkedCard['title'] ?? '',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w600,
+                          height: 1.40,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      SizedBox(height: 12.0),
+
+                      // 해시태그
+                      if (bookmarkedCard['hashtags'] != null)
+                        Wrap(
+                          spacing: 6.0,
+                          runSpacing: 4.0,
+                          children:
+                              (bookmarkedCard['hashtags'] as List<dynamic>)
+                                  .map<Widget>((tag) {
+                                    return Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                        vertical: 4.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF111111),
+                                        borderRadius: BorderRadius.circular(
+                                          12.0,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        tag?.toString() ?? '',
+                                        style: TextStyle(
+                                          color: const Color(0xFF65A0FF),
+                                          fontSize: 12,
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.40,
+                                        ),
+                                      ),
+                                    );
+                                  })
+                                  .toList(),
+                        ),
+                      SizedBox(height: 12.0),
+
+                      Text(
+                        bookmarkedCard['content'] ?? '',
+                        style: TextStyle(
+                          color: const Color(0xFFBDC7DB),
+                          fontSize: 14,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w400,
+                          height: 1.40,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
-
-                  Spacer(),
-
-                  // 중앙: 날짜
-                  Text(
-                    data['date'],
-                    style: TextStyle(
-                      color: const Color(0xFFBDC7DB),
-                      fontSize: 14,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w500,
-                      height: 1.40,
-                    ),
-                  ),
-
-                  SizedBox(height: 8.0),
-
-                  // 하단: 일기 제목
-                  Text(
-                    data['title'],
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w600,
-                      height: 1.40,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
-                  SizedBox(height: 12.0),
-
-                  // 해시태그
-                  Wrap(
-                    spacing: 6.0,
-                    runSpacing: 4.0,
-                    children: data['hashtags'].map<Widget>((tag) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 4.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF111111),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Text(
-                          tag,
-                          style: TextStyle(
-                            color: const Color(0xFF65A0FF),
-                            fontSize: 12,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(height: 12.0),
-
-                  Text(
-                    data['content'],
-                    style: TextStyle(
-                      color: const Color(0xFFBDC7DB),
-                      fontSize: 14,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w400,
-                      height: 1.40,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      // 에러 발생 시 기본 카드 반환
+      print('북마크 카드 빌드 에러: $e');
+      return Container(
+        width: 270.0,
+        height: 230.0,
+        margin: EdgeInsets.only(right: 8.0),
+        decoration: BoxDecoration(
+          color: Color(0xFF1F2124),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Center(
+          child: Text(
+            '카드를 불러올 수 없습니다',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontFamily: 'Pretendard',
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

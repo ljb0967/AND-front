@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'homediaryscreen.dart';
 import '../state/loss_case_controller.dart';
 import '../state/user_controller.dart';
+import '../state/card_controller.dart';
 import 'chatscreen.dart';
 import 'dailyquestionscreen.dart';
 import 'farewelldiaryscreen.dart';
 import 'farewellshopscreen.dart';
+import 'diary_detail_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -22,6 +24,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
   int _selectedIndex = 2;
   final UserController userController = Get.find<UserController>();
   final LossCaseController lossCaseController = Get.find<LossCaseController>();
+  final CardController cardController = Get.find<CardController>();
   List<String> _quests = ['', '', ''];
 
   final List<Widget> _pages = [
@@ -67,6 +70,19 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
   }
 
   String copeWay = Get.find<LossCaseController>().copeWay.value;
+  String CopeWay2 = '';
+
+  void _getCopeWay2(String copeWay) {
+    if (copeWay == "SUPPRESS") {
+      CopeWay2 = "억누르기";
+    } else if (copeWay == "EXPRESS") {
+      CopeWay2 = "표출";
+    } else if (copeWay == "AVOID") {
+      CopeWay2 = "회피";
+    } else if (copeWay == "ANALYZE") {
+      CopeWay2 = "분석";
+    }
+  }
 
   bool _visible1 = false;
   bool _visible2 = false;
@@ -119,6 +135,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
   void initState() {
     super.initState();
     _getquest();
+    _getCopeWay2(copeWay);
 
     // 시간차로 순차적으로 위젯 보이기
     Future.delayed(const Duration(milliseconds: 600), () {
@@ -159,7 +176,7 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Container(
                         // 부모 너비 전체 사용
                         height: 80.0, // 높이 136px (제공된 레이아웃 정보)
@@ -241,17 +258,17 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                                     'image/character1.png',
                                     height: 25,
                                   ),
-                                if (copeWay == "EXPRESS")
+                                if (copeWay == "ANALYZE")
                                   Image.asset(
                                     'image/character1-1.png',
                                     height: 25,
                                   ),
-                                if (copeWay == "ACCEPT")
+                                if (copeWay == "EXPRESS")
                                   Image.asset(
                                     'image/character1-3.png',
                                     height: 25,
                                   ),
-                                if (copeWay == "REJECT")
+                                if (copeWay == "AVOID")
                                   Image.asset(
                                     'image/character1-2.png',
                                     height: 25,
@@ -259,8 +276,9 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                               ],
                             ),
                             SizedBox(height: 8.0),
+
                             Text(
-                              '이별을 혼자서 감당하는 ${copeWay}형을 위한 맞춤 퀘스트', //<---- API
+                              '이별을 혼자서 감당하는 ${CopeWay2}형을 위한 맞춤 퀘스트', //<---- API
                               style: TextStyle(
                                 color: const Color(0xFFB8BFCC),
                                 fontSize: 14,
@@ -285,9 +303,9 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(
-                          8.0,
+                          12.0,
                           10.0,
-                          8.0,
+                          12.0,
                           10.0,
                         ), // 상단/하단 여백 20px 추가
                         child: Container(
@@ -492,9 +510,9 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
       {
         'profileImage': 'image/character1.png',
         'userName': '김디앤',
-        'date': '2025.08.30',
+        'date': '2025.08.04',
         'title': '그냥, 나가서 온몸으로 비맞은 날',
-        'hashtags': ['#가족이별', '#억누르기형', '#AND+11'],
+        'hashtags': ['#가족이별', '#억누르기형'],
         'backgroundImage': 'image/ex_photo.png',
         'isBookmarked': false,
         'content':
@@ -548,164 +566,177 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
 
     final data = diaryData[index % diaryData.length];
 
-    return Container(
-      width: 270.0,
-      margin: EdgeInsets.only(right: 8.0),
-      child: Stack(
-        children: [
-          // 배경 이미지
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.0),
-              image: DecorationImage(
-                image: AssetImage(data['backgroundImage']),
-                fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Get.to(
+          () => DiaryDetailScreen(diaryData: data),
+          transition: Transition.fade,
+        );
+      },
+      child: Container(
+        width: 270.0,
+        margin: EdgeInsets.only(right: 8.0),
+        child: Stack(
+          children: [
+            // 배경 이미지
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                image: DecorationImage(
+                  image: AssetImage(data['backgroundImage']),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
 
-          // 그라데이션 오버레이 (텍스트 가독성을 위해)
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.0),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+            // 그라데이션 오버레이 (텍스트 가독성을 위해)
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                ),
               ),
             ),
-          ),
 
-          // 카드 내용
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 상단: 프로필과 북마크
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // 프로필 정보
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 16.0,
-                          backgroundImage: AssetImage(data['profileImage']),
+            // 카드 내용
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 상단: 프로필과 북마크
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // 프로필 정보
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 16.0,
+                            //backgroundImage: AssetImage(data['profileImage']),
+                            child: Icon(
+                              Icons.person,
+                              color: const Color(0xFF7F8694),
+                              size: 25,
+                            ),
+                          ),
+                          SizedBox(width: 8.0),
+                          Text(
+                            data['userName'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w600,
+                              height: 1.40,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // 북마크 아이콘
+                      Obx(
+                        () => GestureDetector(
+                          onTap: () {
+                            // CardController를 사용하여 북마크 상태 토글 (카드 데이터와 함께)
+                            cardController.toggleBookmark(index, data);
+                          },
+                          child: Icon(
+                            cardController.isBookmarked(index)
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
+                            color: Color(0xFFB8BFCC),
+                            size: 20.0,
+                          ),
                         ),
-                        SizedBox(width: 8.0),
-                        Text(
-                          data['userName'],
+                      ),
+                    ],
+                  ),
+
+                  Spacer(),
+
+                  // 중앙: 날짜
+                  Text(
+                    data['date'],
+                    style: TextStyle(
+                      color: const Color(0xFFB8BFCC),
+                      fontSize: 14,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      height: 1.40,
+                    ),
+                  ),
+
+                  SizedBox(height: 8.0),
+
+                  // 하단: 일기 제목
+                  Text(
+                    data['title'],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w600,
+                      height: 1.40,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  SizedBox(height: 12.0),
+
+                  // 해시태그
+                  Wrap(
+                    spacing: 6.0,
+                    runSpacing: 4.0,
+                    children: data['hashtags'].map<Widget>((tag) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 4.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF111111),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Text(
+                          tag,
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                            color: const Color(0xFF65A0FF),
+                            fontSize: 12,
                             fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             height: 1.40,
                           ),
                         ),
-                      ],
-                    ),
-                    // 북마크 아이콘
-                    GestureDetector(
-                      onTap: () {
-                        // 북마크 토글 기능 (실제로는 상태 관리 필요)
-                        setState(() {
-                          // 여기서 북마크 상태를 토글할 수 있습니다
-                        });
-                      },
-                      child: Icon(
-                        data['isBookmarked']
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                        color: Color(0xFFB8BFCC),
-                        size: 20.0,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Spacer(),
-
-                // 중앙: 날짜
-                Text(
-                  data['date'],
-                  style: TextStyle(
-                    color: const Color(0xFFB8BFCC),
-                    fontSize: 14,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w500,
-                    height: 1.40,
+                      );
+                    }).toList(),
                   ),
-                ),
+                  // SizedBox(height: 12.0),
 
-                SizedBox(height: 8.0),
-
-                // 하단: 일기 제목
-                Text(
-                  data['title'],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w600,
-                    height: 1.40,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-
-                SizedBox(height: 12.0),
-
-                // 해시태그
-                Wrap(
-                  spacing: 6.0,
-                  runSpacing: 4.0,
-                  children: data['hashtags'].map<Widget>((tag) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF111111),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Text(
-                        tag,
-                        style: TextStyle(
-                          color: const Color(0xFF65A0FF),
-                          fontSize: 12,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          height: 1.40,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-                // SizedBox(height: 12.0),
-
-                // Text(
-                //   data['content'],
-                //   style: TextStyle(
-                //     color: const Color(0xFFB8BFCC),
-                //     fontSize: 12,
-                //     fontFamily: 'Pretendard',
-                //     fontWeight: FontWeight.w500,
-                //     height: 1.40,
-                //   ),
-                //   maxLines: 2,
-                //   overflow: TextOverflow.ellipsis,
-                // ),
-              ],
+                  // Text(
+                  //   data['content'],
+                  //   style: TextStyle(
+                  //     color: const Color(0xFFB8BFCC),
+                  //     fontSize: 12,
+                  //     fontFamily: 'Pretendard',
+                  //     fontWeight: FontWeight.w500,
+                  //     height: 1.40,
+                  //   ),
+                  //   maxLines: 2,
+                  //   overflow: TextOverflow.ellipsis,
+                  //                 ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

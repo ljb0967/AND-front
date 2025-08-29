@@ -156,9 +156,9 @@ class _AnalysisAnimationScreenState extends State<AnalysisAnimationScreen>
                     children: [
                       // "END" 텍스트
                       Text(
-                        'END',
+                        'AND',
                         style: TextStyle(
-                          color: const Color(0xFFE0E0E0),
+                          color: const Color(0xFF65A0FF),
                           fontSize: 48,
                           fontFamily: 'Pretendard',
                           fontWeight: FontWeight.w600,

@@ -9,6 +9,8 @@ class ChatController extends GetxController {
   RxString text = ''.obs;
   Rx<DateTime> createAt = DateTime.now().obs;
   Rx<DateTime> updateAt = DateTime.now().obs;
+  RxString profileName = '사랑하는 우리 아빠'.obs;
+  RxString profileImage = ''.obs;
 
   // chat 데이터 설정
   void setId(int value) => id.value = value;
@@ -17,6 +19,8 @@ class ChatController extends GetxController {
   void setText(String value) => text.value = value;
   void setCreatedAt(DateTime value) => createAt.value = value;
   void setUpdatedAt(DateTime value) => updateAt.value = value;
+  void setProfileName(String value) => profileName.value = value;
+  void setProfileImage(String value) => profileImage.value = value;
 
   // // 사용자 정보 설정
   // void setUserInfo({
@@ -59,5 +63,6 @@ class ChatController extends GetxController {
     print('Text: $text');
     print('Created At: $createAt');
     print('Updated At: $updateAt');
+    print('Profile Name: $profileName');
   }
 }

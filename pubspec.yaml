@@ -101,6 +101,8 @@ flutter:
     - image/character1-1.png
     - image/character1-2.png
     - image/character1-3.png
+    - image/calendar.png
+    - image/server.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

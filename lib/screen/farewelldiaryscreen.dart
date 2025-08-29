@@ -60,6 +60,24 @@ class _FarewellDiaryScreenState extends State<FarewellDiaryScreen> {
                 ),
               ),
             ),
+            // Expanded(
+            //   child: SingleChildScrollView(
+            //     child: Column(
+            //       children: [
+            //         Text(
+            //           '이별일기',
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //             fontSize: 20,
+            //             fontFamily: 'Pretendard',
+            //             fontWeight: FontWeight.w600,
+            //             height: 1.40,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

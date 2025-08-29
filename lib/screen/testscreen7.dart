@@ -101,7 +101,7 @@ class _Testscreen7State extends State<Testscreen7> {
             if (widget.selectedOption == '억누르기형') ...[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -315,7 +315,7 @@ class _Testscreen7State extends State<Testscreen7> {
             if (widget.selectedOption == '표출형') ...[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -526,7 +526,7 @@ class _Testscreen7State extends State<Testscreen7> {
             if (widget.selectedOption == '회피형') ...[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -737,7 +737,7 @@ class _Testscreen7State extends State<Testscreen7> {
             if (widget.selectedOption == '분석형') ...[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
