@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test1/screen/loginScreen2.dart';
 import 'testscreen2.dart';
 import '../state/loss_case_controller.dart';
 import '../state/user_controller.dart';
@@ -15,7 +14,6 @@ class Testscreen extends StatefulWidget {
 class _TestscreenState extends State<Testscreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-  String? _gender; // '남' or '여'
 
   // 이별 상대 선택 관련 상태 변수
   String? _selectedCategory; // '가족', '연인', '친구', '반려동물'
@@ -24,8 +22,6 @@ class _TestscreenState extends State<Testscreen> {
   // 컨트롤러 가져오기
   final LossCaseController lossCaseController = Get.find<LossCaseController>();
   final UserController userController = Get.find<UserController>();
-
-  bool _isNumeric(String value) => RegExp(r'^\d+$').hasMatch(value);
 
   bool get _canProceed {
     // final name = _nameController.text.trim();
@@ -573,12 +569,54 @@ class _TestscreenState extends State<Testscreen> {
                                 // 선택된 카테고리를 LossCaseController에 저장
                                 if (_selectedCategory == '가족') {
                                   lossCaseController.setSubject('FAMILY');
+                                  if (_selectedFamilyMember == '아버지') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'FATHER',
+                                    );
+                                  } else if (_selectedFamilyMember == '어머니') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'MOTHER',
+                                    );
+                                  } else if (_selectedFamilyMember == '아들') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'SON',
+                                    );
+                                  } else if (_selectedFamilyMember == '딸') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'DAUGHTER',
+                                    );
+                                  } else if (_selectedFamilyMember == '할아버지') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'GRANDFATHER_GRANDMOTHER',
+                                    );
+                                  } else if (_selectedFamilyMember == '할머니') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'GRANDFATHER_GRANDMOTHER',
+                                    );
+                                  } else if (_selectedFamilyMember == '남자형제') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'BROTHER',
+                                    );
+                                  } else if (_selectedFamilyMember == '여자형제') {
+                                    lossCaseController.setLossSubjectFamily(
+                                      'SISTER',
+                                    );
+                                  }
                                 } else if (_selectedCategory == '연인') {
                                   lossCaseController.setSubject('LOVER');
+                                  lossCaseController.setLossSubjectFamily(
+                                    'SON',
+                                  );
                                 } else if (_selectedCategory == '친구') {
                                   lossCaseController.setSubject('FRIEND');
+                                  lossCaseController.setLossSubjectFamily(
+                                    'SON',
+                                  );
                                 } else if (_selectedCategory == '반려동물') {
                                   lossCaseController.setSubject('PET');
+                                  lossCaseController.setLossSubjectFamily(
+                                    'SON',
+                                  );
                                 }
 
                                 // 사용자 정보도 함께 저장
@@ -590,8 +628,8 @@ class _TestscreenState extends State<Testscreen> {
                                   gender: userController.userGender.value,
                                 );
 
-                                print('Testscreen1 데이터 저장 완료');
-                                lossCaseController.printCurrentData();
+                                // print('Testscreen1 데이터 저장 완료');
+                                // lossCaseController.printCurrentData();
 
                                 Get.to(
                                   () => Testscreen2(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen6.dart';
-import 'testscreen4.dart';
-import '../state/survey_controller.dart';
 
 ///////////////////////////////////////////
 // 반응형 UI 수정 아직 안됨
@@ -17,8 +15,6 @@ class Testscreen5 extends StatefulWidget {
 }
 
 class _Testscreen5State extends State<Testscreen5> {
-  String? _selected; // 억누르기형/표출형/회피형/분석형
-
   // LossCaseController 가져오기
 
   @override
@@ -220,40 +216,6 @@ class _Testscreen5State extends State<Testscreen5> {
           },
         ),
       ),
-    );
-  }
-}
-
-class _RadioLine extends StatelessWidget {
-  final String title;
-  final String? groupValue;
-  final ValueChanged<String?> onChanged;
-  const _RadioLine({
-    required this.title,
-    required this.groupValue,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Radio<String>(
-          value: title,
-          groupValue: groupValue,
-          onChanged: onChanged,
-          visualDensity: VisualDensity.compact,
-          fillColor: WidgetStateProperty.all(const Color(0xFFDCE6FA)),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: const TextStyle(
-            color: Color(0xFF2E5AAC),
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
     );
   }
 }

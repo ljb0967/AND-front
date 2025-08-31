@@ -11,12 +11,27 @@ class UserController extends GetxController {
   RxInt userAge = 0.obs;
   RxString userGender = ''.obs;
   RxBool isLoggedIn = false.obs;
+  RxString quest1 = ''.obs;
+  RxString quest2 = ''.obs;
+  RxString quest3 = ''.obs;
+  List<RxBool> questComplete = [false.obs, false.obs, false.obs];
+  RxString qna = ''.obs;
+  RxInt qnaId = 0.obs;
+  RxInt coin = 10.obs;
 
   void setuserId(int value) => userId.value = value;
   void setEmail(String value) => userEmail.value = value;
   void setuserName(String value) => userName.value = value;
   void setuserAge(int value) => userAge.value = value;
   void setuserGender(String value) => userGender.value = value;
+  void setquest1(String value) => quest1.value = value;
+  void setquest2(String value) => quest2.value = value;
+  void setquest3(String value) => quest3.value = value;
+  void setquestComplete(int index, bool value) =>
+      questComplete[index].value = value;
+  void setqna(String value) => qna.value = value;
+  void setqnaId(int value) => qnaId.value = value;
+  void setcoin(int value) => coin.value = value;
 
   // 로그인 정보 저장
   void setLoginData(Map<String, dynamic> responseData, String userPassword) {

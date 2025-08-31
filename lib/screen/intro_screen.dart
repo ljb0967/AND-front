@@ -143,7 +143,7 @@ class _IntroScreenState extends State<IntroScreen>
       child: Container(
         width: 2,
         height: 28,
-        color: _textColor.withOpacity(0.85),
+        color: _textColor.withValues(alpha: 0.85),
       ),
     );
 

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen5.dart';
-import '../state/survey_controller.dart';
-import 'testscreen3.dart';
 import '../state/loss_case_controller.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -491,8 +489,8 @@ class _Testscreen4State extends State<Testscreen4> {
                             ? () {
                                 lossCaseController.setLossDate(_selectedDate);
 
-                                print('Testscreen4 데이터 저장 완료');
-                                lossCaseController.printCurrentData();
+                                // print('Testscreen4 데이터 저장 완료');
+                                // lossCaseController.printCurrentData();
                                 Get.to(
                                   () => const Testscreen5(),
                                   transition: Transition.fade,

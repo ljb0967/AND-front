@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../state/survey_controller.dart';
 import '../state/loss_case_controller.dart';
 import 'package:get/get.dart';
+import 'dart:async';
+import 'dart:io';
 
 class Homeappbarwidget extends StatefulWidget {
   const Homeappbarwidget({super.key});
@@ -14,7 +15,9 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
   final LossCaseController lossCaseController = Get.find<LossCaseController>();
 
   DateTime _selectedDate = Get.find<LossCaseController>().lossDate.value;
-
+  late final PageController _bgCtrl;
+  Timer? _bgTimer;
+  int _bgIndex = 0;
   String _todayString() {
     final now = DateTime.now();
     const weekDays = ['월', '화', '수', '목', '금', '토', '일'];
@@ -35,6 +38,8 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
   @override
   void initState() {
     super.initState();
+    _bgCtrl = PageController(initialPage: 0);
+    _startAutoSlide();
 
     // 시간차로 순차적으로 위젯 보이기
     Future.delayed(const Duration(milliseconds: 600), () {
@@ -45,33 +50,79 @@ class _HomeappbarwidgetState extends State<Homeappbarwidget> {
     });
   }
 
+  void _startAutoSlide() {
+    _bgTimer?.cancel();
+    _bgTimer = Timer.periodic(const Duration(seconds: 6), (_) {
+      final len = lossCaseController.profilephoto.length;
+      if (!_bgCtrl.hasClients || len <= 1) return;
+      _bgIndex = (_bgIndex + 1) % len;
+      _bgCtrl.animateToPage(
+        _bgIndex,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _bgTimer?.cancel();
+    _bgCtrl.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Stack(
         children: [
-          Container(
+          SizedBox(
             height: 350,
             width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20.0),
-              ),
-              image: DecorationImage(
-                image: AssetImage('image/ex_photo.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned.fill(
             child: ClipRRect(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20.0),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(20),
               ),
-              child: Opacity(
-                opacity: 0.6,
-                child: Container(color: Colors.black),
-              ),
+              child: Obx(() {
+                final images = lossCaseController.profilephoto;
+                if (images.isEmpty) {
+                  // photo가 비어있으면 기본 이미지
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset('image/ex_photo.png', fit: BoxFit.cover),
+                      Container(
+                        color: Colors.black.withValues(alpha: 0.6),
+                      ), // 필요시
+                    ],
+                  );
+                }
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    PageView.builder(
+                      controller: _bgCtrl,
+                      onPageChanged: (i) => _bgIndex = i,
+                      // 스와이프 막고 싶으면 아래 줄 추가:
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: images.length,
+                      itemBuilder: (_, i) {
+                        final path = images[i];
+                        return Image.file(
+                          File(path),
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Image.asset(
+                            'image/ex_photo.png',
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
+                    // 배경 어둡게(명도 조절)
+                    Container(color: Colors.black.withValues(alpha: 0.6)),
+                  ],
+                );
+              }),
             ),
           ),
 

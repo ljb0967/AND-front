@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen.dart';
-import 'loginscreen.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../state/user_controller.dart';
@@ -21,7 +20,8 @@ class _LoginScreen2State extends State<LoginScreen2> {
   // UserController 가져오기
   final UserController userController = Get.find<UserController>();
 
-  static const String _baseUrl = 'http://10.0.2.2:8080';
+  //static const String _baseUrl = 'http://10.0.2.2:8080';
+  static const String _baseUrl = 'https://and-backend.onrender.com';
   static const String _lossCasesEndpoint = '/auth/signup';
 
   bool get _isFormValid {
@@ -49,7 +49,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
       };
 
       // 요청 데이터 로그 출력
-      print('요청 데이터: ${json.encode(requestData)}');
+      //print('요청 데이터: ${json.encode(requestData)}');
 
       final response = await http.post(
         Uri.parse('$_baseUrl$_lossCasesEndpoint'),
@@ -58,16 +58,16 @@ class _LoginScreen2State extends State<LoginScreen2> {
       );
 
       // 응답 상세 로그 출력
-      print('응답 상태 코드: ${response.statusCode}');
-      print('응답 헤더: ${response.headers}');
-      print('응답 본문: ${response.body}');
+      // print('응답 상태 코드: ${response.statusCode}');
+      // print('응답 헤더: ${response.headers}');
+      // print('응답 본문: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('정보 입력 성공: ${response.body}');
+        //print('정보 입력 성공: ${response.body}');
         Get.to(() => const Testscreen(), transition: Transition.fade);
         return true;
       } else {
-        print('정보 입력 실패: ${response.statusCode} - ${response.body}');
+        //print('정보 입력 실패: ${response.statusCode} - ${response.body}');
 
         // 400 오류인 경우 더 자세한 정보 표시
         if (response.statusCode == 400) {

@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import '../state/survey_controller.dart';
-import 'testscreen8.dart';
-import 'homescreen.dart';
 import 'analysis_animation_screen.dart';
 import '../state/loss_case_controller.dart';
 import '../state/user_controller.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'homecontentscreen.dart';
 
 class Testscreen9 extends StatefulWidget {
   const Testscreen9({super.key});
@@ -23,6 +19,7 @@ class _Testscreen9State extends State<Testscreen9> {
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
   File? _selectedImage2;
+  File? _selectedImage3;
 
   // LossCaseController와 UserController 가져오기
   final LossCaseController lossCaseController = Get.find<LossCaseController>();
@@ -30,14 +27,7 @@ class _Testscreen9State extends State<Testscreen9> {
 
   Future<void> _pickImage() async {
     try {
-      print('이미지 선택 시작');
-
-      // 사용자에게 갤러리 또는 카메라 선택 옵션 제공
-      // final ImageSource? source = await _showImageSourceDialog();
-      // if (source == null) {
-      //   print('이미지 소스가 선택되지 않음');
-      //   return;
-      // }
+      //print('이미지 선택 시작');
 
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -46,25 +36,16 @@ class _Testscreen9State extends State<Testscreen9> {
         imageQuality: 85,
       );
 
-      print('선택된 이미지: ${image?.path}');
+      //print('선택된 이미지: ${image?.path}');
 
       if (image != null) {
         setState(() {
           _selectedImage = File(image.path);
-          print('이미지가 성공적으로 선택됨: ${_selectedImage?.path}');
+          //print('이미지가 성공적으로 선택됨: ${_selectedImage?.path}');
         });
-      } else {
-        // print('이미지가 선택되지 않음');
-        // // 사용자에게 안내 메시지 표시
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(
-        //     content: Text('이미지를 선택해주세요'),
-        //     backgroundColor: Colors.blue,
-        //   ),
-        // );
       }
     } catch (e) {
-      print('이미지 선택 오류: $e');
+      //print('이미지 선택 오류: $e');
       // 사용자에게 오류 메시지 표시
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -77,14 +58,7 @@ class _Testscreen9State extends State<Testscreen9> {
 
   Future<void> _pickImage2() async {
     try {
-      print('이미지 선택 시작');
-
-      // 사용자에게 갤러리 또는 카메라 선택 옵션 제공
-      // final ImageSource? source = await _showImageSourceDialog();
-      // if (source == null) {
-      //   print('이미지 소스가 선택되지 않음');
-      //   return;
-      // }
+      //print('이미지 선택 시작');
 
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -93,25 +67,16 @@ class _Testscreen9State extends State<Testscreen9> {
         imageQuality: 85,
       );
 
-      print('선택된 이미지: ${image?.path}');
+      //print('선택된 이미지: ${image?.path}');
 
       if (image != null) {
         setState(() {
           _selectedImage2 = File(image.path);
-          print('이미지가 성공적으로 선택됨: ${_selectedImage2?.path}');
+          //print('이미지가 성공적으로 선택됨: ${_selectedImage2?.path}');
         });
-      } else {
-        // print('이미지가 선택되지 않음');
-        // // 사용자에게 안내 메시지 표시
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(
-        //     content: Text('이미지를 선택해주세요'),
-        //     backgroundColor: Colors.blue,
-        //   ),
-        // );
       }
     } catch (e) {
-      print('이미지 선택 오류: $e');
+      //print('이미지 선택 오류: $e');
       // 사용자에게 오류 메시지 표시
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -122,30 +87,35 @@ class _Testscreen9State extends State<Testscreen9> {
     }
   }
 
-  Future<ImageSource?> _showImageSourceDialog() async {
-    return await showDialog<ImageSource>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('이미지 선택'),
-          content: const Text('이미지를 어디서 가져오시겠습니까?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(ImageSource.gallery),
-              child: const Text('갤러리'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(ImageSource.camera),
-              child: const Text('카메라'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(null),
-              child: const Text('취소'),
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> _pickImage3() async {
+    try {
+      //print('이미지 선택 시작');
+
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      //print('선택된 이미지: ${image?.path}');
+
+      if (image != null) {
+        setState(() {
+          _selectedImage3 = File(image.path);
+          //print('이미지가 성공적으로 선택됨: ${_selectedImage3?.path}');
+        });
+      }
+    } catch (e) {
+      //print('이미지 선택 오류: $e');
+      // 사용자에게 오류 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('이미지 선택 중 오류가 발생했습니다: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   // 최종 데이터를 서버로 전송
@@ -153,25 +123,11 @@ class _Testscreen9State extends State<Testscreen9> {
     try {
       // LossCaseController에서 최종 데이터 가져오기
       final requestData = lossCaseController.toJson();
-      // users 제거
-      // requestData.remove('users');
-      // // lossCaseId 제거
-      // requestData.remove('lossCaseId');
-
-      final headers = userController.getAuthHeaders();
-
-      print('최종 전송 데이터: ${json.encode(requestData)}');
-
-      // Get.offUntil(
-      //   MaterialPageRoute(
-      //     builder: (_) => AnalysisAnimationScreen(),
-      //   ), //로그인 페이지 외에 이전 모든 페이지 스택에서 pop  //디버깅용 임시 지워야함.
-      //   (route) => route.settings.name == "/Loginscreen",
-      // );
 
       // API 엔드포인트 호출
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8080/loss-cases'),
+        //Uri.parse('http://10.0.2.2:8080/loss-cases'),
+        Uri.parse('https://and-backend.onrender.com/loss-cases'),
         headers: userController.getAuthHeaders(),
         body: json.encode(requestData),
       );
@@ -179,7 +135,7 @@ class _Testscreen9State extends State<Testscreen9> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body); // String → Map 변환
         lossCaseController.setLossCaseId(responseData['lossCaseId']);
-        print('Loss Case 생성 성공: ${response.body}');
+        //print('Loss Case 생성 성공: ${response.body}');
 
         // 성공 시 홈 화면으로 이
         Get.offUntil(
@@ -189,7 +145,7 @@ class _Testscreen9State extends State<Testscreen9> {
           (route) => route.settings.name == "/Loginscreen",
         );
       } else {
-        print('Loss Case 생성 실패: ${response.statusCode} - ${response.body}');
+        //print('Loss Case 생성 실패: ${response.statusCode} - ${response.body}');
         // 실패 시 사용자에게 알림
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -348,7 +304,9 @@ class _Testscreen9State extends State<Testscreen9> {
                                   ? Center(
                                       child: Icon(
                                         Icons.add_photo_alternate,
-                                        color: Colors.white.withOpacity(0.3),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.3,
+                                        ),
                                         size: 32,
                                       ),
                                     )
@@ -393,7 +351,9 @@ class _Testscreen9State extends State<Testscreen9> {
                                   ? Center(
                                       child: Icon(
                                         Icons.add_photo_alternate,
-                                        color: Colors.white.withOpacity(0.3),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.3,
+                                        ),
                                         size: 32,
                                       ),
                                     )
@@ -401,7 +361,46 @@ class _Testscreen9State extends State<Testscreen9> {
                             ),
                           ),
                         ),
-                        Expanded(child: Container()),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              _pickImage3();
+                            },
+                            child: Container(
+                              //width: double.infinity,
+                              height: 184,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: ShapeDecoration(
+                                color: const Color(0xFF1F2124),
+                                image: _selectedImage3 != null
+                                    ? DecorationImage(
+                                        image: FileImage(_selectedImage3!),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    width: 2,
+                                    color: const Color(0xFF232529),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: _selectedImage3 == null
+                                  ? Center(
+                                      child: Icon(
+                                        Icons.add_photo_alternate,
+                                        color: Colors.white.withValues(
+                                          alpha: 0.3,
+                                        ),
+                                        size: 32,
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
 
@@ -437,6 +436,16 @@ class _Testscreen9State extends State<Testscreen9> {
                           //   ), //애니메이션 페이지로 이동
                           //   (route) => route.settings.name == "/Loginscreen",
                           // );
+                          if (_selectedImage != null) {
+                            lossCaseController.addProfilePhoto(
+                              _selectedImage!.path,
+                            );
+                          }
+                          if (_selectedImage2 != null) {
+                            lossCaseController.addProfilePhoto(
+                              _selectedImage2!.path,
+                            );
+                          }
                           _submitFinalData();
                         },
                       ),

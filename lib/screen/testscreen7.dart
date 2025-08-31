@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../state/loss_case_controller.dart';
 import 'testscreen8.dart';
-import 'testscreen6.dart';
-import 'testscreen5.dart';
 
 class Testscreen7 extends StatefulWidget {
   final String? selectedOption;
@@ -263,8 +261,8 @@ class _Testscreen7State extends State<Testscreen7> {
                           ),
                           onPressed: () {
                             // 데이터 저장 (필요한 경우)
-                            print('Testscreen7 데이터 저장 완료');
-                            lossCaseController.printCurrentData();
+                            // print('Testscreen7 데이터 저장 완료');
+                            // lossCaseController.printCurrentData();
 
                             Get.to(
                               () => const Testscreen8(),

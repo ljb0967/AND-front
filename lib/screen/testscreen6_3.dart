@@ -253,8 +253,8 @@ class _Testscreen6_3State extends State<Testscreen6_3> {
                                   lossCaseController.setCopeWay('ANALYZE');
                                 }
 
-                                print('Testscreen6 데이터 저장 완료');
-                                lossCaseController.printCurrentData();
+                                // print('Testscreen6 데이터 저장 완료');
+                                // lossCaseController.printCurrentData();
 
                                 Get.to(
                                   () => Testscreen7(

@@ -19,10 +19,8 @@ class DailyQuestionScreen extends StatefulWidget {
 
 class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
   int _selectedIndex = 1;
-  int coin = 10;
   final UserController userController = Get.find();
   final LossCaseController lossCaseController = Get.find();
-  String _qna = '';
 
   final List<Widget> _pages = [
     const ChatScreen(), // 인덱스 0: 대화하기
@@ -35,34 +33,101 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
   DateTime _selectedDate = DateTime.now();
   DateTime _currentMonth = DateTime.now();
 
-  String get _formattedSelectedDate {
-    final weekdays = ['월', '화', '수', '목', '금', '토', '일'];
-    final weekday = weekdays[_selectedDate.weekday - 1];
-    return '${_selectedDate.year}년 ${_selectedDate.month}월 ${_selectedDate.day}일 $weekday요일';
-  }
-
   Future<void> _getqna() async {
-    final id = lossCaseController.lossCaseId.value;
-    final uri = Uri.parse(
-      'http://10.0.2.2:8080/qna',
-    ).replace(queryParameters: {'lossCaseId': id.toString()});
+    if (userController.qna.value != '') {
+      return;
+    }
 
-    final response = await http.get(
+    final id = lossCaseController.lossCaseId.value;
+    //final uri = Uri.parse('http://10.0.2.2:8080/qna/questions');
+    final uri = Uri.parse('https://and-backend.onrender.com/qna/questions');
+
+    final body = {'lossCaseId': id};
+
+    final response = await http.post(
       uri,
       headers: userController.getAuthHeaders(),
+      body: json.encode(body),
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print('qna 데이터 불러오기 성공: ${response.body}');
+      //print('qna 데이터 불러오기 성공: ${response.body}');
+      userController.setqna(data['text'].toString());
+      userController.setqnaId(data['id']);
       // for (var quest in data) {
       //   _quests.add(quest['text']);
       // }
-      _qna = data['text'].toString();
 
       setState(() {}); // UI 갱신
     } else {
       print('qna 데이터 불러오기 실패: ${response.body}');
     }
+  }
+
+  Future<void> _submitqna() async {
+    final qnaid = userController.qnaId.value;
+    final answer = _answerController.text.trim();
+    final body = {'text': answer};
+    //final uri = Uri.parse('http://10.0.2.2:8080/qna/questions/$qnaid/answers');
+    final uri = Uri.parse(
+      'https://and-backend.onrender.com/qna/questions/$qnaid/answers',
+    );
+    final response = await http.post(
+      uri,
+      headers: userController.getAuthHeaders(),
+      body: json.encode(body),
+    );
+    if (response.statusCode == 200) {
+      print('qna 제출 성공: ${response.body}');
+    } else {
+      print('qna 제출 실패: ${response.body}');
+    }
+
+    final now = DateTime.now();
+    final dateString =
+        '${now.year}.${now.month.toString().padLeft(2, '0')}.${now.day.toString().padLeft(2, '0')}';
+    final weekdays = ['월', '화', '수', '목', '금', '토', '일'];
+    final weekdayString = weekdays[now.weekday - 1];
+
+    // 새로운 답변 데이터 생성
+    final newAnswer = {
+      'date': dateString,
+      'weekday': weekdayString,
+      'question': userController.qna.value,
+      'answer': _answerController.text.trim(),
+      'qnaId': qnaid,
+    };
+
+    setState(() {
+      // 같은 날짜에 기존 답변이 있는지 확인
+      final existingAnswerIndex = _diaryArchiveData.indexWhere(
+        (answer) => answer['date'] == dateString,
+      );
+
+      if (existingAnswerIndex != -1) {
+        // 기존 답변이 있으면 최신 답변으로 대체
+        _diaryArchiveData[existingAnswerIndex] = newAnswer;
+      } else {
+        // 기존 답변이 없으면 새로운 답변을 맨 위에 추가
+        _diaryArchiveData.insert(0, newAnswer);
+        // 최대 20개까지만 유지
+        if (_diaryArchiveData.length > 20) {
+          _diaryArchiveData.removeLast();
+        }
+      }
+
+      // 코인 지급 (300자 이상 입력 시)
+      if (_characterCount >= 300) {
+        userController.coin.value += 1;
+      }
+    });
+
+    // 답변 입력 필드 초기화
+    _answerController.clear();
+    _characterCount = 0;
+
+    // 성공 알림창 표시
+    _showSaveSuccessNotification();
   }
 
   void _selectDate(DateTime date) {
@@ -155,11 +220,17 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
   }
 
   void _onItemTapped(int index) {
+    // 현재 화면과 같은 화면을 선택한 경우 navigation하지 않음
+    if (index == _selectedIndex) return;
+
     setState(() {
       _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
     });
-    if (index == 1) return;
-    Get.off(_pages[index], transition: Transition.fade);
+
+    // 다른 화면으로 이동할 때만 navigation
+    if (index != 1) {
+      Get.off(_pages[index], transition: Transition.fade);
+    }
   }
 
   bool _isActive = true;
@@ -178,6 +249,7 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
     // 글자수 카운터 리스너 추가
     _bootstrap();
     _answerController.addListener(_updateCharacterCount);
+    _selectDate(DateTime.now());
   }
 
   Future<void> _bootstrap() async {
@@ -293,55 +365,6 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
     return true;
   }
 
-  // 답변 저장하기 기능
-  void _saveAnswer() {
-    // 현재 날짜 정보 가져오기
-    final now = DateTime.now();
-    final dateString =
-        '${now.year}.${now.month.toString().padLeft(2, '0')}.${now.day.toString().padLeft(2, '0')}';
-    final weekdays = ['월', '화', '수', '목', '금', '토', '일'];
-    final weekdayString = weekdays[now.weekday - 1];
-
-    // 새로운 답변 데이터 생성
-    final newAnswer = {
-      'date': dateString,
-      'weekday': weekdayString,
-      'question': _qna,
-      'answer': _answerController.text.trim(),
-    };
-
-    setState(() {
-      // 같은 날짜에 기존 답변이 있는지 확인
-      final existingAnswerIndex = _diaryArchiveData.indexWhere(
-        (answer) => answer['date'] == dateString,
-      );
-
-      if (existingAnswerIndex != -1) {
-        // 기존 답변이 있으면 최신 답변으로 대체
-        _diaryArchiveData[existingAnswerIndex] = newAnswer;
-      } else {
-        // 기존 답변이 없으면 새로운 답변을 맨 위에 추가
-        _diaryArchiveData.insert(0, newAnswer);
-        // 최대 20개까지만 유지
-        if (_diaryArchiveData.length > 20) {
-          _diaryArchiveData.removeLast();
-        }
-      }
-
-      // 코인 지급 (300자 이상 입력 시)
-      if (_characterCount >= 300) {
-        coin += 1;
-      }
-    });
-
-    // 답변 입력 필드 초기화
-    _answerController.clear();
-    _characterCount = 0;
-
-    // 성공 알림창 표시
-    _showSaveSuccessNotification();
-  }
-
   // 해당 날짜에 답변이 있는지 확인하는 함수
   bool _hasAnswerOnDate(DateTime date) {
     final dateString =
@@ -416,25 +439,28 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
   // 문답보관함 데이터 리스트 (상태로 관리)
   final List<Map<String, dynamic>> _diaryArchiveData = [
     {
-      'date': '2025.08.31',
-      'weekday': '일',
+      'date': '2025.08.29',
+      'weekday': '금',
       'question': '오늘 나의 감정을 색깔로 표현한다면 어떤 색일까요...',
       'answer':
           '오늘 나의 감정은 뭔가 보라색같다. 요근래 계속 아빠 생각이 나서 가슴이 답답하고 우울했는데, 오늘 아빠랑 앱에서 대화하고 오랜만에 아빠랑 갔었던 광안리를 가니까 그동안 묵었던 뭔지 모를 감정들이 씻겨 내려가는 느낌이었다. 그때 바라본 하늘은 너무나 예쁜 보라색이었고, 오묘한 그 색감이 마치 나의 기분과 비슷한 것 같다는 생각이 들었다.',
+      'qnaId': -1,
     },
     {
-      'date': '2025.08.30',
-      'weekday': '토',
+      'date': '2025.08.28',
+      'weekday': '목',
       'question': '지금 내 마음을 한 단어로 표현한다면 어떤 단어가...',
       'answer':
           '지금 내 마음을 한 단어로 표현한다면 "희망"이다. 어제까지는 너무나 절망적이었는데, 오늘 아침에 일어나서 창밖을 보니 햇살이 너무 예뻐서 문득 기분이 좋아졌다. 그리고 친구가 연락을 해줘서 오랜만에 만나서 이야기를 나누었는데, 그 과정에서 내가 생각했던 것보다 훨씬 많은 사람들이 나를 응원하고 있다는 걸 알게 되었다.',
+      'qnaId': -2,
     },
     {
-      'date': '2025.08.29',
-      'weekday': '금',
+      'date': '2025.08.27',
+      'weekday': '수',
       'question': '오늘 하루에서 가장 고마웠던 순간을 꼽는다면 언제...',
       'answer':
           '오늘 하루에서 가장 고마웠던 순간은 아침에 일어나서 엄마가 차려준 아침밥을 먹을 때였다. 평소에는 그냥 당연하게 여겼는데, 오늘은 문득 엄마가 매일 아침 일찍 일어나서 우리 가족을 위해 밥을 차려주신다는 게 너무나 감사하게 느껴졌다. 그리고 밥을 먹으면서 엄마와 대화를 나누었는데, 그 순간이 정말 소중하게 느껴졌다.',
+      'qnaId': -3,
     },
   ];
 
@@ -543,7 +569,7 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    '$coin',
+                                    '${userController.coin.value}',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -701,7 +727,7 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  _qna,
+                                  userController.qna.value,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -879,7 +905,7 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                               child: GestureDetector(
-                                onTap: _isSaveAnswer() ? _saveAnswer : null,
+                                onTap: _isSaveAnswer() ? _submitqna : null,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
@@ -944,7 +970,7 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                         height: 475.0,
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
-                          itemCount: 3, // 일주일치 일기
+                          itemCount: _diaryArchiveData.length, // 일주일치 일기
                           itemBuilder: (context, index) {
                             return _buildDiaryArchiveCard(index);
                           },
@@ -1059,7 +1085,7 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                               ),
                               const SizedBox(height: 8),
 
-                              // 달력 그리드
+                              //달력 그리드
                               ...List.generate(5, (weekIndex) {
                                 final weekDays = _getDaysInMonth()
                                     .skip(weekIndex * 7)
@@ -1086,54 +1112,82 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                                         onTap: () => _selectDate(date),
                                         child: Column(
                                           children: [
-                                            Container(
+                                            SizedBox(
                                               width: 32,
-                                              height: 32,
-                                              decoration: BoxDecoration(
-                                                color: isSelected
-                                                    ? const Color(0xFF65A0FF)
-                                                    : isToday
-                                                    ? const Color(0xFF2A2D31)
-                                                    : Colors.transparent,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  '${date.day}',
-                                                  style: TextStyle(
-                                                    color: isSelected
-                                                        ? Colors.white
-                                                        : isCurrentMonth
-                                                        ? Colors.white
-                                                        : const Color(
-                                                            0xFF7F8694,
-                                                          ),
-                                                    fontSize: 14,
-                                                    fontFamily: 'Pretendard',
-                                                    fontWeight:
-                                                        isSelected || isToday
-                                                        ? FontWeight.w600
-                                                        : FontWeight.w500,
-                                                    height: 1.40,
-                                                    letterSpacing: -0.35,
+                                              height: 36, // 날짜(32) + 점(여유 8)
+                                              child: Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  // 날짜 원/텍스트
+                                                  Container(
+                                                    width: 32,
+                                                    height: 32,
+                                                    decoration: BoxDecoration(
+                                                      color: isSelected
+                                                          ? const Color(
+                                                              0xFF65A0FF,
+                                                            )
+                                                          : isToday
+                                                          ? const Color(
+                                                              0xFF2A2D31,
+                                                            )
+                                                          : Colors.transparent,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      '${date.day}',
+                                                      style: TextStyle(
+                                                        color: isSelected
+                                                            ? Colors.white
+                                                            : (isCurrentMonth
+                                                                  ? Colors.white
+                                                                  : const Color(
+                                                                      0xFF7F8694,
+                                                                    )),
+                                                        fontSize: 14,
+                                                        fontFamily:
+                                                            'Pretendard',
+                                                        fontWeight:
+                                                            (isSelected ||
+                                                                isToday)
+                                                            ? FontWeight.w600
+                                                            : FontWeight.w500,
+                                                        height: 1.40,
+                                                        letterSpacing: -0.35,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
+
+                                                  // 파란 점(아래 고정)
+                                                  if (_hasAnswerOnDate(date))
+                                                    const Align(
+                                                      alignment: Alignment
+                                                          .bottomCenter,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                              bottom: 2,
+                                                            ), // 점과 아래쪽 간격
+                                                        child: SizedBox(
+                                                          width: 4,
+                                                          height: 4,
+                                                          child: DecoratedBox(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                  color: Color(
+                                                                    0xFF65A0FF,
+                                                                  ),
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
                                               ),
                                             ),
-                                            // 파란색 점 표시 (해당 날짜에 답변이 있는 경우)
-                                            if (_hasAnswerOnDate(date)) ...[
-                                              SizedBox(height: 4),
-                                              Container(
-                                                width: 4,
-                                                height: 4,
-                                                decoration: BoxDecoration(
-                                                  color: const Color(
-                                                    0xFF65A0FF,
-                                                  ),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                              ),
-                                            ],
                                           ],
                                         ),
                                       );
@@ -1294,10 +1348,6 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                                   ? const Color(0xFF65A0FF)
                                   : const Color(0xFF111111),
                               borderRadius: BorderRadius.circular(100.0),
-                              border: Border.all(
-                                color: const Color(0xFF232529),
-                                width: 2.0,
-                              ),
                             ),
                             child: ImageIcon(
                               AssetImage('image/server.png'),
@@ -1475,7 +1525,6 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                     child: Container(
-                      height: 320,
                       width: double.infinity,
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(

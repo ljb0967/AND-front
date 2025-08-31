@@ -18,7 +18,9 @@ class _LoginscreenState extends State<Loginscreen> {
   final TextEditingController pwController = TextEditingController();
   bool _isMember = true; // 회원 탭이 기본 선택
 
-  static const String _baseUrl = 'http://10.0.2.2:8080';
+  //static const String _baseUrl = 'http://10.0.2.2:8080';
+  static const String _baseUrl = 'https://and-backend.onrender.com';
+
   static const String _lossCasesEndpoint = '/auth/login';
 
   // 로그인 검증 상태 관리
@@ -40,7 +42,6 @@ class _LoginscreenState extends State<Loginscreen> {
     });
 
     try {
-      // TODO: 백엔드 API 호출하여 로그인 검증
       final requestData = {
         "email": idController.text.trim(),
         "password": pwController.text,
@@ -55,7 +56,7 @@ class _LoginscreenState extends State<Loginscreen> {
       //String token = response.body['accessToken'];
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('로그인 성공: ${response.body}');
+        //print('로그인 성공: ${response.body}');
 
         // 서버 응답 파싱
         try {
@@ -64,7 +65,7 @@ class _LoginscreenState extends State<Loginscreen> {
           // 토큰과 사용자 정보 저장
           await _saveUserData(responseData);
 
-          print('사용자 정보 저장 완료');
+          //print('사용자 정보 저장 완료');
           Get.to(() => const LoginScreen2(), transition: Transition.fade);
         } catch (e) {
           print('응답 파싱 오류: $e');
@@ -97,42 +98,21 @@ class _LoginscreenState extends State<Loginscreen> {
 
       // 임시로 항상 실패로 처리 (백엔드 구현 전)
       await Future.delayed(const Duration(milliseconds: 500)); // API 호출 시뮬레이션
+      if (!mounted) return;
       setState(() {
         _loginError = '이메일 주소 또는 비밀번호가 일치하지 않아요';
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _loginError = '로그인 중 오류가 발생했습니다';
       });
     } finally {
+      if (!mounted) return;
       setState(() {
         _isLoggingIn = false;
       });
     }
-  }
-
-  // 로그인 API 호출 (백엔드 구현 필요)
-  Future<void> _performLogin(String email, String password) async {
-    // TODO: 백엔드 API 구현
-    // try {
-    //   final response = await apiService.login({
-    //     'email': email,
-    //     'password': password,
-    //   });
-    //
-    //   if (response.success) {
-    //     Get.to(() => const LoginScreen2(), transition: Transition.fade);
-    //   } else {
-    //     setState(() {
-    //       _loginError = '이메일 주소 또는 비밀번호가 일치하지 않아요';
-    //     });
-    //   }
-    // } catch (e) {
-    //   print('로그인 오류: $e');
-    //   setState(() {
-    //     _loginError = '로그인 중 오류가 발생했습니다';
-    //   });
-    // }
   }
 
   // 사용자 데이터 저장
@@ -142,9 +122,9 @@ class _LoginscreenState extends State<Loginscreen> {
       final userController = Get.find<UserController>();
       userController.setLoginData(responseData, pwController.text);
 
-      print('사용자 데이터 저장 완료: ${responseData['user']?['email']}');
+      //print('사용자 데이터 저장 완료: ${responseData['user']?['email']}');
     } catch (e) {
-      print('사용자 데이터 저장 실패: $e');
+      // print('사용자 데이터 저장 실패: $e');
       throw Exception('사용자 데이터 저장에 실패했습니다: $e');
     }
   }

@@ -35,6 +35,7 @@ dependencies:
   image_picker: ^1.0.7
   http: ^1.1.0
   intl: ^0.19.0
+  shared_preferences: ^2.2.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -103,6 +104,36 @@ flutter:
     - image/character1-3.png
     - image/calendar.png
     - image/server.png
+    - image/background.jpg
+    - image/shop1.png
+    - image/shop2.png
+    - image/shop3.png
+    - image/shop4.png
+    - image/shop5.jpg
+    - image/shop6.jpg
+    - image/shop7.jpg
+    - image/shop8.jpg
+    - image/shop9.jpg
+    - image/shop10.jpg
+    - image/shop11.jpg
+    - image/shop12.png
+    - image/shop13.jpg
+    - image/shop14.jpg
+    - image/shop15.jpg
+    - image/shop16.png
+    - image/shop17.jpg
+    - image/shop18.jpg
+    - image/shop19.png
+    - image/shop20.jpg
+    - image/shop21.png
+    - image/shop22.jpg
+    - image/shop23.jpg
+    - image/shop24.jpg
+    - image/shop25.jpg
+    - image/diary1.jpg
+    - image/diary2.jpg
+    - image/diary3.jpg
+    - image/diary4.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen4.dart';
-import 'testscreen2.dart';
 import '../state/loss_case_controller.dart';
 
 class Testscreen3 extends StatefulWidget {
@@ -213,18 +212,18 @@ class _Testscreen3State extends State<Testscreen3> {
                                   lossCaseController.setWithTime('LESS_6M');
                                 } else if (_selectedTime == '6개월~1년') {
                                   lossCaseController.setWithTime('M6_TO_1Y');
-                                } else if (_selectedTime == '1년~2년') {
+                                } else if (_selectedTime == '1~2년') {
                                   lossCaseController.setWithTime('Y1_TO_2Y');
-                                } else if (_selectedTime == '2년~5년') {
+                                } else if (_selectedTime == '2~5년') {
                                   lossCaseController.setWithTime('Y2_TO_5Y');
-                                } else if (_selectedTime == '5년~10년') {
+                                } else if (_selectedTime == '5~10년') {
                                   lossCaseController.setWithTime('Y5_TO_10Y');
                                 } else if (_selectedTime == '10년 이상') {
                                   lossCaseController.setWithTime('OVER_10Y');
                                 }
 
-                                print('Testscreen3 데이터 저장 완료');
-                                lossCaseController.printCurrentData();
+                                // print('Testscreen3 데이터 저장 완료');
+                                // lossCaseController.printCurrentData();
 
                                 Get.to(
                                   () => const Testscreen4(),

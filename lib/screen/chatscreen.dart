@@ -11,6 +11,7 @@ import '../state/loss_case_controller.dart';
 import '../state/chat_controller.dart';
 import 'dart:convert';
 import 'dart:io';
+import '../explain.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -33,23 +34,33 @@ class _ChatScreenState extends State<ChatScreen> {
   ];
 
   void _onItemTapped(int index) {
+    // 현재 화면과 같은 화면을 선택한 경우 navigation하지 않음
+    if (index == _selectedIndex) return;
+
     setState(() {
       _selectedIndex = index; // 선택된 인덱스를 업데이트합니다.
     });
-    if (index == 0) return;
-    Get.off(_pages[index], transition: Transition.fade);
+
+    // 다른 화면으로 이동할 때만 navigation
+    if (index != 0) {
+      Get.off(_pages[index], transition: Transition.fade);
+    }
   }
 
   final TextEditingController _messageController = TextEditingController();
   final List<Map<String, dynamic>> _messages = [];
   bool _isTyping = false;
+  String profileName = '';
+  String profileImage = '';
+  String prompt = '';
 
   Future<void> _getchatroomid() async {
     final id = lossCaseController.lossCaseId.value;
     final requestData = {"lossCaseId": id};
 
     final uri = Uri.parse(
-      'http://10.0.2.2:8080/chat/rooms',
+      //'http://10.0.2.2:8080/chat/rooms',
+      'https://and-backend.onrender.com/chat/rooms',
     ).replace(queryParameters: {'lossCaseId': id.toString()});
 
     final response = await http.post(
@@ -57,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
       headers: userController.getAuthHeaders(),
       body: json.encode(requestData),
     );
-    print('Chat Room 생성 요청: ${requestData}');
+    //print('Chat Room 생성 요청: ${requestData}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
@@ -73,7 +84,10 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _getchatmessages() async {
     final roomId = chatController.chatRoomId.value;
 
-    final uri = Uri.parse('http://10.0.2.2:8080/chat/rooms/$roomId/messages');
+    //final uri = Uri.parse('http://10.0.2.2:8080/chat/rooms/$roomId/messages');
+    final uri = Uri.parse(
+      'https://and-backend.onrender.com/chat/rooms/$roomId/messages',
+    );
 
     final response = await http.get(
       uri,
@@ -83,7 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final responseData = jsonDecode(response.body);
       // 불러온 채팅 내용 버블에 반영해야함. {id = 0} , {id = 1} , {id = 2} ... _messages.add() 함수 사용 예정,
-      print('Chat Message 데이터 불러오기 성공: ${response.body}');
+      //print('Chat Message 데이터 불러오기 성공: ${response.body}');
       for (var message in responseData) {
         if (message['sender'] == 'User') {
           final userMessage = {
@@ -106,7 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
         }
       }
     } else {
-      print('Chat Message 데이터 불러오기 실패: ${response.body}');
+      //print('Chat Message 데이터 불러오기 실패: ${response.body}');
     }
   }
 
@@ -120,16 +134,19 @@ class _ChatScreenState extends State<ChatScreen> {
     final chatRoomId = chatController.chatRoomId.value;
 
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8080/chat/rooms/${chatRoomId}/messages'),
+      //Uri.parse('http://10.0.2.2:8080/chat/rooms/${chatRoomId}/messages'),
+      Uri.parse(
+        'https://and-backend.onrender.com/chat/rooms/${chatRoomId}/messages',
+      ),
       headers: userController.getAuthHeaders(),
       body: json.encode(requestData),
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       //서버에서 메시지별 id를 반환하는데 우선은 필요없어서 따로 저장안함.
-      print('메시지 저장 성공: ${response.body}');
+      //print('메시지 저장 성공: ${response.body}');
     } else {
-      print('메시지 저장 실패: ${response.body}');
+      //print('메시지 저장 실패: ${response.body}');
     }
   }
 
@@ -138,13 +155,21 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _bootstrap();
     _messageController.addListener(_onTextChanged);
-
+    if (prompt == '') {
+      prompt = lossCaseController.getPrompt();
+    }
     // 샘플 메시지들 (실제로는 API에서 가져올 데이터)
     _messages.addAll([
       {'text': '사랑하는 우리 아들', 'isUser': false, 'timestamp': '오전 9:41'},
       {'text': '오늘 주말인데 뭐 할기고', 'isUser': false, 'timestamp': '오전 9:41'},
       {'text': '넷플리스 볼려고', 'isUser': true, 'timestamp': '오전 9:42'},
     ]);
+    initdata();
+  }
+
+  void initdata() {
+    profileName = chatController.profileName.value;
+    profileImage = chatController.profileImage.value;
   }
 
   Future<void> _bootstrap() async {
@@ -179,14 +204,8 @@ class _ChatScreenState extends State<ChatScreen> {
       _messageController.clear();
     });
 
-    // TODO: OpenAI GPT API 호출하여 이별 상대의 응답 생성 후 _updatemessage 함수 호출에서 Post
-    String prompt =
-        '''You are a chatbot that takes on the role of the user's ex-partner 
-    and comforts the user's feelings through conversation. You must respond in Korean. 
-    Send replies that are not too long, like messages on KakaoTalk or Instagram DM.''';
-
     String model = 'gpt-5';
-    String apiKey = '';
+    String apiKey = Secrets.openaiApiKey;
 
     var response = await http.post(
       Uri.parse('https://api.openai.com/v1/chat/completions'),
@@ -200,12 +219,12 @@ class _ChatScreenState extends State<ChatScreen> {
           {'role': 'system', 'content': prompt},
           {'role': 'user', 'content': input},
         ],
-        'max_completion_tokens': 1000,
+        'max_completion_tokens': 2000,
       }),
     );
 
     if (response.statusCode == 200) {
-      print('OpenAI GPT API 호출 성공: ${response.body}');
+      //print('OpenAI GPT API 호출 성공: ${response.body}');
       var data = jsonDecode(response.body);
       Map<String, dynamic> message = {
         'text': data['choices'][0]['message']['content'],
@@ -263,6 +282,10 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _messageController.dispose();
+
+    // GetX 컨트롤러 정리 (permanent로 등록된 컨트롤러는 자동으로 정리됨)
+    // 필요시 추가 정리 로직 구현
+
     super.dispose();
   }
 
@@ -302,43 +325,45 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 // 프로필 사진
                 GestureDetector(
-                  onTap: () {
-                    Get.to(
-                      () => Chatprofilescreen(),
-                      transition: Transition.fade,
-                    );
-                  },
-                  child: chatController.profileImage.value.isNotEmpty
-                      ? ClipOval(
-                          child: Image.file(
-                            File(chatController.profileImage.value),
-                            // ← File로 감싸야 함
-                            width: 40,
-                            height: 40,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : Icon(
-                          Icons.person,
-                          color: const Color(0xFF7F8694),
-                          size: 25,
+                  onTap: () => Get.to(
+                    () => const Chatprofilescreen(),
+                    transition: Transition.fade,
+                  ),
+                  child: Obx(() {
+                    final path = chatController.profileImage.value;
+                    if (path.isNotEmpty && File(path).existsSync()) {
+                      return ClipOval(
+                        child: Image.file(
+                          File(path),
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
                         ),
-                  // child: Image.asset(chatController.profileImage.value),
+                      );
+                    }
+                    return const Icon(
+                      Icons.person,
+                      color: Color(0xFF7F8694),
+                      size: 25,
+                    );
+                  }),
                 ),
 
                 SizedBox(width: 12.0),
 
                 // 연락처 이름
                 Expanded(
-                  child: Text(
-                    chatController.profileName.value,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w600,
-                      height: 1.40,
-                      letterSpacing: -0.40,
+                  child: Obx(
+                    () => Text(
+                      chatController.profileName.value,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w600,
+                        height: 1.40,
+                        letterSpacing: -0.40,
+                      ),
                     ),
                   ),
                 ),
@@ -571,22 +596,24 @@ class _ChatScreenState extends State<ChatScreen> {
                     transition: Transition.fade,
                   );
                 },
-                child: chatController.profileImage.value.isNotEmpty
-                    ? ClipOval(
-                        child: Image.file(
-                          File(
-                            chatController.profileImage.value,
-                          ), // ← File로 감싸야 함
-                          width: 30,
-                          height: 30,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Icon(
-                        Icons.person,
-                        color: const Color(0xFF7F8694),
-                        size: 20,
+                child: Obx(() {
+                  final path = chatController.profileImage.value;
+                  if (path.isNotEmpty && File(path).existsSync()) {
+                    return ClipOval(
+                      child: Image.file(
+                        File(path),
+                        width: 30,
+                        height: 30,
+                        fit: BoxFit.cover,
                       ),
+                    );
+                  }
+                  return const Icon(
+                    Icons.person,
+                    color: Color(0xFF7F8694),
+                    size: 20,
+                  );
+                }),
               ),
             )
           else
@@ -601,15 +628,17 @@ class _ChatScreenState extends State<ChatScreen> {
                     (index > 0 && _messages[index - 1]['isUser'] == true))
                   Padding(
                     padding: EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    child: Text(
-                      chatController.profileName.value,
-                      style: TextStyle(
-                        color: const Color(0xFFBDC7DB),
-                        fontSize: 14,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                        letterSpacing: -0.35,
+                    child: Obx(
+                      () => Text(
+                        chatController.profileName.value,
+                        style: const TextStyle(
+                          color: Color(0xFFBDC7DB),
+                          fontSize: 14,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          height: 1.40,
+                          letterSpacing: -0.35,
+                        ),
                       ),
                     ),
                   )

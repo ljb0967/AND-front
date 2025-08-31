@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'homescreen.dart';
-import '../state/survey_controller.dart';
-import 'testscreen7.dart';
 import 'testscreen9.dart';
 import '../state/loss_case_controller.dart';
 import 'dart:convert';
@@ -18,8 +15,11 @@ class Testscreen8 extends StatefulWidget {
 
 class _Testscreen8State extends State<Testscreen8> {
   final TextEditingController _toneController = TextEditingController();
+  final TextEditingController _tone2Controller = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
+  File? _selectedImage2;
+  bool _isTextAdded = false;
 
   // LossCaseController 가져오기
   final LossCaseController lossCaseController = Get.find<LossCaseController>();
@@ -32,13 +32,6 @@ class _Testscreen8State extends State<Testscreen8> {
   Future<void> _pickImage() async {
     try {
       print('이미지 선택 시작');
-
-      // 사용자에게 갤러리 또는 카메라 선택 옵션 제공
-      // final ImageSource? source = await _showImageSourceDialog();
-      // if (source == null) {
-      //   print('이미지 소스가 선택되지 않음');
-      //   return;
-      // }
 
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -54,15 +47,6 @@ class _Testscreen8State extends State<Testscreen8> {
           _selectedImage = File(image.path);
           print('이미지가 성공적으로 선택됨: ${_selectedImage?.path}');
         });
-      } else {
-        // print('이미지가 선택되지 않음');
-        // // 사용자에게 안내 메시지 표시
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(
-        //     content: Text('이미지를 선택해주세요'),
-        //     backgroundColor: Colors.blue,
-        //   ),
-        // );
       }
     } catch (e) {
       print('이미지 선택 오류: $e');
@@ -76,30 +60,35 @@ class _Testscreen8State extends State<Testscreen8> {
     }
   }
 
-  Future<ImageSource?> _showImageSourceDialog() async {
-    return await showDialog<ImageSource>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('이미지 선택'),
-          content: const Text('이미지를 어디서 가져오시겠습니까?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(ImageSource.gallery),
-              child: const Text('갤러리'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(ImageSource.camera),
-              child: const Text('카메라'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(null),
-              child: const Text('취소'),
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> _pickImage2() async {
+    try {
+      print('이미지 선택 시작');
+
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      print('선택된 이미지: ${image?.path}');
+
+      if (image != null) {
+        setState(() {
+          _selectedImage2 = File(image.path);
+          print('이미지가 성공적으로 선택됨: ${_selectedImage2?.path}');
+        });
+      }
+    } catch (e) {
+      print('이미지 선택 오류: $e');
+      // 사용자에게 오류 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('이미지 선택 중 오류가 발생했습니다: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -237,7 +226,6 @@ class _Testscreen8State extends State<Testscreen8> {
                     // 텍스트 입력 필드
                     Container(
                       width: double.infinity,
-                      height: 68,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 12,
@@ -276,45 +264,91 @@ class _Testscreen8State extends State<Testscreen8> {
 
                     SizedBox(height: 16),
 
-                    // 텍스트 추가 버튼
-                    Container(
-                      width: double.infinity,
-                      height: 68,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            width: 2,
-                            color: const Color(0xFF232529),
+                    if (_isTextAdded) ...[
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFF1F2124),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextField(
+                          controller: _tone2Controller,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          style: const TextStyle(
+                            color: const Color(0xFF8A9099),
+                            fontSize: 16,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            height: 1.40,
+                          ),
+                          decoration: InputDecoration(
+                            isCollapsed: true,
+                            border: InputBorder.none,
+                            hintText: '텍스트를 입력하세요 (복사/붙여넣기 가능)',
+                            hintStyle: TextStyle(
+                              color: const Color(0xFF8A9099),
+                              fontSize: 16,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                            ),
+                          ),
                         ),
                       ),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: const Color(0xFF7F8694),
-                              size: 24,
+                    ] else ...[
+                      Container(
+                        width: double.infinity,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 2,
+                              color: const Color(0xFF232529),
                             ),
-                            SizedBox(width: 10),
-                            Text(
-                              '텍스트 추가',
-                              style: TextStyle(
-                                color: const Color(0xFF7F8694),
-                                fontSize: 14,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                              ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isTextAdded = true;
+                            });
+                          },
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_circle_outline,
+                                  color: const Color(0xFF7F8694),
+                                  size: 24,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  '텍스트 추가',
+                                  style: TextStyle(
+                                    color: const Color(0xFF7F8694),
+                                    fontSize: 14,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.40,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
 
+                    // 텍스트 추가 버튼
                     SizedBox(height: 32),
 
                     // 이미지 첨부 섹션
@@ -382,26 +416,6 @@ class _Testscreen8State extends State<Testscreen8> {
 
                         SizedBox(width: 12),
 
-                        // 두 번째 예시 이미지
-                        Expanded(
-                          child: Container(
-                            height: 118.67,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: ShapeDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('image/ex_image2.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(width: 12),
-
-                        // 사용자 이미지 첨부 영역
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
@@ -429,7 +443,50 @@ class _Testscreen8State extends State<Testscreen8> {
                                   ? Center(
                                       child: Icon(
                                         Icons.add_photo_alternate,
-                                        color: Colors.white.withOpacity(0.3),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.3,
+                                        ),
+                                        size: 32,
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 12),
+
+                        // 사용자 이미지 첨부 영역
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              _pickImage2();
+                            },
+                            child: Container(
+                              height: 118.67,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: ShapeDecoration(
+                                image: _selectedImage2 != null
+                                    ? DecorationImage(
+                                        image: FileImage(_selectedImage2!),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    width: 2,
+                                    color: const Color(0xFF232529),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: _selectedImage2 == null
+                                  ? Center(
+                                      child: Icon(
+                                        Icons.add_photo_alternate,
+                                        color: Colors.white.withValues(
+                                          alpha: 0.3,
+                                        ),
                                         size: 32,
                                       ),
                                     )
@@ -466,16 +523,26 @@ class _Testscreen8State extends State<Testscreen8> {
                         ),
                         onPressed: () {
                           if (_selectedImage != null) {
-                            final base64Image = _convertToBase64(
+                            final base64Image1 = _convertToBase64(
                               _selectedImage!,
                             );
-                            lossCaseController.setPhoto(
-                              base64Image,
+                            lossCaseController.addPhoto(
+                              base64Image1,
                             ); // Base64 문자열 저장
                           }
+                          if (_selectedImage2 != null) {
+                            final base64Image2 = _convertToBase64(
+                              _selectedImage2!,
+                            );
+                            lossCaseController.addPhoto(
+                              base64Image2,
+                            ); // Base64 문자열 저장
+                          }
+                          lossCaseController.setTone(_toneController.text);
+                          lossCaseController.setTone2(_tone2Controller.text);
 
-                          print('Testscreen8 데이터 저장 완료');
-                          lossCaseController.printCurrentData();
+                          // print('Testscreen8 데이터 저장 완료');
+                          // lossCaseController.printCurrentData();
 
                           Get.to(
                             () => const Testscreen9(),

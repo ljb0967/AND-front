@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test1/screen/testscreen.dart';
 import 'testscreen3.dart';
-import '../state/survey_controller.dart';
 import '../state/loss_case_controller.dart';
 
 class Testscreen2 extends StatefulWidget {
@@ -305,11 +303,77 @@ class _Testscreen2State extends State<Testscreen2> {
                                   );
                                 } else if (_selectedReason ==
                                     '정확히 모르겠어요 / 복합적이에요') {
-                                  lossCaseController.setLossReason('UNKNOWN');
+                                  lossCaseController.setLossReason(
+                                    'UNSURE_LOVER',
+                                  );
+                                } else if (_selectedReason ==
+                                    '큰 싸움으로 인한 연락 두절') {
+                                  lossCaseController.setLossReason('FIGHT');
+                                } else if (_selectedReason ==
+                                    '갑작스러운 차단 / 멀어짐') {
+                                  lossCaseController.setLossReason(
+                                    'SUDDEN_CUTOFF',
+                                  );
+                                } else if (_selectedReason == '자연스러운 멀어짐') {
+                                  lossCaseController.setLossReason(
+                                    'NATURSAL_DRIFT',
+                                  );
+                                } else if (_selectedReason == '친구에게 상처를 받음') {
+                                  lossCaseController.setLossReason(
+                                    'HURTED_BY_FRIEND',
+                                  );
+                                } else if (_selectedReason ==
+                                    '정확히 모르겠어요 / 복합적이에요') {
+                                  lossCaseController.setLossReason(
+                                    'UNSURE_FRIEND',
+                                  );
+                                } else if (_selectedReason == '자연사(노화)') {
+                                  lossCaseController.setLossReason(
+                                    'NATURAL_DEATH',
+                                  );
+                                } else if (_selectedReason ==
+                                    '질병/사고로 인한 갑작스러운 죽음') {
+                                  lossCaseController.setLossReason(
+                                    'ILLNESS_ACCIDENT',
+                                  );
+                                } else if (_selectedReason == '안락사 결정') {
+                                  lossCaseController.setLossReason(
+                                    'EUTHANASIA',
+                                  );
+                                } else if (_selectedReason == '실종') {
+                                  lossCaseController.setLossReason('MISSING');
+                                } else if (_selectedReason ==
+                                    '정확히 모르겠어요 / 복합적이에요') {
+                                  lossCaseController.setLossReason(
+                                    'UNSURE_PET',
+                                  );
+                                } else if (_selectedReason == '사망 (자연사)') {
+                                  lossCaseController.setLossReason(
+                                    'DEATH_NATURAL',
+                                  );
+                                } else if (_selectedReason ==
+                                    '사망 (사고사, 급작스러운 상실)') {
+                                  lossCaseController.setLossReason(
+                                    'DEATH_ACCIDENT',
+                                  );
+                                } else if (_selectedReason == '관계 단절') {
+                                  lossCaseController.setLossReason('CUT_OFF');
+                                } else if (_selectedReason == '이혼 / 가족 구조 해체') {
+                                  lossCaseController.setLossReason('DIVORCE');
+                                } else if (_selectedReason ==
+                                    '장기적 거리감 (연락두절, 이민, 실종 등)') {
+                                  lossCaseController.setLossReason(
+                                    'LONG_TERM_DISTANCE',
+                                  );
+                                } else if (_selectedReason ==
+                                    '정확히 모르겠어요 / 복합적이에요') {
+                                  lossCaseController.setLossReason(
+                                    'UNSURE_FAMILY',
+                                  );
                                 }
 
-                                print('Testscreen2 데이터 저장 완료');
-                                lossCaseController.printCurrentData();
+                                // print('Testscreen2 데이터 저장 완료');
+                                // lossCaseController.printCurrentData();
 
                                 Get.to(
                                   () => const Testscreen3(),
