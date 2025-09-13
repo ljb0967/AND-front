@@ -2,9 +2,10 @@
 
 # 1. 로그인/회원가입
 
-<img src="./Readme_image/Loginscreen.png" alt="로그인 화면" width="300">
-
-![로그인 화면2](./Readme_image/Loginscreen2.png)
+<p align="center">
+    <img src="./Readme_image/Loginscreen.png" alt="로그인 화면" width="200">
+    <img src="./Readme_image/Loginsceen2.png" alt="로그인 화면2" width="200">
+</p>
 
 # 2. 사전테스트
 
