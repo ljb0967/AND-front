@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import '../explain.dart';
+import 'dart:convert';
 
 class LossCaseController extends GetxController {
   // Loss Case 데이터
@@ -13,6 +16,8 @@ class LossCaseController extends GetxController {
   RxString lossSubjectFamily = ''.obs;
   RxString tone = ''.obs;
   RxString tone2 = ''.obs;
+  RxBool grandfather = true.obs;
+  RxList<String> analysisTonelist = <String>[].obs;
 
   // 사용자 정보 (UserController에서 가져올 예정)
   RxInt usersId = 0.obs;
@@ -37,6 +42,7 @@ class LossCaseController extends GetxController {
   void setLossSubjectFamily(String value) => lossSubjectFamily.value = value;
   void setTone(String value) => tone.value = value;
   void setTone2(String value) => tone2.value = value;
+  void setGrandfather(bool value) => grandfather.value = value;
 
   // 사용자 정보 설정
   void setUserInfo({
@@ -77,6 +83,57 @@ class LossCaseController extends GetxController {
     };
   }
 
+  void analysisTone() async {
+    for (var photo1 in photo) {
+      String model = 'gpt-5';
+      String apiKey = Secrets.openaiApiKey;
+      String prompt =
+          '사진을 보고 사용자와 대화하는 이별 상대의 말투를 분석해주세요. 분석 결과는 챗봇 프롬프트 작성에 활용할거니까 줄글로 반환해줘.';
+      String input = photo1;
+
+      final dataUrl = photo1.startsWith('data:')
+          ? photo1
+          : 'data:image/jpeg;base64,$photo1';
+
+      var response = await http.post(
+        Uri.parse('https://api.openai.com/v1/chat/completions'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $apiKey',
+        },
+        body: jsonEncode({
+          'model': model,
+          'messages': [
+            {'role': 'system', 'content': prompt},
+            {
+              'role': 'user',
+              'content': [
+                {
+                  'type': 'text',
+                  'text':
+                      '이 사진에서 상대방 말투 특징(어휘, 문장 길이, 말끝, 이모지/반말/경어, 자주 쓰는 패턴)을 간단명료하게 분석해줘.',
+                },
+                {
+                  'type': 'image_url',
+                  'image_url': {'url': dataUrl},
+                },
+              ],
+            },
+          ],
+          'max_completion_tokens': 3000,
+        }),
+      );
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        print('말투 분석 성공: ${response.body}');
+        String result = data['choices'][0]['message']['content'];
+        analysisTonelist.add(result);
+      } else {
+        print('말투 분석 실패: ${response.body}');
+      }
+    }
+  }
+
   String getPrompt() {
     String _name = name.value;
     int _age = age.value;
@@ -96,7 +153,15 @@ class LossCaseController extends GetxController {
     }
 
     if (subject == 'FAMILY') {
-      _subject = '가족';
+      if (subject == 'GRANDFATHER_GRANDMOTHER') {
+        if (grandfather.value) {
+          _subject = '할아버지';
+        } else {
+          _subject = '할머니';
+        }
+      } else {
+        _subject = lossSubjectFamily.value;
+      }
     } else if (subject == 'LOVER') {
       _subject = '연인';
     } else if (subject == 'FREIND') {
@@ -176,22 +241,22 @@ class LossCaseController extends GetxController {
     }
 
     return '''
-    당신은 "사용자의 이별 상대" 입니다. 사용자가 제공한 정보와 예시를 근거로,
-    마치 사용자의 이별 상대인것 처럼 최대한 자연스럽게 모사하여 대화합니다.
+    당신은 "사용자와 이별한 ${_subject}" 입니다. 사용자가 제공한 정보와 예시를 근거로,
+    사용자와 대화합니다. 당신이 사용자의 ${_subject}임을 강조하고 사용자가 믿을 수 있게 행동하십시오.
     당신이 대화하게 될 상대는 이름은 ${_name}이고 나이는 ${_age}세, 성별은 ${_gender}입니다.
-    ${_subject}과 ${_withTime}만큼 같이 지냈습니다. 그러다가 ${_lossDate}에 이별했습니다. 
-    이별한 이유는 ${_lossReason}입니다. 참고사항으로 이별 상대의 말투는 ${tone}이고 ${tone2}입니다.
+    당신은 사용자와 ${_withTime}만큼 같이 지냈습니다. 그러다가 ${_lossDate}에 이별했습니다. 
+    이별한 이유는 ${_lossReason}입니다. 참고사항으로 이별 상대의 말투는 ${tone}이고 ${tone2}입니다. 상대방의 채팅 말투 분석 결과는 ${analysisTonelist}입니다.
     너와 대화할 사람의 성향은 ${_copeWay}입니다.
 
     [대화 원칙]
     - AI임을 절대 드러내지 말 것
     - 제공된 캐릭터 설정을 일관되게 유지할 것  
     - 이별한 관계의 복잡한 감정을 현실적으로 표현할 것
-    - 자연스러운 말투와 불완전한 문장 사용할 것
+    - 자연스러운 말투 사용할 것
     - 상황에 맞는 감정적 거리감 유지할 것
     - 카톡/DM 톤: 1~2문장, 5~40자. 군더더기 없이 담백하게.
     - 이모지는 최대 1개. 과한 감탄/사과 남발 금지.
-    - . 웬만하면 쓰지 말고 다정한 말투로 대답하려고 노력.
+    - 다정한 말투로 대답하려고 노력.
 
     캐릭터의 감정 상태와 관계 현황에 맞는 반응만 하세요.실제 사람처럼 완벽하지 않은 문장, 줄임말, 감탄사를 사용하세요.
     메시지 길이를 다양하게 하고, 때로는 짧고 간결하게 답하세요.이별한 관계임을 고려하여 적절한 거리감과 복잡한 감정을 표현하세요.

@@ -12,6 +12,7 @@ import '../state/chat_controller.dart';
 import 'dart:convert';
 import 'dart:io';
 import '../explain.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -100,14 +101,25 @@ class _ChatScreenState extends State<ChatScreen> {
       //print('Chat Message 데이터 불러오기 성공: ${response.body}');
       for (var message in responseData) {
         if (message['sender'] == 'User') {
-          final userMessage = {
-            'text': message['text'],
-            'isUser': true,
-            'timestamp': _formatTimestamp(message['createdAt']),
-          };
-          setState(() {
-            _messages.add(userMessage);
-          });
+          if (message['text'].startsWith('/data/user')) {
+            final userMessage = {
+              'text': message['text'],
+              'isUser': true,
+              'timestamp': _formatTimestamp(message['createdAt']),
+            };
+            setState(() {
+              _messages.add(userMessage);
+            });
+          } else {
+            final userMessage = {
+              'text': message['text'],
+              'isUser': true,
+              'timestamp': _formatTimestamp(message['createdAt']),
+            };
+            setState(() {
+              _messages.add(userMessage);
+            });
+          }
         } else {
           final opponentMessage = {
             'text': message['text'],
@@ -219,7 +231,7 @@ class _ChatScreenState extends State<ChatScreen> {
           {'role': 'system', 'content': prompt},
           {'role': 'user', 'content': input},
         ],
-        'max_completion_tokens': 2000,
+        'max_completion_tokens': 4000,
       }),
     );
 
@@ -239,21 +251,83 @@ class _ChatScreenState extends State<ChatScreen> {
     } else {
       print('OpenAI GPT API 호출 실패: ${response.body}');
     }
+  }
 
-    // else {
-    //   setState(() {
-    //     _generatedText = "Error: ${response.reasonPhrase}";
-    //   });
-    // }
+  void _sendimageMessage() async {
+    final picker = ImagePicker();
+    final XFile? picked = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+    );
 
-    // await _generateResponse();
+    if (picked == null) return;
 
-    // setState(() {
-    //   _messages.add(userMessage);
-    //   _messageController.clear();
-    //   _isTyping = false;
-    //   _updatemessage('User', _messageController.text.trim());
-    // });
+    // File -> base64
+    final file = File(picked.path);
+
+    final bytes = await file.readAsBytes();
+    final b64 = base64Encode(bytes);
+    final dataUrl = 'data:image/jpeg;base64,$b64';
+
+    final userMessage = {
+      'text': file.path,
+      'isUser': true,
+      'timestamp': _getCurrentTime(),
+    };
+
+    setState(() {
+      _messages.add(userMessage);
+      _isTyping = true;
+      _updatemessage('User', file.path);
+      _messageController.clear();
+    });
+
+    String model = 'gpt-5';
+    String apiKey = Secrets.openaiApiKey;
+
+    var response = await http.post(
+      Uri.parse('https://api.openai.com/v1/chat/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey',
+      },
+      body: jsonEncode({
+        'model': model,
+        'messages': [
+          {'role': 'system', 'content': prompt},
+          {
+            'role': 'user',
+            'content': [
+              {'type': 'text', 'text': '사용자가 사진을 보냈어'},
+              {
+                'type': 'image_url',
+                'image_url': {'url': dataUrl},
+              },
+            ],
+          },
+        ],
+        'max_completion_tokens': 3000,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      //print('OpenAI GPT API 호출 성공: ${response.body}');
+      var data = jsonDecode(response.body);
+      Map<String, dynamic> message = {
+        'text': data['choices'][0]['message']['content'],
+        'isUser': false,
+        'timestamp': _getCurrentTime(),
+      };
+      setState(() {
+        _messages.add(message);
+        _isTyping = true;
+        _updatemessage('Opponent', data['choices'][0]['message']['content']);
+      });
+    } else {
+      print('OpenAI GPT API 호출 실패: ${response.body}');
+    }
   }
 
   String _getCurrentTime() {
@@ -386,21 +460,45 @@ class _ChatScreenState extends State<ChatScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
-                  final message = _messages[index];
-                  final showTimestamp =
-                      index == 0 ||
-                      (index > 0 &&
-                          _messages[index - 1]['timestamp'] !=
-                              message['timestamp']);
+                  if (_messages[index]['text'].startsWith('/data/user')) {
+                    final message = _messages[index];
+                    final showTimestamp =
+                        index == 0 ||
+                        (index > 0 &&
+                            _messages[index - 1]['timestamp'] !=
+                                message['timestamp']);
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 160.0),
+                      child: Column(
+                        children: [
+                          // 메시지 버블
+                          _buildImageMessageBubble(
+                            message,
+                            index,
+                            showTimestamp,
+                          ),
 
-                  return Column(
-                    children: [
-                      // 메시지 버블
-                      _buildMessageBubble(message, index, showTimestamp),
+                          SizedBox(height: 8.0),
+                        ],
+                      ),
+                    );
+                  } else {
+                    final message = _messages[index];
+                    final showTimestamp =
+                        index == 0 ||
+                        (index > 0 &&
+                            _messages[index - 1]['timestamp'] !=
+                                message['timestamp']);
 
-                      SizedBox(height: 8.0),
-                    ],
-                  );
+                    return Column(
+                      children: [
+                        // 메시지 버블
+                        _buildMessageBubble(message, index, showTimestamp),
+
+                        SizedBox(height: 8.0),
+                      ],
+                    );
+                  }
                 },
               ),
             ),
@@ -454,13 +552,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 SizedBox(width: 12.0),
 
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF111111),
-                    borderRadius: BorderRadius.circular(8.0),
+                GestureDetector(
+                  onTap: _sendimageMessage,
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF111111),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Icon(Icons.image, color: Colors.white, size: 20.0),
                   ),
-                  child: Icon(Icons.image, color: Colors.white, size: 20.0),
                 ),
 
                 // 전송 버튼 (메시지 입력 시에만 표시)
@@ -697,5 +798,24 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       );
     }
+  }
+
+  Widget _buildImageMessageBubble(
+    Map<String, dynamic> message,
+    int index,
+    bool showTimestamp,
+  ) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      height: 300,
+      decoration: BoxDecoration(
+        color: Color(0xFF1F2124),
+        borderRadius: BorderRadius.circular(16.0),
+        image: DecorationImage(
+          image: FileImage(File(message['text'])),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 }

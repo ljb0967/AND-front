@@ -249,7 +249,7 @@ class _Testscreen2State extends State<Testscreen2> {
                       ),
                     ],
 
-                    SizedBox(height: 110),
+                    SizedBox(height: 100),
 
                     // 다음으로 넘어가기 버튼
                     SizedBox(

@@ -174,7 +174,7 @@ class _Testscreen3State extends State<Testscreen3> {
                       ),
                     ),
 
-                    SizedBox(height: 110),
+                    SizedBox(height: 100),
 
                     // 다음으로 넘어가기 버튼
                     SizedBox(
@@ -222,9 +222,6 @@ class _Testscreen3State extends State<Testscreen3> {
                                   lossCaseController.setWithTime('OVER_10Y');
                                 }
 
-                                // print('Testscreen3 데이터 저장 완료');
-                                // lossCaseController.printCurrentData();
-
                                 Get.to(
                                   () => const Testscreen4(),
                                   transition: Transition.fade,
@@ -264,13 +261,7 @@ class _Testscreen3State extends State<Testscreen3> {
               ? const Color(0xFF2A2D31)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            // color: _selectedFamilyMember == text
-            //     ? const Color(0xFF65A0FF)                    //선택하면 배경 테두리 바뀌게 하는 부분
-            //     : Colors.transparent,
-            color: Colors.transparent,
-            width: 1,
-          ),
+          border: Border.all(color: Colors.transparent, width: 1),
         ),
         child: Row(
           children: [
@@ -318,37 +309,3 @@ class _Testscreen3State extends State<Testscreen3> {
     );
   }
 }
-
-// class _RadioLine extends StatelessWidget {
-//   final String title;
-//   final String? groupValue;
-//   final ValueChanged<String?> onChanged;
-//   const _RadioLine({
-//     required this.title,
-//     required this.groupValue,
-//     required this.onChanged,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Radio<String>(
-//           value: title,
-//           groupValue: groupValue,
-//           onChanged: onChanged,
-//           visualDensity: VisualDensity.compact,
-//           fillColor: MaterialStateProperty.all(const Color(0xFFDCE6FA)),
-//         ),
-//         const SizedBox(width: 8),
-//         Text(
-//           title,
-//           style: const TextStyle(
-//             color: Color(0xFF2E5AAC),
-//             fontWeight: FontWeight.w600,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }

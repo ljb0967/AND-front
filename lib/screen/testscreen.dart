@@ -29,10 +29,6 @@ class _TestscreenState extends State<Testscreen> {
     final hasValidBreakupSelection =
         _selectedCategory != null &&
         (_selectedCategory != '가족' || _selectedFamilyMember != null);
-    // return name.isNotEmpty &&
-    //     _isNumeric(age) &&
-    //     _gender != null &&
-    //     hasValidBreakupSelection;
     return hasValidBreakupSelection;
   }
 
@@ -589,10 +585,12 @@ class _TestscreenState extends State<Testscreen> {
                                     lossCaseController.setLossSubjectFamily(
                                       'GRANDFATHER_GRANDMOTHER',
                                     );
+                                    lossCaseController.setGrandfather(true);
                                   } else if (_selectedFamilyMember == '할머니') {
                                     lossCaseController.setLossSubjectFamily(
                                       'GRANDFATHER_GRANDMOTHER',
                                     );
+                                    lossCaseController.setGrandfather(false);
                                   } else if (_selectedFamilyMember == '남자형제') {
                                     lossCaseController.setLossSubjectFamily(
                                       'BROTHER',
@@ -724,19 +722,3 @@ class _TestscreenState extends State<Testscreen> {
     );
   }
 }
-
-// class _GreyField extends StatelessWidget {
-//   final Widget child;
-//   const _GreyField({required this.child});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         color: const Color(0xFFE6E9EE),
-//         borderRadius: BorderRadius.circular(6),
-//       ),
-//       child: child,
-//     );
-//   }
-// }

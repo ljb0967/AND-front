@@ -191,13 +191,13 @@ class _Testscreen6State extends State<Testscreen6> {
                           const SizedBox(height: 12),
                           _buildOption(
                             'D.',
-                            '당시 상황을 떠올리며 \'여기서 뭐가 잘못됐지?\'하고 따\n져본다',
+                            '당시 상황을 떠올리며 \'여기서 뭐가 잘못됐지?\'하고 따져본다',
                           ),
                         ],
                       ),
                     ),
 
-                    SizedBox(height: 110),
+                    SizedBox(height: 60),
 
                     // 다음으로 넘어가기 버튼
                     SizedBox(
@@ -230,19 +230,6 @@ class _Testscreen6State extends State<Testscreen6> {
                         ),
                         onPressed: _canProceed
                             ? () {
-                                // if (_selectedOption == 'A.') {
-                                //   lossCaseController.setCopeWay('SUPPRESS');
-                                // } else if (_selectedOption == 'B.') {
-                                //   lossCaseController.setCopeWay('REJECT');
-                                // } else if (_selectedOption == 'C.') {
-                                //   lossCaseController.setCopeWay('SUPPRESS');
-                                // } else if (_selectedOption == 'D.') {
-                                //   lossCaseController.setCopeWay('SUPPRESS');
-                                // }
-                                // // 선택된 옵션을 LossCaseController에 저장 (필요한 경우)
-                                // print('Testscreen6 데이터 저장 완료');
-                                // lossCaseController.printCurrentData();
-
                                 Get.to(
                                   () => Testscreen6_1(),
                                   transition: Transition.fade,
@@ -293,9 +280,8 @@ class _Testscreen6State extends State<Testscreen6> {
           ),
         ),
         child: Container(
-          width: 380,
           height: 68,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           decoration: ShapeDecoration(
             color: const Color(0xFF1F2124),
             shape: RoundedRectangleBorder(
@@ -303,43 +289,34 @@ class _Testscreen6State extends State<Testscreen6> {
             ),
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 8,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  SizedBox(
-                    width: 16,
-                    child: Text(
-                      text1,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                        letterSpacing: -0.40,
-                      ),
-                    ),
+              Text(
+                text1,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w500,
+                  height: 1.40,
+                  letterSpacing: -0.40,
+                ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  text2,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontFamily: 'Pretendard',
+                    fontWeight: FontWeight.w500,
+                    height: 1.40,
+                    letterSpacing: -0.40,
                   ),
-                  Text(
-                    text2,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w500,
-                      height: 1.40,
-                      letterSpacing: -0.40,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),

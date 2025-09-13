@@ -688,25 +688,25 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 16,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 295, 0),
-                          child: Container(
-                            child: Text(
-                              'Question',
-                              style: TextStyle(
-                                color: const Color(0xFF65A0FF),
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                height: 1.40,
-                                letterSpacing: -0.40,
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                child: Text(
+                                  'Question',
+                                  style: TextStyle(
+                                    color: const Color(0xFF65A0FF),
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.40,
+                                    letterSpacing: -0.40,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                       Row(
@@ -743,21 +743,28 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 320, 0),
-                        child: Container(
-                          child: Text(
-                            'Answer',
-                            style: TextStyle(
-                              color: const Color(0xFF65A0FF),
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
-                              letterSpacing: -0.40,
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                child: Text(
+                                  'Answer',
+                                  style: TextStyle(
+                                    color: const Color(0xFF65A0FF),
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.40,
+                                    letterSpacing: -0.40,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
+
                       Row(
                         children: [
                           Expanded(

@@ -404,7 +404,7 @@ class _Testscreen9State extends State<Testscreen9> {
                       ],
                     ),
 
-                    SizedBox(height: 80),
+                    SizedBox(height: 20),
 
                     // AND 시작하기 버튼
                     SizedBox(
@@ -429,13 +429,6 @@ class _Testscreen9State extends State<Testscreen9> {
                           textAlign: TextAlign.center,
                         ),
                         onPressed: () {
-                          //디버깅용
-                          // Get.offUntil(
-                          //   MaterialPageRoute(
-                          //     builder: (_) => AnalysisAnimationScreen(),
-                          //   ), //애니메이션 페이지로 이동
-                          //   (route) => route.settings.name == "/Loginscreen",
-                          // );
                           if (_selectedImage != null) {
                             lossCaseController.addProfilePhoto(
                               _selectedImage!.path,
@@ -446,6 +439,7 @@ class _Testscreen9State extends State<Testscreen9> {
                               _selectedImage2!.path,
                             );
                           }
+                          lossCaseController.analysisTone();
                           _submitFinalData();
                         },
                       ),

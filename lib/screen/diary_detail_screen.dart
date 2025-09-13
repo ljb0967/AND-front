@@ -6,6 +6,7 @@ import 'package:test1/screen/dailyquestionscreen.dart';
 import 'package:test1/screen/homecontentscreen.dart';
 import 'package:test1/screen/farewelldiaryscreen.dart';
 import 'package:test1/screen/farewellshopscreen.dart';
+import 'dart:io';
 
 class DiaryDetailScreen extends StatefulWidget {
   final Map<String, dynamic> diaryData;
@@ -56,14 +57,25 @@ class _DiaryDetailScreenState extends State<DiaryDetailScreen> {
         children: [
           Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(widget.diaryData['backgroundImage']),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withValues(alpha: 0.5),
-                  BlendMode.darken,
-                ),
-              ),
+              image: widget.diaryData['backgroundImage'].startsWith('image/')
+                  ? DecorationImage(
+                      image: AssetImage(widget.diaryData['backgroundImage']),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withValues(alpha: 0.5),
+                        BlendMode.darken,
+                      ),
+                    )
+                  : DecorationImage(
+                      image: FileImage(
+                        File(widget.diaryData['backgroundImage']),
+                      ),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withValues(alpha: 0.5),
+                        BlendMode.darken,
+                      ),
+                    ),
             ),
             child: Column(
               children: [

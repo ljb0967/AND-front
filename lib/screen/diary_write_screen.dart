@@ -691,34 +691,24 @@ class _DiaryWriteScreenState extends State<DiaryWriteScreen> {
                       vertical: 30.0,
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: Container(
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(),
-                            child: IconButton(
-                              icon: Image.asset('image/arrow-left.png'),
-                              onPressed: () {
-                                Get.back();
-                              },
-                            ),
-                          ),
+                        IconButton(
+                          icon: Image.asset('image/arrow-left.png'),
+                          onPressed: () {
+                            Get.back();
+                          },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 130, 0),
-                          child: Container(
-                            child: Text(
-                              '오늘의 이별일기',
-                              style: TextStyle(
-                                color: const Color(0xFFBDC7DB),
-                                fontSize: 14,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                height: 1.40,
-                              ),
+
+                        Expanded(
+                          child: Text(
+                            '오늘의 이별일기',
+                            style: TextStyle(
+                              color: const Color(0xFFBDC7DB),
+                              fontSize: 14,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
                             ),
                           ),
                         ),
@@ -735,55 +725,57 @@ class _DiaryWriteScreenState extends State<DiaryWriteScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 24, 20),
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
                         onTap: () {
                           _showRegistrationConfirmation();
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 130, 0),
-                          child: Container(
-                            width: 150,
-                            height: 30,
-                            padding: const EdgeInsets.symmetric(horizontal: 0),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF1F2124),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                '오늘도, 이별 나누기 등록',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.40,
-                                  letterSpacing: -0.35,
-                                ),
+                        child: Container(
+                          width: 150,
+                          height: 30,
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1F2124),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '오늘도, 이별 나누기 등록',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                                letterSpacing: -0.35,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      Icon(
-                        Icons.star_border,
-                        color: const Color(0xFFBDC7DB),
-                        size: 30,
-                      ),
-                      SizedBox(width: 12),
-                      GestureDetector(
-                        onTap: () {
-                          _showImageSourceDialog();
-                        },
-                        child: Icon(
-                          Icons.image_outlined,
-                          color: const Color(0xFFBDC7DB),
-                          size: 30,
-                        ),
+
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star_border,
+                            color: const Color(0xFFBDC7DB),
+                            size: 30,
+                          ),
+                          SizedBox(width: 12),
+                          GestureDetector(
+                            onTap: () {
+                              _showImageSourceDialog();
+                            },
+                            child: Icon(
+                              Icons.image_outlined,
+                              color: const Color(0xFFBDC7DB),
+                              size: 30,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

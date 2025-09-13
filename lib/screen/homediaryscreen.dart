@@ -221,34 +221,24 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
                           vertical: 30.0,
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: Container(
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(),
-                                child: IconButton(
-                                  icon: Image.asset('image/arrow-left.png'),
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                ),
-                              ),
+                            IconButton(
+                              icon: Image.asset('image/arrow-left.png'),
+                              onPressed: () {
+                                Get.back();
+                              },
                             ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 180, 0),
-                              child: Container(
-                                child: Text(
-                                  '홈 화면',
-                                  style: TextStyle(
-                                    color: const Color(0xFFBDC7DB),
-                                    fontSize: 14,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.40,
-                                  ),
+
+                            Expanded(
+                              child: Text(
+                                '홈 화면',
+                                style: TextStyle(
+                                  color: const Color(0xFFBDC7DB),
+                                  fontSize: 14,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.40,
                                 ),
                               ),
                             ),
@@ -795,32 +785,32 @@ class _HomediaryscreenState extends State<Homediaryscreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // 프로필 정보
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 16.0,
-                              //backgroundImage: AssetImage(data['profileImage']),
-                              child: Icon(
-                                Icons.person,
-                                color: const Color(0xFF7F8694),
-                                size: 25,
+                        Expanded(
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 16.0,
+                                //backgroundImage: AssetImage(data['profileImage']),
+                                child: Icon(
+                                  Icons.person,
+                                  color: const Color(0xFF7F8694),
+                                  size: 25,
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 8.0),
-                            Text(
-                              data['userName'],
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                height: 1.40,
+                              SizedBox(width: 8.0),
+                              Text(
+                                data['userName'],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.40,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-
-                        SizedBox(width: 135.0),
 
                         Row(
                           children: [

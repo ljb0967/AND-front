@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'testscreen6.dart';
 
-///////////////////////////////////////////
-// 반응형 UI 수정 아직 안됨
-//
-//////////////////////////////////////////
-
 class Testscreen5 extends StatefulWidget {
   const Testscreen5({super.key});
 

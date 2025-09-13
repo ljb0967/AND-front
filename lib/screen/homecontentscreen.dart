@@ -736,29 +736,31 @@ class _HomecontentscreenState extends State<Homecontentscreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // 프로필 정보
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 16.0,
-                            //backgroundImage: AssetImage(data['profileImage']),
-                            child: Icon(
-                              Icons.person,
-                              color: const Color(0xFF7F8694),
-                              size: 25,
+                      Expanded(
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 16.0,
+                              //backgroundImage: AssetImage(data['profileImage']),
+                              child: Icon(
+                                Icons.person,
+                                color: const Color(0xFF7F8694),
+                                size: 25,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 8.0),
-                          Text(
-                            data['userName'],
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
+                            SizedBox(width: 8.0),
+                            Text(
+                              data['userName'],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                                height: 1.40,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       // 북마크 아이콘
                       Obx(

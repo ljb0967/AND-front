@@ -87,14 +87,11 @@ class _LoginscreenState extends State<Loginscreen> {
       } else {
         // _showErrorDialog('로그인에 실패했습니다. 다시 시도해주세요.');
       }
-      /////////////////////////////////////////////////////////
 
       if (email == 'ljb0967@naver.com' && password == 'a12345678') {
         //디버깅 용
         Get.to(() => const LoginScreen2(), transition: Transition.fade);
       }
-
-      ////////////////////////////////////////////////////////////
 
       // 임시로 항상 실패로 처리 (백엔드 구현 전)
       await Future.delayed(const Duration(milliseconds: 500)); // API 호출 시뮬레이션
@@ -141,53 +138,68 @@ class _LoginscreenState extends State<Loginscreen> {
 
             // 로고
             Padding(
-              padding: EdgeInsets.only(right: 283.64),
-              child: Image.asset('image/home_image.png', height: 20),
+              padding: const EdgeInsets.only(left: 20),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Image.asset('image/home_image.png', height: 20),
+              ),
             ),
 
             SizedBox(height: 36.55),
 
             // 메인 타이틀
             Padding(
-              padding: EdgeInsets.only(right: 165),
-              child: Text(
-                '끝, 그리고 그 다음\n어서오세요 AND 입니다',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontFamily: 'Pretendard',
-                  fontWeight: FontWeight.w600,
-                  height: 1.40,
-                  letterSpacing: -0.50,
-                ),
+              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '끝, 그리고 그 다음\n어서오세요 AND 입니다',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w600,
+                        height: 1.40,
+                        letterSpacing: -0.50,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
             SizedBox(height: 4),
 
-            // 서브 타이틀
             Padding(
-              padding: EdgeInsets.only(right: 117),
-              child: Text(
-                '회원 / 비회원 / SNS 계정 로그인이 가능해요',
-                style: TextStyle(
-                  color: const Color(0xFFBDC7DB),
-                  fontSize: 14,
-                  fontFamily: 'Pretendard',
-                  fontWeight: FontWeight.w500,
-                  height: 1.40,
-                  letterSpacing: -0.35,
-                ),
+              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '회원 / 비회원 / SNS 계정 로그인이 가능해요',
+                      style: TextStyle(
+                        color: const Color(0xFFBDC7DB),
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        height: 1.40,
+                        letterSpacing: -0.35,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
-            SizedBox(height: 36),
+            SizedBox(height: 26),
 
             // 회원/비회원 탭
             Row(
               children: [
                 // 회원 탭
                 Expanded(
+                  flex: 1,
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -213,6 +225,7 @@ class _LoginscreenState extends State<Loginscreen> {
 
                 // 비회원 탭
                 Expanded(
+                  flex: 1,
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -273,100 +286,115 @@ class _LoginscreenState extends State<Loginscreen> {
                     // 회원 로그인 섹션
                     if (_isMember) ...[
                       Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '회원 로그인',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '회원 로그인',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.40,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
 
                       SizedBox(height: 22),
 
                       // 이메일 입력 필드
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFF1F2124),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: idController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(
-                            color: const Color(0xFF8A9099),
-                            fontSize: 16,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
-                          ),
-                          decoration: InputDecoration(
-                            isCollapsed: true,
-                            border: InputBorder.none,
-                            hintText: "이메일 주소 입력",
-                            hintStyle: TextStyle(
-                              color: Color(0xFF8A9099),
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              decoration: ShapeDecoration(
+                                color: const Color(0xFF1F2124),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: TextField(
+                                controller: idController,
+                                keyboardType: TextInputType.emailAddress,
+                                style: TextStyle(
+                                  color: const Color(0xFF8A9099),
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.40,
+                                ),
+                                decoration: InputDecoration(
+                                  isCollapsed: true,
+                                  border: InputBorder.none,
+                                  hintText: "이메일 주소 입력",
+                                  hintStyle: TextStyle(
+                                    color: Color(0xFF8A9099),
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.40,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
 
                       SizedBox(height: 18),
 
                       // 비밀번호 입력 필드
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFF1F2124),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: TextField(
-                          obscureText: true,
-                          controller: pwController,
-                          style: TextStyle(
-                            color: const Color(0xFF8A9099),
-                            fontSize: 16,
-                            fontFamily: 'Pretendard',
-                            fontWeight: FontWeight.w500,
-                            height: 1.40,
-                          ),
-                          decoration: InputDecoration(
-                            isCollapsed: true,
-                            border: InputBorder.none,
-                            hintText: "비밀번호 입력",
-                            hintStyle: TextStyle(
-                              color: Color(0xFF8A9099),
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              decoration: ShapeDecoration(
+                                color: const Color(0xFF1F2124),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: TextField(
+                                obscureText: true,
+                                controller: pwController,
+                                style: TextStyle(
+                                  color: const Color(0xFF8A9099),
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.40,
+                                ),
+                                decoration: InputDecoration(
+                                  isCollapsed: true,
+                                  border: InputBorder.none,
+                                  hintText: "비밀번호 입력",
+                                  hintStyle: TextStyle(
+                                    color: Color(0xFF8A9099),
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.40,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
 
                       SizedBox(height: 12),
@@ -389,67 +417,76 @@ class _LoginscreenState extends State<Loginscreen> {
                       SizedBox(height: 15),
 
                       // 로그인 버튼
-                      SizedBox(
-                        width: double.infinity,
-                        height: 48,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _isLoggingIn
-                                ? const Color(0xFF7F8694)
-                                : const Color(0xFF65A0FF),
-                            disabledBackgroundColor: const Color(0xFF7F8694),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              height: 48,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: _isLoggingIn
+                                      ? const Color(0xFF7F8694)
+                                      : const Color(0xFF65A0FF),
+                                  disabledBackgroundColor: const Color(
+                                    0xFF7F8694,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: _isLoggingIn
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: 16,
+                                            height: 16,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                    Colors.white,
+                                                  ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            '로그인 중...',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontFamily: 'Pretendard',
+                                              fontWeight: FontWeight.w600,
+                                              height: 1.40,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Text(
+                                        '로그인',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontFamily: 'Pretendard',
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.40,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                onPressed: _isLoggingIn
+                                    ? null
+                                    : () {
+                                        _validateLogin(
+                                          idController.text,
+                                          pwController.text,
+                                        );
+                                      },
+                              ),
                             ),
                           ),
-                          child: _isLoggingIn
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                              Colors.white,
-                                            ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '로그인 중...',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontFamily: 'Pretendard',
-                                        fontWeight: FontWeight.w600,
-                                        height: 1.40,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Text(
-                                  '로그인',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Pretendard',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.40,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                          onPressed: _isLoggingIn
-                              ? null
-                              : () {
-                                  _validateLogin(
-                                    idController.text,
-                                    pwController.text,
-                                  );
-                                },
-                        ),
+                        ],
                       ),
 
                       SizedBox(height: 20),
@@ -532,102 +569,120 @@ class _LoginscreenState extends State<Loginscreen> {
                     // 비회원 로그인 섹션
                     if (!_isMember) ...[
                       Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '비회원 로그인',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '비회원 로그인',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.40,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
 
-                      SizedBox(height: 32),
+                      SizedBox(height: 12),
 
                       Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '① 일부 서비스 이용에 제한이 있을 수 있어요',
-                            style: TextStyle(
-                              color: const Color(0xFFBDC7DB),
-                              fontSize: 14,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '① 일부 서비스 이용에 제한이 있을 수 있어요',
+                                style: TextStyle(
+                                  color: const Color(0xFFBDC7DB),
+                                  fontSize: 14,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.40,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
 
                       SizedBox(height: 107),
 
                       // 비회원 로그인 버튼
-                      SizedBox(
-                        width: double.infinity,
-                        height: 48,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF65A0FF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              height: 48,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF65A0FF),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  '로그인',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.40,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                onPressed: () {
+                                  Get.to(
+                                    () => const LoginScreen2(),
+                                    transition: Transition.fade,
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                          child: Text(
-                            '로그인',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w600,
-                              height: 1.40,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          onPressed: () {
-                            Get.to(
-                              () => const LoginScreen2(),
-                              transition: Transition.fade,
-                            );
-                          },
-                        ),
+                        ],
                       ),
 
                       SizedBox(height: 20),
 
                       // 비회원 회원가입 버튼
-                      Center(
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero, // ← 기본 패딩 제거
-                            minimumSize: Size(0, 0), // ← 최소 크기도 제거
-                            tapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap, // ← 터치 영역 축소
-                          ),
-                          onPressed: () {
-                            Get.to(
-                              () => const Registerscreen(),
-                              transition: Transition.fade,
-                            );
-                          },
-                          child: Text(
-                            '회원가입',
-                            style: TextStyle(
-                              color: const Color(0xFFBDC7DB),
-                              fontSize: 14,
-                              fontFamily: 'Pretendard',
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero, // ← 기본 패딩 제거
+                                  minimumSize: Size(0, 0), // ← 최소 크기도 제거
+                                  tapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // ← 터치 영역 축소
+                                ),
+                                onPressed: () {
+                                  Get.to(
+                                    () => const Registerscreen(),
+                                    transition: Transition.fade,
+                                  );
+                                },
+                                child: Text(
+                                  '회원가입',
+                                  style: TextStyle(
+                                    color: const Color(0xFFBDC7DB),
+                                    fontSize: 14,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.40,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
 

@@ -488,9 +488,6 @@ class _Testscreen4State extends State<Testscreen4> {
                         onPressed: _canProceed
                             ? () {
                                 lossCaseController.setLossDate(_selectedDate);
-
-                                // print('Testscreen4 데이터 저장 완료');
-                                // lossCaseController.printCurrentData();
                                 Get.to(
                                   () => const Testscreen5(),
                                   transition: Transition.fade,

@@ -198,71 +198,74 @@ class _ChatprofilescreenState extends State<Chatprofilescreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset('image/home_image.png', height: 20),
-                    Row(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 30, 25, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset('image/Bell.png', height: 30),
-                        SizedBox(width: 12),
-                        Image.asset('image/GearSix.png', height: 30),
+                        Image.asset('image/home_image.png', height: 20),
+                        Row(
+                          children: [
+                            Image.asset('image/Bell.png', height: 30),
+                            SizedBox(width: 12),
+                            Image.asset('image/GearSix.png', height: 30),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(26, 30, 26, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Text(
-                      '취소',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                        letterSpacing: -0.40,
-                      ),
-                    ),
                   ),
-                  Text(
-                    '프로필 설정',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w600,
-                      height: 1.40,
-                      letterSpacing: -0.40,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Text(
-                      '완료',
-                      style: TextStyle(
-                        color: const Color(0xFF65A0FF),
-                        fontSize: 16,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        height: 1.40,
-                        letterSpacing: -0.40,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(26, 30, 26, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            '취소',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                              letterSpacing: -0.40,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '프로필 설정',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w600,
+                            height: 1.40,
+                            letterSpacing: -0.40,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            '완료',
+                            style: TextStyle(
+                              color: const Color(0xFF65A0FF),
+                              fontSize: 16,
+                              fontFamily: 'Pretendard',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                              letterSpacing: -0.40,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
