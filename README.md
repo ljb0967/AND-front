@@ -21,22 +21,32 @@
 
 # 3. 홈 화면
 
-<img src="./Readme_image/homescreen.png" alt="홈홈 화면" width="200">
+<p align="center">
+    <img src="./Readme_image/homescreen.png" alt="홈홈 화면" width="200">
+</p>
 
 # 4. 이별 나누기
 
 # 5. 이별 일기
 
-<img src="./Readme_image/diaryscreen.png" alt="일기 화면" width="200">
+<p align="center">
+    <img src="./Readme_image/diaryscreen.png" alt="일기 화면" width="200">
+</p>
 
 # 6. 이별 상점
 
-<img src="./Readme_image/shopscreen.png" alt="상점 화면" width="200">
+<p align="center">
+    <img src="./Readme_image/shopscreen.png" alt="상점 화면" width="200">
+</p>
 
 # 7. 일일문답
 
-<img src="./Readme_image/dailyqscreen.png" alt="일일문답 화면" width="200">
+<p align="center">
+    <img src="./Readme_image/dailyqscreen.png" alt="일일문답 화면" width="200">
+</p>
 
 # 8. 채팅
 
-<img src="./Readme_image/chatscreen.png" alt="채팅 화면" width="200">
+<p align="center">
+    <img src="./Readme_image/chatscreen.png" alt="채팅 화면" width="200">
+</p>
