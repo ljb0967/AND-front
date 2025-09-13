@@ -2,7 +2,7 @@
 
 # 1. 로그인/회원가입
 
-![로그인 화면](./Readme_image/Loginscreen.png)
+<img src="./Readme_image/Loginscreen.png" alt="로그인 화면" width="300">
 
 ![로그인 화면2](./Readme_image/Loginscreen2.png)
 
